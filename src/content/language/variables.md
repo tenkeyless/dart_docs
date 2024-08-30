@@ -1,37 +1,39 @@
 ---
-title: Variables
-description: Learn about variables in Dart.
+# title: Variables
+title: 변수
+# description: Learn about variables in Dart.
+description: Dart의 변수에 대해 알아보세요.
 prevpage:
   url: /language
-  title: Basics
+  # title: Basics
+  title: 기초
 nextpage:
   url: /language/operators
-  title: Operators
+  # title: Operators
+  title: 연산자
 ---
 
 <?code-excerpt replace="/ *\/\/\s+ignore_for_file:[^\n]+\n//g; /(^|\n) *\/\/\s+ignore:[^\n]+\n/$1/g; /(\n[^\n]+) *\/\/\s+ignore:[^\n]+\n/$1\n/g; / *\/\/\s+ignore:[^\n]+//g; /([A-Z]\w*)\d\b/$1/g"?>
 
-Here's an example of creating a variable and initializing it:
+다음은 변수를 생성하고 초기화하는 예입니다.
 
 <?code-excerpt "misc/lib/language_tour/variables.dart (var-decl)"?>
 ```dart
 var name = 'Bob';
 ```
 
-Variables store references. The variable called `name` contains a
-reference to a `String` object with a value of "Bob".
+변수는 참조를 저장합니다. 
+`name`이라는 변수는 "Bob"이라는 값을 가진 `String` 객체에 대한 참조를 포함합니다.
 
-The type of the `name` variable is inferred to be `String`,
-but you can change that type by specifying it.
-If an object isn't restricted to a single type,
-specify the `Object` type (or `dynamic` if necessary).
+`name` 변수의 타입은 `String`으로 추론되지만, 지정하여 해당 타입을 변경할 수 있습니다. 
+객체가 단일 타입으로 제한되지 않은 경우, `Object` 타입(또는 필요한 경우 `dynamic`)을 지정합니다.
 
 <?code-excerpt "misc/lib/language_tour/variables.dart (type-decl)"?>
 ```dart
 Object name = 'Bob';
 ```
 
-Another option is to explicitly declare the type that would be inferred:
+또 다른 옵션은 추론될 타입을 명시적으로 선언하는 것입니다.
 
 <?code-excerpt "misc/lib/language_tour/variables.dart (static-types)"?>
 ```dart
@@ -39,68 +41,61 @@ String name = 'Bob';
 ```
 
 :::note
-This page follows the
-[style guide recommendation](/effective-dart/design#types)
-of using `var`, rather than type annotations, for local variables.
+이 페이지는 로컬 변수에 대해, 
+타입 어노테이션 대신 `var`를 사용하는 [스타일 가이드 권장 사항](/effective-dart/design#types)을 따릅니다.
 :::
 
-## Null safety
+## 널 세이프티 (null safety) {:#null-safety}
 
-The Dart language enforces sound null safety.
+Dart 언어는 사운드 널 세이프티(sound null safety)를 적용합니다.
 
-Null safety prevents an error that results from unintentional access
-of variables set to `null`. The error is called a null dereference error.
-A null dereference error occurs when you access a property or call a method
-on an expression that evaluates to `null`.
-An exception to this rule is when `null` supports the property or method,
-like `toString()` or `hashCode`. With null safety, the Dart compiler
-detects these potential errors at compile time.
+널 세이프티는 `null`로 설정된 변수에 의도치 않게 액세스하여 발생하는 오류를 방지합니다. 
+이 오류를 null 역참조 오류(null dereference error)라고 합니다. 
+null 역참조 오류는 `null`로 평가되는 표현식에서, 속성에 액세스하거나 메서드를 호출할 때 발생합니다. 
+이 규칙의 예외는 `null`이 (`toString()` 또는 `hashCode`와 같이) 속성이나 메서드를 지원하는 경우입니다. 
+널 세이프티를 통해, Dart 컴파일러는 컴파일 타임에 이러한 잠재적 오류를 감지합니다.
 
-For example, say you want to find the absolute value of an `int` variable `i`.
-If `i` is `null`, calling `i.abs()` causes a null dereference error.
-In other languages, trying this could lead to a runtime error,
-but Dart's compiler prohibits these actions.
-Therefore, Dart apps can't cause runtime errors.
+예를 들어, `int` 변수 `i`의 절대값을 찾고 싶다고 가정해 보겠습니다. 
+`i`가 `null`인 경우, `i.abs()`를 호출하면, null 역참조 오류가 발생합니다. 
+다른 언어에서는, 이를 시도하면 런타임 오류가 발생할 수 있지만, Dart 컴파일러는 이러한 동작을 금지합니다. 
+따라서, Dart 앱은 런타임 오류를 일으킬 수 없습니다.
 
-Null safety introduces three key changes:
+널 세이프티는 세 가지 주요 변경 사항을 도입합니다.
 
-1.  When you specify a type for a variable, parameter, or another
-    relevant component, you can control whether the type allows `null`.
-    To enable nullability, you add a `?` to the end of the type declaration.
+1. 변수, 매개변수 또는 다른 관련 구성 요소에 대한 타입을 지정할 때, 
+   타입이 `null`을 허용하는지 여부를 제어할 수 있습니다. 
+   Null 허용을 활성화하려면, 타입 선언 끝에 `?`를 추가합니다.
 
-    ```dart
-    String? name  // Nullable type. Can be `null` or string.
+   ```dart
+   String? name  // Nullable 타입입니다. `null` 또는 문자열일 수 있습니다.
 
-    String name   // Non-nullable type. Cannot be `null` but can be string.
-    ```
+   String name   // null이 될 수 없는 타입입니다. `null`이 될 수 없지만, 문자열은 가능합니다.
+   ```
 
-2.  You must initialize variables before using them.
-    Nullable variables default to `null`, so they are initialized by default.
-    Dart doesn't set initial values to non-nullable types.
-    It forces you to set an initial value.
-    Dart doesn't allow you to observe an uninitialized variable.
-    This prevents you from accessing properties or calling methods
-    where the receiver's type can be `null`
-    but `null` doesn't support the method or property used.
+1. 변수를 사용하기 전에 초기화해야 합니다. 
+   Null 허용 변수는 기본적으로 `null`이므로, 기본적으로 초기화됩니다. 
+   Dart는 null을 허용하지 않는 타입에 초기값을 설정하지 않습니다. 초기값을 설정하도록 강제합니다. 
+   Dart는 초기화되지 않은 변수를 관찰하는 것을 허용하지 않습니다. 
+   이렇게 하면 수신자의 타입이 `null`일 수 있지만, 
+   `null`이 사용된 메서드나 속성을 지원하지 않는 속성에, 
+   액세스하거나 메서드를 호출할 수 없습니다.
 
-3.  You can't access properties or call methods on an expression with a
-    nullable type. The same exception applies where it's a property or method that `null` supports like `hashCode` or `toString()`.
+2. nullable 타입이 있는 표현식에서 속성에 액세스하거나 메서드를 호출할 수 없습니다. 
+   (`hashCode` 또는 `toString()`와 같이) `null`이 지원하는 속성이나 메서드인 경우에도, 
+   동일한 예외가 적용됩니다.
 
-Sound null safety changes potential **runtime errors**
-into **edit-time** analysis errors.
-Null safety flags a non-null variable when it has been either:
+사운드 널 세이프티는 잠재적인 **런타임 오류**를 **편집 시** 분석 오류로 변경합니다. 널 세이프티는 다음 중 하나일 때 널이 아닌 변수를 플래그로 표시합니다.
 
-* Not initialized with a non-null value.
-* Assigned a `null` value.
+* 널이 아닌 값으로 초기화되지 않음.
+* `null` 값이 할당됨.
 
-This check allows you to fix these errors _before_ deploying your app.
+이 검사를 통해 앱을 배포하기 _전에_ 이러한 오류를 수정할 수 있습니다.
 
-## Default value
+## 기본값 {:#default-value}
 
-Uninitialized variables that have a nullable type
-have an initial value of `null`.
-Even variables with numeric types are initially null,
-because numbers—like everything else in Dart—are objects.
+nullable 타입을 가진 초기화되지 않은 변수는 초기 값이 `null`입니다. 
+숫자 타입의 변수조차도 처음에는 null입니다. 
+숫자는 Dart의 다른 모든 것과 마찬가지로 객체이기 때문입니다.
 
 <?code-excerpt "misc/test/language_tour/variables_test.dart (var-null-init)"?>
 ```dart
@@ -109,24 +104,22 @@ assert(lineCount == null);
 ```
 
 :::note
-Production code ignores the `assert()` call. During development, on the other
-hand, <code>assert(<em>condition</em>)</code> throws an exception if
-_condition_ is false. For details, check out [Assert][].
+프로덕션 코드는 `assert()` 호출을 무시합니다. 
+반면, 개발 중에. <code>assert(<em>condition</em>)</code>는 _condition_ 이 거짓이면, 
+예외를 throw합니다. 
+자세한 내용은 [Assert][]를 확인하세요.
 :::
 
-With null safety, you must initialize the values
-of non-nullable variables before you use them:
+널 세이프티를 사용하려면, 사용하기 전에 non-nullable 변수의 값을 초기화해야 합니다.
 
 <?code-excerpt "misc/lib/language_tour/variables.dart (var-ns-init)"?>
 ```dart
 int lineCount = 0;
 ```
 
-You don't have to initialize a local variable where it's declared,
-but you do need to assign it a value before it's used.
-For example, the following code is valid because
-Dart can detect that `lineCount` is non-null by the time
-it's passed to `print()`:
+선언된 곳에서 로컬 변수를 초기화할 필요는 없지만 사용하기 전에 값을 할당해야 합니다. 
+예를 들어, 다음 코드는 Dart가 `lineCount`가 `print()`에 전달될 때까지, 
+null이 아님을 감지할 수 있기 때문에 유효합니다.
 
 <?code-excerpt "misc/lib/language_tour/variables.dart (var-ns-flow)"?>
 ```dart
@@ -141,28 +134,21 @@ if (weLikeToCount) {
 print(lineCount);
 ```
 
-Top-level and class variables are lazily initialized;
-the initialization code runs
-the first time the variable is used.
+최상위 수준 변수와 클래스 변수는 지연(lazily) 초기화됩니다. 
+초기화 코드는 변수가 처음 사용될 때 실행됩니다.
 
+## Late 변수 {:#late-variables}
 
-## Late variables
+`late` 수정자는 두 가지 사용 사례가 있습니다.
 
-The `late` modifier has two use cases:
+* 선언 후 초기화되는 null이 아닌 변수 선언.
+* 변수 지연(Lazily) 초기화.
 
-* Declaring a non-nullable variable that's initialized after its declaration.
-* Lazily initializing a variable.
+종종 Dart의 제어 흐름 분석은 null이 아닌 변수가 사용되기 전에 null이 아닌 값으로 설정되는 경우를 감지할 수 있지만, 때로는 분석이 실패합니다. 
+두 가지 일반적인 사례는 최상위 변수와 인스턴스 변수입니다. Dart는 종종 설정되었는지 확인할 수 없으므로, 시도하지 않습니다.
 
-Often Dart's control flow analysis can detect when a non-nullable variable
-is set to a non-null value before it's used,
-but sometimes analysis fails.
-Two common cases are top-level variables and instance variables:
-Dart often can't determine whether they're set,
-so it doesn't try.
-
-If you're sure that a variable is set before it's used,
-but Dart disagrees,
-you can fix the error by marking the variable as `late`:
+변수가 사용되기 전에 설정되었다고 확신하지만, Dart가 동의하지 않는 경우, 
+변수를 `late`로 표시하여 오류를 수정할 수 있습니다.
 
 <?code-excerpt "misc/lib/language_tour/variables.dart (var-late-top-level)" replace="/late/[!$&!]/g"?>
 ```dart
@@ -174,122 +160,106 @@ void main() {
 }
 ```
 
-:::warning Notice
-If you fail to initialize a `late` variable,
-a runtime error occurs when the variable is used.
+:::warning 공지
+`late` 변수를 초기화하지 못하면, 해당 변수가 사용될 때 런타임 오류가 발생합니다.
 :::
 
-When you mark a variable as `late` but initialize it at its declaration,
-then the initializer runs the first time the variable is used.
-This lazy initialization is handy in a couple of cases:
+변수를 `late`로 표시하지만 선언 시 초기화하면, 초기화자는 변수가 처음 사용될 때 실행됩니다. 
+이 지연 초기화는 몇 가지 경우에 유용합니다.
 
-* The variable might not be needed,
-  and initializing it is costly.
-* You're initializing an instance variable,
-  and its initializer needs access to `this`.
+* 변수가 필요하지 않을 수 있으며, 초기화하는 데 비용이 많이 듭니다.
+* 인스턴스 변수를 초기화하고 있으며, 초기화자는 `this`에 액세스해야 합니다.
 
-In the following example,
-if the `temperature` variable is never used,
-then the expensive `readThermometer()` function is never called:
+다음 예에서, `temperature` 변수가 전혀 사용되지 않으면, 
+비용이 많이 드는 `readThermometer()` 함수가 호출되지 않습니다.
 
 <?code-excerpt "misc/lib/language_tour/variables.dart (var-late-lazy)" replace="/late/[!$&!]/g"?>
 ```dart
-// This is the program's only call to readThermometer().
-[!late!] String temperature = readThermometer(); // Lazily initialized.
+// 이것은 이 프로그램의 readThermometer()에 대한 유일한 호출입니다.
+[!late!] String temperature = readThermometer(); // 지연(Lazily) 초기화되었습니다.
 ```
 
+## Final 및 const {:#final-and-const}
 
-## Final and const
-
-If you never intend to change a variable, use `final` or `const`, either
-instead of `var` or in addition to a type. A final variable can be set
-only once; a const variable is a compile-time constant. (Const variables
-are implicitly final.)
+변수를 변경할 생각이 없다면, `var` 대신 또는 타입에 추가하여, `final` 또는 `const`를 사용하세요. 
+final 변수는 한 번만 설정할 수 있습니다. 
+const 변수는 컴파일 타임 상수입니다. (Const 변수는 암묵적으로 final입니다.)
 
 :::note
-[Instance variables][] can be `final` but not `const`.
+[인스턴스 변수][Instance variables]는 `final`이 될 수 있지만, `const`가 될 수는 없습니다.
 :::
 
-Here's an example of creating and setting a `final` variable:
+다음은 `final` 변수를 생성하고 설정하는 예입니다.
 
 <?code-excerpt "misc/lib/language_tour/variables.dart (final)"?>
 ```dart
-final name = 'Bob'; // Without a type annotation
+final name = 'Bob'; // 타입 어노테이션 없이
 final String nickname = 'Bobby';
 ```
 
-You can't change the value of a `final` variable:
+`final` 변수의 값은 변경할 수 없습니다.
 
 <?code-excerpt "misc/lib/language_tour/variables.dart (cant-assign-to-final)"?>
 ```dart tag=fails-sa
-name = 'Alice'; // Error: a final variable can only be set once.
+name = 'Alice'; // 오류: final 변수는 한 번만 설정할 수 있습니다.
 ```
 
-Use `const` for variables that you want to be **compile-time constants**. If
-the const variable is at the class level, mark it `static const`.
-Where you declare the variable, set the value to a compile-time constant
-such as a number or string literal, a const
-variable, or the result of an arithmetic operation on constant numbers:
+**컴파일 타임 상수**가 되기를 원하는 변수에는, `const`를 사용합니다. 
+const 변수가 클래스 레벨에 있는 경우, `static const`로 표시합니다. 
+변수를 선언하는 곳에서는, 숫자나 문자열 리터럴, const 변수 또는 상수 숫자에 대한 산술 연산 결과와 같은 
+컴파일 타임 상수로 값을 설정합니다.
 
 <?code-excerpt "misc/lib/language_tour/variables.dart (const)"?>
 ```dart
-const bar = 1000000; // Unit of pressure (dynes/cm2)
-const double atm = 1.01325 * bar; // Standard atmosphere
+const bar = 1000000; // 압력의 단위 (dynes/cm2)
+const double atm = 1.01325 * bar; // 표준 대기
 ```
 
-The `const` keyword isn't just for declaring constant variables.
-You can also use it to create constant _values_,
-as well as to declare constructors that _create_ constant values.
-Any variable can have a constant value.
+`const` 키워드는 상수 변수를 선언하기 위한 것만은 아닙니다. 
+상수 _값_ 을 생성하고, 상수 값을 _생성_ 하는 생성자를 선언하는 데, 사용할 수도 있습니다. 
+모든 변수는 상수 값을 가질 수 있습니다.
 
 <?code-excerpt "misc/lib/language_tour/variables.dart (const-vs-final)"?>
 ```dart
 var foo = const [];
 final bar = const [];
-const baz = []; // Equivalent to `const []`
+const baz = []; // `const []`와 동일함
 ```
 
-You can omit `const` from the initializing expression of a `const` declaration,
-like for `baz` above. For details, see [DON'T use const redundantly][].
+`const` 선언의 초기화 표현식에서 `const`를 생략할 수 있습니다. (위의 `baz`와 같이) 
+자세한 내용은 [const를 중복해서 사용하지 마세요][DON'T use const redundantly]를 참조하세요.
 
-You can change the value of a non-final, non-const variable,
-even if it used to have a `const` value:
+`const` 값이 있던 경우에도, final이 아닌, const가 아닌 변수의 값을 변경할 수 있습니다.
 
 <?code-excerpt "misc/lib/language_tour/variables.dart (reassign-to-non-final)"?>
 ```dart
-foo = [1, 2, 3]; // Was const []
+foo = [1, 2, 3]; // const [] 였습니다.
 ```
 
-You can't change the value of a `const` variable:
+`const` 변수의 값은 변경할 수 없습니다.
 
 <?code-excerpt "misc/lib/language_tour/variables.dart (cant-assign-to-const)"?>
 ```dart tag=fails-sa
-baz = [42]; // Error: Constant variables can't be assigned a value.
+baz = [42]; // 오류: 상수 변수에 값을 할당할 수 없습니다.
 ```
 
-You can define constants that use
-[type checks and casts][] (`is` and `as`),
-[collection `if`][],
-and [spread operators][] (`...` and `...?`):
+[타입 검사 및 캐스트][type checks and casts] (`is` 및 `as`), [컬렉션 `if`][collection `if`], [스프레드 연산자][spread operators] (`...` 및 `...?`)를 사용하는 상수를 정의할 수 있습니다.
 
 <?code-excerpt "misc/lib/language_tour/variables.dart (const-dart-25)"?>
 ```dart
-const Object i = 3; // Where i is a const Object with an int value...
-const list = [i as int]; // Use a typecast.
-const map = {if (i is int) i: 'int'}; // Use is and collection if.
-const set = {if (list is List<int>) ...list}; // ...and a spread.
+const Object i = 3; // 여기서 i는 int 값을 갖는 const 객체입니다.
+const list = [i as int]; // 타입캐스트를 사용하세요.
+const map = {if (i is int) i: 'int'}; // is와 collection if를 사용합니다.
+const set = {if (list is List<int>) ...list}; // ...그리고 스프레드를 사용합니다.
 ```
 
 :::note
-Although a `final` object cannot be modified,
-its fields can be changed. 
-In comparison, a `const` object and its fields
-cannot be changed: they're _immutable_.
+`final` 객체는 수정할 수 없지만, 필드는 변경할 수 있습니다. 
+반면, `const` 객체와 필드는 변경할 수 없습니다. _변경 불가능(immutable)_ 합니다.
 :::
 
-For more information on using `const` to create constant values, see
-[Lists][], [Maps][], and [Classes][].
-
+`const`를 사용하여 상수 값을 생성하는 방법에 대한 자세한 내용은, 
+[리스트][Lists] [맵][Maps] 및 [클래스][Classes]를 참조하세요.
 
 [Assert]: /language/error-handling#assert
 [Instance variables]: /language/classes#instance-variables

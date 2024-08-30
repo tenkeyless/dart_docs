@@ -1,25 +1,27 @@
 ---
-title: Keywords
-description: Keywords in Dart.
+# title: Keywords
+title: 키워드
+# description: Keywords in Dart.
+description: Dart의 키워드
 toc: false
 prevpage:
   url: /language/libraries
-  title: Libraries
+  # title: Libraries
+  title: 라이브러리
 nextpage:
   url: /language/built-in-types
-  title: Built-in types
+  # title: Built-in types
+  title: 빌트인 타입
 ---
 
 {% assign ckw = '&nbsp;<sup>1</sup>' %}
 {% assign bii = '&nbsp;<sup>2</sup>' %}
 {% assign unr = '&nbsp;<sup>3</sup>' %}
 
-The following table lists the words
-that the Dart language reserves for its own use.
-These words can't be used as identifiers unless otherwise noted.
-Even when allowed, using keywords as identifiers can confuse other
-developers reading your code and should be avoided.
-To learn more about identifier usage, click on the term.
+다음 표는 Dart 언어가 자체적으로 사용하도록 예약한 단어를 나열한 것입니다. 
+이러한 단어는 달리 언급되지 않는 한, 식별자로 사용할 수 없습니다. 
+허용되는 경우에도, 키워드를 식별자로 사용하면 코드를 읽는 다른 개발자를 혼란스럽게 할 수 있으므로 피해야 합니다. 
+식별자 사용에 대해 자세히 알아보려면 용어를 클릭하세요.
 
 <table class="table table-striped">
 
@@ -33,12 +35,8 @@ To learn more about identifier usage, click on the term.
 {% endtablerow %}
 </table>
 
-{{ckw}} This keyword can be used as an identifier
-        depending on **context**.
+{{ckw}} 이 키워드는 **컨텍스트**에 따라 식별자로 사용될 수 있습니다.
 
-{{bii}} This keyword can't be used as the name of a type
-        (a class, a mixin, an enum, an extension type, or a type alias),
-        the name of an extension, or as an import prefix.
-        It can be used as an identifier in all other circumstances.
+{{bii}} 이 키워드는 타입 이름(클래스, 믹스인, 열거형, 확장 타입 또는 타입 별칭), 확장 이름 또는 import 접두사(prefix)로 사용할 수 없습니다. 다른 모든 상황에서는 식별자로 사용할 수 있습니다.
 
-{{unr}} This keyword can be used as an identifier without restriction.
+{{unr}} 이 키워드는 제한 없이 식별자로 사용될 수 있습니다.
