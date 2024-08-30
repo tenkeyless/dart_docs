@@ -1,111 +1,111 @@
-- title: Language
+- title: 언어
   expanded: false
   children:
-    - title: Introduction
+    - title: 소개
       match-page-url-exactly: true
       permalink: /language
-    - title: Syntax basics
+    - title: 구문 기초
       children:
-        - title: Variables
+        - title: 변수
           permalink: /language/variables
-        - title: Operators
+        - title: 연산자
           permalink: /language/operators
-        - title: Comments
+        - title: 주석
           permalink: /language/comments
-        - title: Metadata
+        - title: 메타데이터
           permalink: /language/metadata
-        - title: Libraries & imports
+        - title: 라이브러리 & imports
           permalink: /language/libraries
         - title: Keywords
           permalink: /language/keywords
-    - title: Types
+    - title: 타입
       children:
-        - title: Built-in types
+        - title: 빌트인 타입
           permalink: /language/built-in-types
-        - title: Records
+        - title: 레코드
           permalink: /language/records
-        - title: Collections
+        - title: 컬렉션
           permalink: /language/collections
-        - title: Generics
+        - title: 제네릭
           permalink: /language/generics
         - title: Typedefs
           permalink: /language/typedefs
-        - title: Type system
+        - title: 타입 시스템
           permalink: /language/type-system
-    - title: Patterns
+    - title: 패턴
       children:
-        - title: Overview & usage
+        - title: 개요 & 사용
           permalink: /language/patterns
-        - title: Pattern types
+        - title: 개요 타입
           permalink: /language/pattern-types
-        - title: Applied tutorial
+        - title: 적용된 튜토리얼
           permalink: https://codelabs.developers.google.com/codelabs/dart-patterns-records
-    - title: Functions
+    - title: 함수
       permalink: /language/functions
-    - title: Control flow
+    - title: 제어 흐름
       children:
-      - title: Loops
+      - title: 루프
         permalink: /language/loops
-      - title: Branches
+      - title: 분기
         permalink: /language/branches
-    - title: Error handling
+    - title: 오류 처리
       permalink: /language/error-handling
-    - title: Classes & objects
+    - title: 클래스 & 객체
       children:
-        - title: Classes
+        - title: 클래스
           permalink: /language/classes
-        - title: Constructors
+        - title: 생성자
           permalink: /language/constructors
-        - title: Methods
+        - title: 메서드
           permalink: /language/methods
-        - title: Extend a class
+        - title: 클래스 확장
           permalink: /language/extend
         - title: Mixins
           permalink: /language/mixins
         - title: Enums
           permalink: /language/enums
-        - title: Extension methods
+        - title: 확장 메서드
           permalink: /language/extension-methods
-        - title: Extension types
+        - title: 확장 타입
           permalink: /language/extension-types
-        - title: Callable objects
+        - title: 호출 가능한 객체
           permalink: /language/callable-objects
-    - title: Class modifiers
+    - title: 클래스 수정자 (modifiers)
       children:
-        - title: Overview & usage
+        - title: 개요 & 사용
           match-page-url-exactly: true
           permalink: /language/class-modifiers
-        - title: Class modifiers for API maintainers
+        - title: API 유지 관리자를 위한 클래스 수정자
           permalink: /language/class-modifiers-for-apis
-        - title: Reference
+        - title: 참조
           permalink: /language/modifier-reference
-    - title: Concurrency
+    - title: 동시성 (Concurrency)
       children:
-        - title: Overview
+        - title: 개요
           permalink: /language/concurrency
-        - title: Asynchronous support
+        - title: 비동기 지원
           permalink: /language/async
         - title: Isolates
           permalink: /language/isolates
-    - title: Null safety
+    - title: Null 세이프티
       expanded: false
       children:
-        - title: Sound null safety
+        - title: 사운드 null 세이프티
           match-page-url-exactly: true
           permalink: /null-safety
-        - title: Migrating to null safety
+        - title: null 세이프티로 마이그레이션
           permalink: /null-safety/migration-guide
-        - title: Understanding null safety
+        - title: null 세이프티 이해하기
           permalink: /null-safety/understanding-null-safety
-        - title: Unsound null safety
+        - title: 언사운드 null 세이프티
           permalink: /null-safety/unsound-null-safety
         - title: FAQ
           permalink: /null-safety/faq
 
-- title: Core libraries
+- title: 코어 라이브러리
   expanded: false
   children:
-    - title: Overview
+    - title: 개요
       match-page-url-exactly: true
       permalink: /libraries
     - title: dart:core
@@ -121,149 +121,149 @@
     - title: dart:html
       permalink: /libraries/dart-html
     - divider
-    - title: Iterable collections
+    - title: Iterable 컬렉션
       permalink: /libraries/collections/iterables
-    - title: Asynchronous programming
+    - title: 비동기 프로그래밍
       children:
-        - title: Tutorial
+        - title: 튜토리얼
           permalink: /libraries/async/async-await
-        - title: Futures and error handling
+        - title: Future와 오류 처리
           permalink: /libraries/async/futures-error-handling
-        - title: Using streams
+        - title: 스트림 사용
           permalink: /libraries/async/using-streams
-        - title: Creating streams
+        - title: 스트림 생성
           permalink: /libraries/async/creating-streams
 
-- title: Effective Dart
+- title: 효과적인 Dart
   expanded: false
   permalink: /effective-dart
   children:
-    - title: Overview
+    - title: 개요
       match-page-url-exactly: true
       permalink: /effective-dart
-    - title: Style
+    - title: 스타일
       permalink: /effective-dart/style
-    - title: Documentation
+    - title: 문서
       permalink: /effective-dart/documentation
-    - title: Usage
+    - title: 사용
       permalink: /effective-dart/usage
-    - title: Design
+    - title: 디자인
       permalink: /effective-dart/design
 
-- title: Packages
+- title: 패키지
   expanded: false
   children:
-    - title: How to use packages
+    - title: 패키지 사용 방법
       permalink: /guides/packages
-    - title: Commonly used packages
+    - title: 일반적으로 사용되는 패키지
       permalink: /resources/useful-packages
-    - title: Creating packages
+    - title: 패키지 생성
       permalink: /guides/libraries/create-packages
-    - title: Publishing packages
+    - title: 패키지 게시
       permalink: /tools/pub/publishing
-    - title: Writing package pages
+    - title: 패키지 페이지 작성
       permalink: /tools/pub/writing-package-pages
-    - title: Package reference
+    - title: 패키지 참조
       expanded: false
       children:
-        - title: Dependencies
+        - title: 종속성
           permalink: /tools/pub/dependencies
-        - title: Glossary
+        - title: 용어집
           permalink: /tools/pub/glossary
-        - title: Package layout conventions
+        - title: 패키지 레이아웃 규칙
           permalink: /tools/pub/package-layout
-        - title: Pub environment variables
+        - title: Pub 환경 변수
           permalink: /tools/pub/environment-variables
-        - title: Pubspec file
+        - title: Pubspec 파일
           permalink: /tools/pub/pubspec
-        - title: Troubleshooting pub
+        - title: pub 문제 해결
           permalink: /tools/pub/troubleshoot
-        - title: Verified publishers
+        - title: 검증된 게시자
           permalink: /tools/pub/verified-publishers
-        - title: Security advisories
+        - title: 보안 권고
           permalink: /tools/pub/security-advisories
-        - title: Versioning
+        - title: 버전 관리
           permalink: /tools/pub/versioning
-    - title: What not to commit
+    - title: 커밋하지 말아야 할 것
       permalink: /guides/libraries/private-files
 
-- title: Development
+- title: 개발
   expanded: false
   children:
     - title: JSON
       permalink: /guides/json
-    - title: Number representation
+    - title: 숫자 표현
       permalink: /guides/language/numbers
     - title: Google APIs
       permalink: /resources/google-apis
-    - title: Multi-platform apps
+    - title: 다중 플랫폼 앱
       permalink: /multiplatform-apps
-    - title: Command-line & server apps
+    - title: 명령줄 및 서버 앱
       children:
-        - title: Overview
+        - title: 개요
           match-page-url-exactly: true
           permalink: /server
-        - title: Get started
+        - title: 시작하기
           permalink: /tutorials/server/get-started
-        - title: Write command-line apps
+        - title: 명령줄 앱 작성
           permalink: /tutorials/server/cmdline
-        - title: Fetch data from the internet
+        - title: 인터넷에서 데이터 가져오기
           permalink: /tutorials/server/fetch-data
-        - title: Write HTTP servers
+        - title: HTTP 서버 작성
           permalink: /tutorials/server/httpserver
-        - title: Libraries & packages
+        - title: 라이브러리 & 패키지
           permalink: /server/libraries
         - title: Google Cloud
           permalink: /server/google-cloud
-    - title: Web apps
+    - title: 웹 앱
       children:
-        - title: Overview
+        - title: 개요
           match-page-url-exactly: true
           permalink: /web
-        - title: Get started
+        - title: 시작하기
           permalink: /web/get-started
-        - title: Deployment
+        - title: 배포
           permalink: /web/deployment
-        - title: Libraries & packages
+        - title: 라이브러리 & 패키지
           permalink: /web/libraries
-        - title: Wasm compilation
+        - title: Wasm 컴파일
           permalink: /web/wasm
-    - title: Environment declarations
+    - title: 환경 선언
       permalink: /guides/environment-declarations
 
-- title: Interoperability
+- title: 상호 운용성 (Interoperability)
   expanded: false
   children:
-  - title: C interop
+  - title: C 상호 운용성
     permalink: /interop/c-interop
-  - title: Objective-C & Swift interop
+  - title: Objective-C & Swift 상호 운용성
     permalink: /interop/objective-c-interop
-  - title: Java & Kotlin interop
+  - title: Java & Kotlin 상호 운용성
     permalink: /interop/java-interop
-  - title: JavaScript interop
+  - title: JavaScript 상호 운용성
     children:
-      - title: Overview
+      - title: 개요
         permalink: /interop/js-interop
         match-page-url-exactly: true
-      - title: Usage
+      - title: 사용
         permalink: /interop/js-interop/usage
-      - title: JS types
+      - title: JS 타입
         permalink: /interop/js-interop/js-types
-      - title: Tutorials
+      - title: 튜토리얼
         permalink: /interop/js-interop/tutorials
-      - title: Past JS interop
+      - title: 과거 JS 상호 운용성
         permalink: /interop/js-interop/past-js-interop
       - divider
-      - title: Web interop
+      - title: Web 상호 운용성
         permalink: /interop/js-interop/package-web
 
-- title: Tools & techniques
+- title: 도구 & 기술
   expanded: false
   children:
-  - title: Overview
+  - title: 개요
     match-page-url-exactly: true
     permalink: /tools
-  - title: Editors & debuggers
+  - title: 편집기 & 디버거
     children:
       - title: IntelliJ & Android Studio
         permalink: /tools/jetbrains-plugin
@@ -273,17 +273,17 @@
         permalink: /tools/dart-devtools
       - title: DartPad
         children:
-          - title: Overview
+          - title: 개요
             match-page-url-exactly: true
             permalink: /tools/dartpad
-          - title: Troubleshooting DartPad
+          - title: DartPad 문제 해결
             permalink: /tools/dartpad/troubleshoot
-  - title: Command-line tools
+  - title: 명령줄 도구
     children:
     - title: Dart SDK
       expanded: true
       children:
-        - title: Overview
+        - title: 개요
           permalink: /tools/sdk
         - title: dart
           permalink: /tools/dart-tool
@@ -309,78 +309,78 @@
           permalink: /tools/dart-test
         - title: dartaotruntime
           permalink: /tools/dartaotruntime
-        - title: Experiment flags
+        - title: 실험 플래그
           permalink: /tools/experiment-flags
-    - title: Other command-line tools
+    - title: 기타 명령줄 도구
       expanded: true
       children:
         - title: build_runner
           permalink: /tools/build_runner
         - title: webdev
           permalink: /tools/webdev
-  - title: Static analysis
+  - title: 정적 분석
     children:
-      - title: Customizing static analysis
+      - title: 정적 분석 커스터마이즈
         permalink: /tools/analysis
-      - title: Fixing common type problems
+      - title: 일반적인 타입 문제 고치기
         permalink: /guides/language/sound-problems
-      - title: Fixing type promotion failures
+      - title: 타입 승격 실패 고치기
         permalink: /tools/non-promotion-reasons
-      - title: Linter rules
+      - title: 린터 규칙
         permalink: /tools/linter-rules
-      - title: Diagnostic messages
+      - title: 진단 메시지
         permalink: /tools/diagnostic-messages
-  - title: Testing & optimization
+  - title: 테스트 & 최적화
     children:
-      - title: Testing
+      - title: 테스트
         permalink: /guides/testing
-      - title: Debugging web apps
+      - title: 웹 앱 디버깅
         permalink: /web/debugging
 
 - divider
-- title: Resources
+- title: 리소스
   expanded: false
   children:
-    - title: Language cheatsheet
+    - title: 언어 치트시트
       permalink: /resources/dart-cheatsheet
-    - title: Breaking changes
+    - title: 중요한 변경
       permalink: /resources/breaking-changes
-    - title: Language evolution
+    - title: 언어 진화
       permalink: /guides/language/evolution
-    - title: Language specification
+    - title: 언어 사양
       permalink: /guides/language/spec
-    - title: Dart 3 migration guide
+    - title: Dart 3 마이그레이션 가이드
       permalink: /resources/dart-3-migration
-    - title: Coming from ...
+    - title: ...에서 이전
       expanded: false
       children:
-        - title: JavaScript to Dart
+        - title: JavaScript에서 Dart로
           permalink: /resources/coming-from/js-to-dart
-        - title: Swift to Dart
+        - title: Swift에서 Dart로
           permalink: /resources/coming-from/swift-to-dart
     - divider
     - title: FAQ
       permalink: /resources/faq
-    - title: Glossary
+    - title: 용어집
       permalink: /resources/glossary
-    - title: Books
+    - title: 책
       permalink: /resources/books
-    - title: Videos
+    - title: 비디오
       permalink: /resources/videos
-    - title: Tutorials
+    - title: 튜토리얼
       match-page-url-exactly: true
       permalink: /tutorials
 
-- title: Related sites
+- title: 관련 사이트
   expanded: true
   children:
-    - title: API reference
+    - title: API 참조
       permalink: https://api.dart.dev
-    - title: Blog
+    - title: 블로그
       permalink: https://medium.com/dartlang
-    - title: DartPad (online editor)
+    - title: DartPad (온라인 편집기)
       permalink: https://dartpad.dev
     - title: Flutter
       permalink: https://flutter.dev
-    - title: Package site
+    - title: 패키지 사이트
       permalink: https://pub.dev

@@ -35,6 +35,89 @@ do consider building and test your work before submitting.
 
 If you want or need to build the site, follow the steps below.
 
+## [Dart][] [한글 문서](https://dart-docs-kr.web.app/) 웹사이트
+
+이 문서는 [dart-docs-kr.web.app](https://dart-docs-kr.web.app/)에서 호스팅되고 있습니다.
+
+이 문서는 [Dart][Dart]를 번역한 것입니다.
+
+main 브랜치에 한해서 번역되며, Dart_[버전]-[날짜] 와 같은 태그의 형태로 태그가 붙여집니다.
+가령, Dart_3.5-240827 이 태그는, Dart 3.5 버전에 대한 번역본이며, 
+240827의 날짜에 해당하는 main 브랜치에서 fork하여 번역된 것입니다.
+
+## Docker를 활용한 빌드
+
+이 서비스는 로컬로 Docker를 활용해 웹페이지를 열 수 있습니다.
+
+### Docker build
+
+```shell
+$ docker build -t flutter-doc-site .
+```
+
+### Docker run
+
+```shell
+$ docker run --rm --name doc__dart-doc-site -p 4002:4000 -v ${workspaceFolder}/.pub-cache:/root/.pub-cache -v ${workspaceFolder}:/app flutter-doc-site
+```
+
+이 명령의 실행으로, 4002 포트에서 문서를 열 수 있습니다. 
+(이 명령은 vscode의 `tasks.json`을 기준으로 작성되었습니다.
+커맨드라인에서 수행 시, ${workspaceFolder}의 폴더명을 변경해야 할 필요가 있습니다.)
+
+### VS code `tasks.json`
+
+`tasks.json` 파일의 예시입니다.
+
+```json
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "Docker 이미지 빌드",
+            "type": "shell",
+            "command": "docker",
+            "args": [
+                "build",
+                "-t",
+                "flutter-doc-site",
+                "."
+            ],
+            "problemMatcher": [],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "detail": "Flutter Doc 사이트를 위한 Docker 이미지를 빌드합니다."
+        },
+        {
+            "label": "Docker에서 Dart Doc 실행 (포트 4002)",
+            "type": "shell",
+            "command": "docker",
+            "args": [
+                "run",
+                "--rm",
+                "--name",
+                "doc__dart-doc-site",
+                "-p",
+                "4002:4000",
+                "-v",
+                "${workspaceFolder}/.pub-cache:/root/.pub-cache",
+                "-v",
+                "${workspaceFolder}:/app",
+                "flutter-doc-site"
+            ],
+            "problemMatcher": [],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "detail": "Docker 컨테이너에서 Dart Doc 서버를 실행합니다."
+        }
+    ]
+}
+```
+
 ## Build the site
 
 For changes beyond simple text and CSS tweaks,
