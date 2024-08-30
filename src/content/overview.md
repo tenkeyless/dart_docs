@@ -1,6 +1,8 @@
 ---
-title: Dart overview
-description: A short introduction to Dart.
+# title: Dart overview
+title: Dart 개요
+# description: A short introduction to Dart.
+description: Dart에 대한 간략한 소개.
 js: [{url: '/assets/js/inject_dartpad.js', defer: true}]
 ---
 
@@ -9,54 +11,38 @@ js: [{url: '/assets/js/inject_dartpad.js', defer: true}]
   src="/assets/img/logo_lockup_dart_horizontal.png" 
   alt="Dart product logo">
 
-Dart is a client-optimized language for developing fast apps on any platform.
-Its goal is to offer the most productive programming language for
-multi-platform development, paired with a
-[flexible execution runtime platform](#platform) for app frameworks.
+Dart는 모든 플랫폼에서 빠른 앱을 개발하기 위한 클라이언트 최적화 언어입니다. 
+이 언어의 목표는 앱 프레임워크를 위한 [유연한 실행 런타임 플랫폼](#platform)과 함께, 
+다중 플랫폼 개발을 위한 가장 생산적인 프로그래밍 언어를 제공하는 것입니다.
 
-Languages are defined by their _technical envelope_—the 
-choices made during development that
-shape the capabilities and strengths of a language.
-Dart is designed for a technical envelope that is
-particularly suited to client development,
-prioritizing both development (sub-second stateful hot reload) and
-high-quality production experiences across
-a wide variety of compilation targets (web, mobile, and desktop).
+언어는 _기술적 범위(technical envelope)_ 로 정의됩니다. 
+이는 개발 중에 언어의 기능과 강점을 형성하는 선택입니다. 
+Dart는 클라이언트 개발에 특히 적합한 기술적 범위에 맞게 설계되어, 
+다양한 컴파일 대상(웹, 모바일, 데스크톱)에서 개발(1초 미만의 상태 저장 핫 리로드)과 
+고품질 프로덕션 경험을 모두 우선시합니다.
 
-Dart also forms the foundation of [Flutter]({{site.flutter}}).
-Dart provides the language and runtimes that power Flutter apps,
-but Dart also supports many core developer tasks like
-formatting, analyzing, and testing code.
+Dart는 또한 [Flutter]({{site.flutter}})의 기반을 형성합니다. 
+Dart는 Flutter 앱을 구동하는 언어와 런타임을 제공하지만, 
+코드 포맷, 분석, 테스트와 같은 많은 핵심 개발자 작업도 지원합니다.
 
+## Dart: 언어 {:#language}
 
-## Dart: The language {:#language}
+Dart 언어는 타입 세이프입니다. 정적 타입 검사를 사용하여, 변수 값이 _항상_ 변수의 정적 타입과 일치하는지 확인합니다. 이를 사운드 타이핑(sound typing)이라고도 합니다. 
+타입은 필수이지만, 타입 주석은 타입 추론 덕분에 선택 사항입니다. 
+Dart 타이핑 시스템도 유연하여, `dynamic` 타입과 런타임 검사를 결합하여 사용할 수 있으며, 
+이는 실험 중이나 특히 동적으로 동작해야 하는 코드에 유용할 수 있습니다.
 
-The Dart language is type safe;
-it uses static type checking to ensure that
-a variable's value _always_ matches the variable's static type.
-Sometimes, this is referred to as sound typing.
-Although types are mandatory,
-type annotations are optional because of type inference.
-The Dart typing system is also flexible,
-allowing the use of a `dynamic` type combined with runtime checks,
-which can be useful during experimentation or
-for code that needs to be especially dynamic.
+Dart에는 내장된 [사운드 널 세이프티(sound null safety)](/null-safety)가 있습니다. 
+즉, 사용자가 허용한다고 명시하지 않는 한, 값은 null이 될 수 없습니다. 
+사운드 null 세이프티로, Dart는 정적 코드 분석을 통해, 런타임에 null 예외로부터 사용자를 보호할 수 있습니다. 
+다른 많은 null 세이프 언어와 달리, Dart가 변수가 null이 아니라고 판단하면, 
+해당 변수는 결코 null이 될 수 없습니다. 
+디버거에서 실행 중인 코드를 검사하면, 
+런타임에 null이 될 수 없음이 유지되므로, _사운드_ null 세이프티가 있습니다.
 
-Dart has built-in [sound null safety](/null-safety).
-This means values can't be null unless you say they can be.
-With sound null safety, Dart can protect you from
-null exceptions at runtime through static code analysis.
-Unlike many other null-safe languages,
-when Dart determines that a variable is non-nullable,
-that variable can never be null.
-If you inspect your running code in the debugger,
-you see that non-nullability is retained at runtime; hence _sound_ null safety.
-
-The following code sample showcases several Dart language features,
-including libraries, async calls, nullable and non-nullable types,
-arrow syntax, generators, streams, and getters.
-To learn more about the language, 
-check out the [Dart language tour](/language).
+다음 코드 샘플은 라이브러리, 비동기 호출, null 가능 및 null 불가능 타입, 화살표 구문, 
+생성기(generators), 스트림 및 getters를 포함한 여러 Dart 언어 기능을 보여줍니다. 
+언어에 대해 자세히 알아보려면, [Dart 언어 투어](/language)를 확인하세요.
 
 <?code-excerpt "misc/lib/overview_pi.dart"?>
 ```dartpad
@@ -69,7 +55,7 @@ void main() async {
   }
 }
 
-/// Generates a stream of increasingly accurate estimates of π.
+/// π에 대한 점점 더 정확한 추정치 스트림을 생성합니다.
 Stream<double> computePi({int batch = 100000}) async* {
   var total = 0; // Inferred to be of type int
   var count = 0;
@@ -81,11 +67,10 @@ Stream<double> computePi({int batch = 100000}) async* {
     count += inside.length;
     final ratio = count / total;
 
-    // Area of a circle is A = π⋅r², therefore π = A/r².
-    // So, when given random points with x ∈ <0,1>,
-    // y ∈ <0,1>, the ratio of those inside a unit circle
-    // should approach π / 4. Therefore, the value of π
-    // should be:
+    // 원의 면적은 A = π⋅r²이므로 π = A/r²입니다. 
+    // 따라서, x ∈ <0,1>, y ∈ <0,1>인 임의의 점이 주어졌을 때, 
+    // 단위 원 안에 있는 점들의 비율은 π / 4에 가까워야 합니다. 
+    // 따라서 π의 값은 다음과 같아야 합니다.
     yield ratio * 4;
   }
 }
@@ -108,184 +93,149 @@ class Point {
 ```
 
 :::note
-This example is running in an embedded [DartPad](/tools/dartpad).
-You can also
-<a href="{{site.dartpad}}/?id=bc63d212c3252e44058ff76f34ef5730"
-target="_blank" rel="noopener">open this example in its own window</a>.
+이 예제는 내장된 [DartPad](/tools/dartpad)에서 실행됩니다. 
+또한, <a href="{{site.dartpad}}/?id=bc63d212c3252e44058ff76f34ef5730" target="_blank" rel="noopener">이 예제를 자체 창에서 열 수 있습니다</a>.
 :::
 
 
-## Dart: The libraries {:#libraries}
+## Dart: 라이브러리 {:#libraries}
 
-Dart has [a rich set of core libraries](/libraries),
-providing essentials for many everyday programming tasks:
+Dart에는 [풍부한 코어 라이브러리 세트](/libraries)가 있어, 
+많은 일상적인 프로그래밍 작업에 필수적인 기능을 제공합니다.
 
-* Built-in types, collections, and other core functionality for
-  every Dart program
+* 모든 Dart 프로그램에 대한 빌트인 타입, 컬렉션 및 기타 코어 함수 
   (`dart:core`)
-* Richer collection types such as queues, linked lists, hashmaps, and
-  binary trees
+* 큐, 링크드 리스트, 해시맵 및 이진 트리와 같은 더 풍부한 컬렉션 타입 
   (`dart:collection`)
-* Encoders and decoders for converting between different data representations,
-  including JSON and UTF-8
+* JSON 및 UTF-8을 포함하여, 다양한 데이터 표현 간 변환을 위한 인코더 및 디코더 
   (`dart:convert`)
-* Mathematical constants and functions, and random number generation
+* 수학 상수 및 함수, 난수 생성 
   (`dart:math`)
-* Support for asynchronous programming,
-  with classes such as `Future` and `Stream`
+* `Future` 및 `Stream`과 같은 클래스를 사용한 비동기 프로그래밍 지원 
   (`dart:async`)
-* Lists that efficiently handle fixed-sized data
-  (for example, unsigned 8-byte integers) and SIMD numeric types
+* 고정 크기 데이터(예: 부호 없는 8바이트 정수)와 SIMD 숫자 타입을 효율적으로 처리하는 리스트 
   (`dart:typed_data`)
-* File, socket, HTTP, and other I/O support for non-web applications
+* 웹이 아닌 애플리케이션을 위한 파일, 소켓, HTTP 및 기타 I/O 지원
   (`dart:io`)
-* Foreign function interfaces for interoperability with
-  other code that presents a C-style interface
+* C 스타일 인터페이스를 제공하는 다른 코드와의 상호 운용성을 위한 외부 함수 인터페이스(Foreign function interfaces)
   (`dart:ffi`)
-* Concurrent programming using _isolates_—independent workers
-  that are similar to threads but
-  don't share memory, communicating only through messages
+* 스레드와 유사하지만 메모리를 공유하지 않고, 메시지를 통해서만 통신하는, 
+  독립적인 작업자인 _isolates_ 를 사용한 동시성 프로그래밍
   (`dart:isolate`)
-* HTML elements and other resources for web-based applications that need to
-  interact with the browser and the Document Object Model (DOM)
+* 브라우저 및 문서 개체 모델(DOM)과 상호 작용해야 하는 웹 기반 애플리케이션을 위한 HTML 요소 및 기타 리소스
   (`dart:html`)
 
-Beyond the core libraries, many APIs are provided through
-a comprehensive set of packages.
-The Dart team publishes many useful supplementary packages,
-such as these:
+코어 라이브러리 외에도, 많은 API가 포괄적인 패키지 세트를 통해 제공됩니다. 
+Dart 팀은 다음과 같은 많은 유용한 보충 패키지를 게시합니다.
 
 * [characters]({{site.pub-pkg}}/characters)
-* [intl]({{site.pub-pkg}}/intl) 
+* [intl]({{site.pub-pkg}}/intl)
 * [http]({{site.pub-pkg}}/http)
 * [crypto]({{site.pub-pkg}}/crypto)
 * [markdown]({{site.pub-pkg}}/markdown)
 
-Additionally, third-party publishers and the broader community
-publish thousands of packages, with support for features like these:
+또한, 타사 게시자와 더 광범위한 커뮤니티는, 다음과 같은 기능을 지원하는, 수천 개의 패키지를 게시합니다.
 
 * [XML]({{site.pub-pkg}}/xml) 
-* [Windows integration]({{site.pub-pkg}}/win32)
+* [Windows 통합]({{site.pub-pkg}}/win32)
 * [SQLite]({{site.pub-pkg}}/sqflite_common)
-* [compression]({{site.pub-pkg}}/archive)
+* [압축]({{site.pub-pkg}}/archive)
 
-To see a series of working examples featuring the Dart core libraries,
-read the [core library documentation](/libraries).
-To find additional APIs, check out the
-[commonly used packages page](/resources/useful-packages).
+Dart 코어 라이브러리를 특징으로 하는 일련의 작업 예제를 보려면, [코어 라이브러리 문서](/libraries)를 읽어보세요. 
+추가 API를 찾으려면, [일반적으로 사용되는 패키지 페이지](/resources/useful-packages)를 확인하세요.
 
+## Dart: 플랫폼 {:#platform}
 
-## Dart: The platforms {:#platform}
+Dart의 컴파일러 기술을 사용하면, 다양한 방식으로 코드를 실행할 수 있습니다.
 
-Dart's compiler technology lets you run code in different ways:
+* **네이티브 플랫폼**: 모바일 및 데스크톱 기기를 대상으로 하는 앱의 경우, 
+  Dart에는 JIT(Just-in-Time) 컴파일이 포함된 Dart VM과 
+  머신 코드를 생성하기 위한 AOT(Ahead-of-Time) 컴파일러가 모두 포함되어 있습니다.
 
-* **Native platform**: For apps targeting mobile and desktop devices,
-  Dart includes both a Dart VM with just-in-time (JIT) compilation and
-  an ahead-of-time (AOT) compiler for producing machine code.
-
-* **Web platform**: For apps targeting the web, Dart can compile for
-  development or production purposes. Its web compilers translate Dart
-  into JavaScript or WebAssembly.
+* **웹 플랫폼**: 웹을 대상으로 하는 앱의 경우, Dart는 개발 또는 프로덕션 목적으로 컴파일할 수 있습니다. 
+  웹 컴파일러는 Dart를 JavaScript 또는 WebAssembly로 변환합니다.
 
 <img 
   src="/assets/img/Dart-platforms.svg" 
   width="800" 
   alt="An illustration of the targets supported by Dart">
 
-The [Flutter framework]({{site.flutter}}) is a popular,
-multi-platform UI toolkit that's powered by the Dart platform,
-and that provides tooling and UI libraries to build UI experiences that run
-on iOS, Android, macOS, Windows, Linux, and the web.
+[Flutter 프레임워크]({{site.flutter}})는 Dart 플랫폼을 기반으로 하는 인기 있는 다중 플랫폼 UI 툴킷으로, 
+iOS, Android, macOS, Windows, Linux 및 웹에서 실행되는 UI 환경을 구축하기 위한 도구와 UI 라이브러리를 제공합니다.
 
-#### Dart Native (machine code JIT and AOT) {:#native-platform}
+#### Dart 네이티브 (머신 코드 JIT 및 AOT) {:#native-platform}
 
-During development, a fast developer cycle is critical for iteration.
-The Dart VM offers a just-in-time compiler (JIT) with
-incremental recompilation (enabling hot reload), live metrics collections
-(powering [DevTools](/tools/dart-devtools)), and rich debugging support.
+개발 중에, 빠른 개발자 주기는 반복에 필수적입니다. 
+Dart VM은 증가분 재컴파일(핫 리로드 사용 가능), 라이브 메트릭 수집([DevTools](/tools/dart-devtools) 지원) 및 풍부한 디버깅 지원이 포함된 적시(JIT, just-in-time) 컴파일러를 제공합니다.
 
-When apps are ready to be deployed to production—whether you're
-publishing to an app store or deploying to a production backend—the 
-Dart ahead-of-time (AOT) compiler can compile to native ARM or x64
-machine code. Your AOT-compiled app launches with consistent, short
-startup time.
+(앱 스토어에 게시하든 프로덕션 백엔드에 배포하든) 앱을 프로덕션에 배포할 준비가 되면, 
+Dart 사전(AOT, ahead-of-time) 컴파일러가 네이티브 ARM 또는 x64 머신 코드로 컴파일할 수 있습니다. 
+AOT로 컴파일된 앱은 일관되고 짧은 시작 시간으로 실행됩니다.
 
-The AOT-compiled code runs inside an efficient Dart runtime that
-enforces the sound Dart type system and
-manages memory using fast object allocation and a
-[generational garbage collector](https://medium.com/flutter-io/flutter-dont-fear-the-garbage-collector-d69b3ff1ca30).
+AOT로 컴파일된 코드는 사운드 Dart 타입 시스템을 적용하고, 빠른 객체 할당 및 [세대별 가비지 수집기](https://medium.com/flutter-io/flutter-dont-fear-the-garbage-collector-d69b3ff1ca30)를 사용하여, 
+메모리를 관리하는 효율적인 Dart 런타임 내에서 실행됩니다.
 
-More information:
-* [Get started: Command-line and server apps](/tutorials/server/get-started)
-* [`dart` tool for running with JIT or AOT compiling to machine code](/tools/dart-tool)
-* [Write command-line apps](/tutorials/server/cmdline)
-* [Write HTTP servers](/tutorials/server/httpserver)
+자세한 정보:
 
-#### Dart Web (JavaScript dev & prod and WebAssembly) {:#web-platform}
+* [시작하기: 명령줄 및 서버 앱](/tutorials/server/get-started)
+* [JIT 또는 AOT 컴파일을 머신 코드로 실행하기 위한 `dart` 도구](/tools/dart-tool)
+* [명령줄 앱 작성](/tutorials/server/cmdline)
+* [HTTP 서버 작성](/tutorials/server/httpserver)
 
-Dart Web enables running Dart code on web platforms powered by
-JavaScript. With Dart Web, you compile Dart code to JavaScript code, which in
-turn runs in a browser—for example, [V8](https://v8.dev/) inside
-[Chrome](https://www.google.com/chrome/).
-Alternatively, Dart code can be compiled to WebAssembly.
+#### Dart 웹 (JavaScript dev & prod 및 WebAssembly) {:#web-platform}
 
-Dart web contains three compilation modes:
+Dart Web은 JavaScript로 구동되는 웹 플랫폼에서 Dart 코드를 실행할 수 있도록 합니다. 
+Dart Web을 사용하면, Dart 코드를 JavaScript 코드로 컴파일하여, 브라우저에서 실행합니다. 
+예를 들어, [Chrome](https://www.google.com/chrome/) 내의 [V8](https://v8.dev/)입니다. 
+또는 Dart 코드를 WebAssembly로 컴파일할 수 있습니다.
 
-* An incremental JavaScript development compiler enabling a fast developer 
-  cycle.
-* An optimizing JavaScript production compiler which compiles Dart code to fast,
-  compact, deployable JavaScript. These efficiencies come from techniques such
-  as dead-code elimination.
-* An optimizing WebAssembly (WasmGC) production compiler which compiles Dart
-  code to super-fast, deployable WebAssembly GC code.
+Dart Web에는 세 가지 컴파일 모드가 있습니다.
 
-More information:
+* 빠른 개발자 주기를 가능하게 하는 증분(incremental) JavaScript 개발 컴파일러.
+* Dart 코드를 빠르고 컴팩트하며 배포 가능한 JavaScript로 컴파일하는 최적화 JavaScript 프로덕션 컴파일러. 
+  이러한 효율성은 데드 코드 제거와 같은 기술에서 비롯됩니다.
+* Dart 코드를 초고속 배포 가능한 WebAssembly GC 코드로 컴파일하는 
+  최적화 WebAssembly (WasmGC) 프로덕션 컴파일러.
 
-* [Build a web app with Dart](/web/get-started)
+자세한 정보:
+
+* [Dart로 웹 앱 빌드](/web/get-started)
 * [`dart compile js`](/tools/dart-compile#js)
-* [`webdev` tool](/tools/webdev)
-* [Web deployment tips](/web/deployment)
-* [WebAssembly compilation](/web/wasm)
+* [`webdev` 도구](/tools/webdev)
+* [웹 배포 팁](/web/deployment)
+* [WebAssembly 컴파일](/web/wasm)
 
-#### The Dart runtime {:#runtime}
+#### Dart 런타임 {:#runtime}
 
-Regardless of which platform you use or how you compile your code,
-executing the code requires a Dart runtime.
-This runtime is responsible for the following critical tasks:
+어떤 플랫폼을 사용하든 코드를 어떻게 컴파일하든, 코드를 실행하려면 Dart 런타임이 필요합니다. 
+이 런타임은 다음과 같은 중요한 작업을 담당합니다.
 
-* Managing memory:
-  Dart uses a managed memory model,
-  where unused memory is reclaimed by a garbage collector (GC). 
+* 메모리 관리:
+  Dart는 관리되는 메모리 모델을 사용하며, 사용되지 않는 메모리는 가비지 콜렉터(GC)에서 회수합니다.
 
-* Enforcing the Dart type system:
-  Although most type checks in Dart are static (compile-time),
-  some type checks are dynamic (runtime).
-  For example, the Dart runtime enforces dynamic checks by
-  [type check and cast operators](/language/operators#type-test-operators).
+* Dart 타입 시스템 적용:
+  Dart의 대부분 타입 검사는 정적(컴파일 타임)이지만, 일부 타입 검사는 동적(런타임)입니다. 
+  예를 들어, Dart 런타임은 [타입 검사 및 캐스트 연산자](/language/operators#type-test-operators)를 통해,
+  동적 검사를 적용합니다.
 
-* Managing [isolates](/language/concurrency):
-  The Dart runtime controls the main isolate (where code normally runs)
-  and any other isolates that the app creates.
+* [isolates](/language/concurrency) 관리:
+  Dart 런타임은 기본 isolates(코드가 일반적으로 실행되는 곳)와 앱에서 만드는 다른 isolates를 제어합니다.
 
-On native platforms, the Dart runtime is automatically
-included inside self-contained executables, 
-and is part of the Dart VM provided by
-the [`dart run`](/tools/dart-run) command.
+네이티브 플랫폼에서, Dart 런타임은 자체 포함 실행 파일에 자동으로 포함되며, 
+[`dart run`](/tools/dart-run) 명령에서 제공하는 Dart VM의 일부입니다.
 
-## Learning Dart {:#learning-dart}
+## Dart 배우기 {:#learning-dart}
 
-You have many choices for learning Dart. Here are a few that we recommend:
+Dart를 배우는 데는 여러 가지 선택 사항이 있습니다. 다음은 추천하는 몇 가지입니다.
 
-* [Explore Dart in the browser]({{site.dartpad}}/) through DartPad,
-  a web-based execution environment for Dart code.
-* [Take a tour of the Dart language](/language),
-  which shows you how to use each major Dart feature.
-* [Complete a Dart tutorial](/tutorials/server/cmdline) that 
-  covers the basics of using Dart to build for the command line.
-* [Work through extensive online training][udemy]
-  from Dart experts.
-* [Explore the API documentation]({{site.dart-api}}) that
-  describes the Dart core libraries.
-* [Read a book about Dart programming](/resources/books).
+* [브라우저에서 Dart를 탐색]({{site.dartpad}}/)
+  * Dart 코드용 웹 기반 실행 환경인 DartPad 제공합니다.
+* [Dart 언어 투어](/language)
+  * 각 주요 Dart 기능을 사용하는 방법을 보여줍니다.
+* [Dart 튜토리얼](/tutorials/server/cmdline)
+  * 명령줄을 빌드하기 위해, Dart를 사용하는 기본 사항을 다룹니다.
+* [Dart 전문가의 광범위한 온라인 교육][udemy]
+* [Dart 핵심 라이브러리를 설명하는 API 문서를 탐색]({{site.dart-api}})
+* [Dart 프로그래밍에 대한 책](/resources/books)
 
 [udemy]: https://www.udemy.com/course/complete-dart-guide/?couponCode=NOV-20

@@ -1,115 +1,108 @@
 
-### Install using a Linux package manager {:.no_toc}
+### Linux 패키지 관리자를 사용하여 설치 {:#install-using-a-linux-package-manager .no_toc}
 
-You have two options to install the Dart SDK on Ubuntu or Debian:
+Ubuntu 또는 Debian에 Dart SDK를 설치하는 데는 두 가지 옵션이 있습니다.
 
-* Use the [apt-get](#install-using-the-apt-get-package-manager) command.
-* Download a [`.deb`](#install-as-a-debian-package) package
-  and run the `dpkg` command.
+* [apt-get](#install-using-the-apt-get-package-manager) 명령을 사용합니다.
+* [`.deb`](#install-as-a-debian-package) 패키지를 다운로드하고 `dpkg` 명령을 실행합니다.
 
-### Install using the `apt-get` package manager {:.no_toc}
+### `apt-get` 패키지 관리자를 사용하여 설치 {:#install-using-the-apt-get-package-manager .no_toc}
 
-To install Dart with `apt-get`, perform the following steps.
-You need steps 1 to 3 only for the first install.
+`apt-get`으로 Dart를 설치하려면 다음 단계를 수행합니다. 첫 번째 설치에는 1~3단계만 필요합니다.
 
-1. Update the package index files and install the secure HTTP package.
+1. 패키지 인덱스 파일을 업데이트하고, 보안 HTTP 패키지를 설치합니다.
 
    ```console
    $ sudo apt-get update && sudo apt-get install apt-transport-https
    ```
 
-1. Download and add the Google Linux GPG public key.
+2. Google Linux GPG 공개 키를 다운로드하여 추가합니다.
 
    ```console
    $ wget -qO- https://dl-ssl.google.com/linux/linux_signing_key.pub \
      | sudo gpg  --dearmor -o /usr/share/keyrings/dart.gpg
    ```
 
-1. Add the Dart package repository to your Linux system.
+3. Linux 시스템에 Dart 패키지 저장소를 추가합니다.
 
    ```console
    $ echo 'deb [signed-by=/usr/share/keyrings/dart.gpg arch=amd64] https://storage.googleapis.com/download.dartlang.org/linux/debian stable main' \
      | sudo tee /etc/apt/sources.list.d/dart_stable.list
    ```
 
-1. Use the following `sudo apt-get` commands.
+4. 다음의 `sudo apt-get` 명령을 사용하세요.
 
    ```console
    $ sudo apt-get update && sudo apt-get install dart
    ```
 
-### Install as a Debian package {:.no_toc}
+### Debian 패키지로 설치 {:#install-as-a-debian-package .no_toc}
 
-To install the Dart SDK as a Debian package (`*.deb`),
-perform the following steps.
+Dart SDK를 Debian 패키지(`*.deb`)로 설치하려면 다음 단계를 수행합니다.
 
-1. Download the Dart SDK [Debian package](#){:.debian-link-stable}.
+1. Dart SDK [Debian 패키지](#){:.debian-link-stable}를 다운로드합니다.
 
-1. Use the `sudo dpkg` command to install the `*.deb` package.
+1. `sudo dpkg` 명령을 사용하여 `*.deb` 패키지를 설치합니다.
 
    ```console
    $ sudo dpkg -i dart_3.4.0-1_amd64.deb
    ```
 
-   Substitute `dart_3.4.0-1_amd64.deb` with the current filename.
+   `dart_3.4.0-1_amd64.deb`를 현재 파일 이름으로 바꾸세요.
 
-## Upgrade the Dart SDK {:.no_toc}
+## Dart SDK 업그레이드 {:#upgrade-the-dart-sdk .no_toc}
 
-Use the same command that you used to install the SDK.
+SDK를 설치하는 데 사용한 것과 동일한 명령을 사용하세요.
 
-### Upgrade using `apt-get` {:.no_toc}
+### `apt-get`를 사용하여 업그레이드 {:#upgrade-using-apt-get .no_toc}
 
-If you installed the Dart SDK with `apt-get`,
-use the following `sudo apt-get` commands.
+`apt-get`으로 Dart SDK를 설치한 경우, 다음 `sudo apt-get` 명령을 사용하세요.
 
 ```console
 $ sudo apt-get update && sudo apt-get install dart
 ```
 
-### Upgrade using `dpkg` {:.no_toc}
+### `dpkg`를 사용하여 업그레이드 {:#upgrade-using-dpkg .no_toc}
 
-If you installed the Dart SDK with `dpkg`,
-use the `sudo dpkg` command.
+`dpkg`로 Dart SDK를 설치한 경우, `sudo dpkg` 명령을 사용하세요.
 
 ```console
 $ sudo dpkg -i dart_3.2.6-1_amd64.deb
 ```
 
-Substitute `dart_3.4.0-1_amd64.deb` with the new upgrade's filename.
+`dart_3.4.0-1_amd64.deb`를 새로운 업그레이드의 파일 이름으로 바꾸세요.
 
-## Uninstall the Dart SDK {:.no_toc}
+## Dart SDK 제거 {:#uninstall-the-dart-sdk .no_toc}
 
-### Uninstall using `apt-get` {:.no_toc}
+### `apt-get`를 사용하여 제거 {:#uninstall-using-apt-get .no_toc}
 
-If you installed the Dart SDK with `apt-get`,
-use the `sudo apt-get remove` command.
+`apt-get`으로 Dart SDK를 설치한 경우, `sudo apt-get remove` 명령을 사용합니다.
 
-1. Use the `sudo apt-get remove` command.
+1. `sudo apt-get remove` 명령을 사용합니다.
 
    ```console
    $ sudo apt-get remove -y dart
    ```
 
-1. Remove the Dart configuration files from your home directory.
+2. 홈 디렉토리에서 Dart 구성 파일을 제거합니다.
 
    ```console
    $ rm -rf  ~/.dart*
    ```
 
-### Uninstall using `dpkg` {:.no_toc}
+### `dpkg`를 사용하여 제거 {:#uninstall-using-dpkg .no_toc}
 
-If you installed the Dart SDK with `dpkg`,
-use the `sudo dpkg --purge` command.
+`dpkg`로 Dart SDK를 설치한 경우, `sudo dpkg --purge` 명령을 사용합니다.
 
-1. Use the `sudo dpkg --purge` command.
+1. `sudo dpkg --purge` 명령을 사용합니다.
 
    ```console
    $ sudo dpkg --purge dart
    ```
 
-   This removes the configuration files at the same time.
+   이렇게 하면 구성 파일도 동시에 제거됩니다.
 
-1. Verify the SDK has been removed.
+2. SDK가 제거되었는지 확인하세요.
 
    ```console
    $ dpkg -l | grep dart

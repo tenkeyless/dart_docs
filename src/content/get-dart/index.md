@@ -1,33 +1,34 @@
 ---
-title: Get the Dart SDK
+# title: Get the Dart SDK
+title: Dart SDK 받기
+# description: >-
+#   Get the libraries and command-line tools that you need to develop
+#   Dart web, command-line, and server apps.
 description: >-
-  Get the libraries and command-line tools that you need to develop
-  Dart web, command-line, and server apps.
+  Dart 웹, 명령줄, 서버 앱을 개발하는 데 필요한 라이브러리와 명령줄 도구를 받아보세요.
 channel-list: [Stable, Beta, Dev]
 js: [{url: '/assets/js/get-dart/install.js', defer: true}]
 ---
 
-This page describes how to download the Dart SDK.
-The Dart SDK includes the libraries and command-line tools that
-you need to develop Dart command-line, server, and web apps.
+이 페이지에서는 Dart SDK를 다운로드하는 방법을 설명합니다. 
+Dart SDK에는 Dart 명령줄, 서버 및 웹 앱을 개발하는 데 필요한 라이브러리와 명령줄 도구가 포함되어 있습니다.
 
-To learn more about the Dart SDK, consult the [Dart SDK overview](/tools/sdk).
+Dart SDK에 대해 자세히 알아보려면, [Dart SDK 개요](/tools/sdk)를 참조하세요.
 
 :::tip
-If you've installed or plan to [install the Flutter SDK][install-flutter], it
-includes the full Dart SDK. You don't need to install Dart separately and can skip this guide.
+[Flutter SDK를 설치][install-flutter]했거나 설치할 계획이라면, 전체 Dart SDK가 포함됩니다. 
+Dart를 별도로 설치할 필요가 없으며, 이 가이드를 건너뛸 수 있습니다.
 :::
 
-## System requirements
+## 시스템 요구 사항 {:#system-requirements}
 
-Dart supports the following hardware architectures and platform versions
-to develop and run Dart code.
+Dart는 Dart 코드를 개발하고 실행하기 위해 다음과 같은 하드웨어 아키텍처와 플랫폼 버전을 지원합니다.
 
 {% assign yes = '<span class="material-symbols system-support" style="color: #158477;" aria-label="Supported" title="Supported">verified</span>' %}
 {% assign no = '<span class="material-symbols system-support" style="color: #D43324" aria-label="Not supported" title="Not supported">dangerous</span>' %}
 {% assign dep = '<span class="material-symbols system-support" style="color: #EF6C00" aria-label="Deprecated" title="Deprecated">error</span>' %}
 {% assign na = '<span class="material-symbols system-support" style="color: #DADCE0" aria-label="Does not exist" title="Does not exist">do_not_disturb_on</span>' %}
-{% assign macversions = 'Latest three versions of macOS:<br>' %}
+{% assign macversions = 'macOS의 최신 3가지 버전:<br>' %}
 {% for version in macos limit:3 %}
 {%- if version.eol == false -%}
 {% capture maclinkversion -%}
@@ -38,38 +39,35 @@ to develop and run Dart code.
 {%- endif %}
 {% endfor %}
 
-| Platform |   x64   | IA32 (x86) |  Arm32  |  Arm64  | RISC-V (RV64GC) | OS Versions                                                 |
+| 플랫폼 |   x64   | IA32 (x86) |  Arm32  |  Arm64  | RISC-V (RV64GC) | OS 버전                                                 |
 |----------|:-------:|:----------:|:-------:|:-------:|:---------------:|-------------------------------------------------------------|
 | Windows  | {{yes}} |  {{dep}}   | {{no}}  | {{yes}} |     {{na}}      | [10], [11][]                                                |
-| Linux    | {{yes}} |  {{dep}}   | {{yes}} | {{yes}} |     {{yes}}     | [Debian stable][],<br>[Ubuntu LTS][] under standard support |
+| Linux    | {{yes}} |  {{dep}}   | {{yes}} | {{yes}} |     {{yes}}     | 표준 지원 중인<br> [Debian stable][], [Ubuntu LTS][] |
 | macOS    | {{yes}} |  {{no}}    | {{na}}  | {{yes}} |     {{na}}      | {{macversions}}                                             |
 
 {:.table .table-striped}
 
-{{yes}} Supported on all channels.<br>
-{{dep}} Support is deprecated and might be dropped in a future Dart release.<br>
-{{no}} Unsupported on all channels.<br>
-{{na}} Unsupported by the operating system.<br>
+{{yes}} 모든 채널에서 지원됩니다.<br>
+{{dep}} 지원이 deprecated 되었으며, 향후 Dart 릴리스에서 드롭될 수 있습니다.<br>
+{{no}} 모든 채널에서 지원되지 않습니다.<br>
+{{na}} 운영 체제에서 지원되지 않습니다.<br>
 
-## Choose an installation option
+## 설치 옵션 선택 {:#choose-an-installation-option}
 
-To install and update the Dart SDK from the stable channel,
-choose one of the following options:
+stable 채널에서 Dart SDK를 설치하고 업데이트하려면, 다음 옵션 중 하나를 선택하세요.
 
-1. [Use a package manager](#install) (Recommended).
+1. [패키지 관리자 사용](#install) (권장)
 
-1. Use a [Dart Docker image][dart-docker].
+2. [Dart Docker 이미지][dart-docker] 사용
 
-1. [Install Flutter][install-flutter].  
-   If you've installed or plan to [install the Flutter SDK][install-flutter],
-   it includes the full Dart SDK. The Flutter SDK includes the
-   [`dart`](/tools/dart-tool) CLI tool in Flutter's `bin` folder.
+3. [Flutter 설치][install-flutter]. 
+   [Flutter SDK 설치][install-flutter]를 설치했거나, 설치할 계획이라면 전체 Dart SDK가 포함됩니다. Flutter SDK에는 Flutter의 `bin` 폴더에 [`dart`](/tools/dart-tool) CLI 도구가 포함됩니다.
 
-1. Download a ZIP archive from the [SDK Archive](/get-dart/archive).
+4. [SDK 아카이브](/get-dart/archive)에서 ZIP 아카이브를 다운로드합니다.
 
-1. [Build the SDK from source][build-source].
+5. [소스에서 SDK 빌드][build-source]
 
-:::warning Notice
+:::warning 공지
 {% include './archive/_sdk-terms.md' %}
 :::
 
@@ -78,13 +76,11 @@ NOTE to editors: Keep the zip file link as the last thing in the paragraph,
 so it's easy to find (but not more tempting than package managers).
 {% endcomment %}
 
-## Install the Dart SDK {:#install}
+## Dart SDK 설치 {:#install}
 
-To install the Dart SDK,
-use the appropriate package manager for your development platform.
+Dart SDK를 설치하려면, 개발 플랫폼에 적합한 패키지 관리자를 사용하세요.
 
-To upgrade the Dart SDK,
-run the same command to install the Dart SDK from your package manager.
+Dart SDK를 업그레이드하려면, 동일한 명령을 실행하여 패키지 관리자에서 Dart SDK를 설치하세요.
 
 <ul class="tabs__top-bar">
   <li class="tab-link current" data-tab="tab-sdk-install-windows">Windows</li>
@@ -109,7 +105,7 @@ run the same command to install the Dart SDK from your package manager.
 
 </div>
 
-## Release channel reference {:#release-channels}
+## 릴리스 채널 참조 {:#release-channels}
 
 {% for channel in channel-list %}
 {% assign chnl = channel | downcase -%}
@@ -119,45 +115,46 @@ run the same command to install the Dart SDK from your package manager.
 {% assign verstring = "`x.y.z`" %}
 {% assign examples = "`1.24.3` and `2.1.0`" %}
 {% assign schedule = "every three months" %}
-{% assign version-use = "building and deploying production apps" %}
+{% assign version-use = "프로덕션 앱 빌드 및 배포" %}
 {% when 'beta' %}
 {% assign verstring = "`x.y.z-a.b.beta`" %}
 {% assign examples = "`2.8.0-20.11.beta` and `3.3.0-205.1.beta`" %}
 {% assign verdesc = "pre-release" %}
 {% assign schedule = "once a month" %}
-{% assign version-use = "testing your app's compatibility with future stable versions" %}
+{% assign version-use = "향후 stable 버전과 앱의 호환성 테스트" %}
 {% when 'dev' %}
 {% assign verstring = "`x.y.z-a.b.dev`" %}
 {% assign examples = "`2.8.0-20.11.dev` and `3.2.12-15.33.dev`" %}
 {% assign verdesc = "development" %}
 {% assign schedule = "twice a week" %}
-{% assign version-use = "testing recent fixes and experimental features" %}
+{% assign version-use = "최근 수정 사항 및 실험적 기능 테스트" %}
 {% endcase %}
 
-### {{channel}} channel
+<!-- ### {{channel}} channel -->
+### {{channel}} 채널
 
-Dart publishes a new release to the *{{chnl}}* channel about {{schedule}}.
-The current {{chnl}} version is {{current}}.
+Dart는 {{schedule}}에 대한 *{{chnl}}* 채널에 새 릴리스를 게시합니다.
+현재 {{chnl}} 버전은 {{current}}입니다.
 
-Use **{{chnl}}** channel releases for {{version-use}}.
+{{version-use}}에 **{{chnl}}** 채널 릴리스를 사용합니다.
 
-**{{channel}}** channel release version strings follow a {{verstring}} format:
+**{{channel}}** 채널 릴리스 버전 문자열은 {{verstring}} 형식을 따릅니다.
 
-* `x` : major version
-* `y` : minor version
-* `z` : patch version
+* `x` : 메이저 버전
+* `y` : 마이너 버전
+* `z` : 패치 버전
 {%- if chnl != 'stable' %}
-* `a` : {{verdesc}} version
-* `b` : {{verdesc}} patch version
+* `a` : {{verdesc}} 버전
+* `b` : {{verdesc}} 패치 버전
 {% endif %}
 
-Examples of {{chnl}} channel version strings include {{examples}}.
+{{chnl}} 채널 버전 문자열의 예로는 {{examples}}가 있습니다.
 
-To install a {{chnl}} channel release,
+{{chnl}} 채널 릴리스를 설치하려면,
 {%- if chnl != 'stable' %}
-download the [SDK as a zip file][dl-sdk].
+[SDK를 zip 파일][dl-sdk]로 다운로드합니다.
 {%- else %}
-follow the [instructions on this page](#install).
+[이 페이지의 지침](#install)을 따르세요.
 {% endif %}
 
 {% endfor -%}
