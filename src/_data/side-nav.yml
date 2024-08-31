@@ -42,7 +42,7 @@
           permalink: https://codelabs.developers.google.com/codelabs/dart-patterns-records
     - title: 함수
       permalink: /language/functions
-    - title: 제어 흐름
+    - title: 흐름 제어
       children:
       - title: 루프
         permalink: /language/loops

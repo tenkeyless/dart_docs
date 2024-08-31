@@ -57,9 +57,9 @@ var image = {
 Dart의 변수, 기본값, `final` 및 `const` 키워드, 
 정적 타입에 대해 [자세히 알아보세요](/language/variables).
 
-## 제어 흐름 문 {:#control-flow-statements}
+## 흐름 제어 문 {:#control-flow-statements}
 
-Dart는 일반적인 제어 흐름 문을 지원합니다.
+Dart는 일반적인 흐름 제어 문을 지원합니다.
 
 <?code-excerpt "misc/test/samples_test.dart (control-flow)"?>
 ```dart
@@ -85,7 +85,7 @@ while (year < 2016) {
 [`break` 및 `continue`](/language/loops), 
 [`switch` 및 `case`](/language/branches), 
 [`assert`](/language/error-handling#assert)를 포함하여, 
-Dart의 제어 흐름 문에 대해 자세히 알아보세요.
+Dart의 흐름 제어 문에 대해 자세히 알아보세요.
 
 ## 함수 {:#functions}
 
