@@ -1,22 +1,25 @@
 ---
-title: Functions
-description: Everything about functions in Dart.
+# title: Functions
+title: 함수
+# description: Everything about functions in Dart.
+description: Dart의 함수에 대한 모든 것.
 js: [{url: '/assets/js/inject_dartpad.js', defer: true}]
 prevpage:
   url: /language/pattern-types
-  title: Pattern types
+  # title: Pattern types
+  title: 패턴 타입
 nextpage:
   url: /language/loops
-  title: Loops
+  # title: Loops
+  title: 루프
 ---
 
-Dart is a true object-oriented language, so even functions are objects
-and have a type, [Function.][Function API reference]
-This means that functions can be assigned to variables or passed as arguments
-to other functions. You can also call an instance of a Dart class as if
-it were a function. For details, see [Callable objects][].
+Dart는 진정한 객체 지향 언어이므로, 함수도 객체이며 타입 [Function][Function API reference]이 있습니다. 
+즉, 함수는 변수에 할당되거나, 다른 함수에 인수로 전달될 수 있습니다. 
+Dart 클래스의 인스턴스를 함수인 것처럼 호출할 수도 있습니다. 
+자세한 내용은 [호출 가능한 객체][Callable objects]를 참조하세요.
 
-Here's an example of implementing a function:
+함수를 구현하는 예는 다음과 같습니다.
 
 <?code-excerpt "misc/lib/language_tour/functions.dart (function)"?>
 ```dart
@@ -25,9 +28,8 @@ bool isNoble(int atomicNumber) {
 }
 ```
 
-Although Effective Dart recommends
-[type annotations for public APIs][],
-the function still works if you omit the types:
+효과적인 Dart에서는 [공개 API에 대한 타입 어노테이션][type annotations for public APIs]을 권장하지만, 
+타입을 생략해도 함수는 여전히 작동합니다.
 
 <?code-excerpt "misc/lib/language_tour/functions.dart (function-omitting-types)"?>
 ```dart
@@ -36,69 +38,53 @@ isNoble(atomicNumber) {
 }
 ```
 
-For functions that contain just one expression, you can use a shorthand
-syntax:
+표현식이 하나만 포함된 함수의 경우, 다음과 같은 단축 구문을 사용할 수 있습니다.
 
 <?code-excerpt "misc/lib/language_tour/functions.dart (function-shorthand)"?>
 ```dart
 bool isNoble(int atomicNumber) => _nobleGases[atomicNumber] != null;
 ```
 
-The <code>=> <em>expr</em></code> syntax is a shorthand for
-<code>{ return <em>expr</em>; }</code>. The `=>` notation
-is sometimes referred to as _arrow_ syntax.
+<code>=> <em>expr</em></code> 구문은 <code>{ return <em>expr</em>; }</code>의 약어입니다.
+`=>` 표기법은 때때로 _화살표(arrow)_ 구문이라고도 합니다.
 
 :::note
-Only _expressions_ can appear between the arrow (`=>`) and the semicolon (`;`).
-Expressions evaluate to values.
-This means that you can't write a statement where Dart expects a value.
-For example,
-you could use a [conditional expression][] but not an [if statement][].
-In the previous example,
-`_nobleGases[atomicNumber] != null;` returns a boolean value.
-The function then returns a boolean value
-that indicates whether the `atomicNumber` falls into the noble gas range.
+화살표(`=>`)와 세미콜론(`;`) 사이에는 _표현식_ 만 나타날 수 있습니다. 
+표현식은 값으로 평가됩니다. 
+즉, Dart가 값을 기대하는 명령문을 작성할 수 없습니다. 
+예를 들어, [조건식][conditional expression]은 사용할 수 있지만, [if 명령문][if statement]은 사용할 수 없습니다. 
+이전 예에서, `_nobleGases[atomicNumber] != null;`은 boolean 값을 반환합니다. 
+그런 다음, 함수는 `atomicNumber`가 noble gas 범위에 속하는지 여부를 나타내는 boolean 값을 반환합니다.
 :::
 
-## Parameters
+## 파라미터 {:#parameters}
 
-A function can have any number of *required positional* parameters. These can be
-followed either by *named* parameters or by *optional positional* parameters
-(but not both).
+함수에는 *필수 위치(required positional)* 매개변수가 개수에 제한 없이 포함될 수 있습니다. 
+이 뒤에는 *이름이 지정된(named)* 매개변수 또는 *선택적 위치(optional positional)* 매개변수가 올 수 있습니다.(둘 다는 아님)
 
 :::note
-Some APIs—notably [Flutter][] widget constructors—use only named
-parameters, even for parameters that are mandatory. See the next section for
-details.
+일부 API(특히 [Flutter][] 위젯 생성자)는 필수 매개변수에 대해서도, 명명된 매개변수만 사용합니다. 
+자세한 내용은 다음 섹션을 참조하세요.
 :::
 
-You can use [trailing commas][] when you pass arguments to a function
-or when you define function parameters.
+함수에 인수를 전달하거나 함수 매개변수를 정의할 때, [끝 쉼표(trailing commas)][]를 사용할 수 있습니다.
 
+### 명명된 매개변수 {:#named-parameters}
 
-### Named parameters
+명명된 매개변수는 명시적으로 `required`로 표시되지 않는 한, 선택 사항입니다.
 
-Named parameters are optional
-unless they're explicitly marked as `required`.
-
-When defining a function, use
-<code>{<em>param1</em>, <em>param2</em>, …}</code>
-to specify named parameters.
-If you don't provide a default value
-or mark a named parameter as `required`,
-their types must be nullable
-as their default value will be `null`:
+함수를 정의할 때, <code>{<em>param1</em>, <em>param2</em>, …}</code>를 사용하여 명명된 매개변수를 지정합니다. 
+기본값을 제공하지 않거나 명명된 매개변수를 `required`로 표시하지 않으면, 
+기본값이 `null`이 되므로 해당 타입은 null 가능해야 합니다.
 
 <?code-excerpt "misc/lib/language_tour/functions.dart (specify-named-parameters)"?>
 ```dart
-/// Sets the [bold] and [hidden] flags ...
+/// [bold] 및 [hidden] 플래그를 설정합니다...
 void enableFlags({bool? bold, bool? hidden}) {...}
 ```
 
-When calling a function, 
-you can specify named arguments using
-<code><em>paramName</em>: <em>value</em></code>. 
-For example:
+함수를 호출할 때, <code><em>paramName</em>: <em>value</em></code>를 사용하여, 
+명명된 인수를 지정할 수 있습니다. 예를 들어:
 
 <?code-excerpt "misc/lib/language_tour/functions.dart (use-named-parameters)"?>
 ```dart
@@ -106,35 +92,30 @@ enableFlags(bold: true, hidden: false);
 ```
 
 <a id="default-parameters"></a>
-To define a default value for a named parameter besides `null`,
-use `=` to specify a default value.
-The specified value must be a compile-time constant.
-For example:
+`null` 외에 명명된 매개변수에 대한 기본값을 정의하려면, `=`를 사용하여 기본값을 지정합니다. 
+지정된 값은 컴파일 타임 상수여야 합니다. 예를 들어:
 
 <?code-excerpt "misc/lib/language_tour/functions.dart (named-parameter-default-values)"?>
 ```dart
-/// Sets the [bold] and [hidden] flags ...
+/// [bold] 및 [hidden] 플래그를 설정합니다...
 void enableFlags({bool bold = false, bool hidden = false}) {...}
 
-// bold will be true; hidden will be false.
+// bold는 true가 되고, hidden는 false가 됩니다.
 enableFlags(bold: true);
 ```
 
-If you instead want a named parameter to be mandatory,
-requiring callers to provide a value for the parameter,
-annotate them with `required`:
+대신 명명된 매개변수를 필수로 지정하여, 호출자가 매개변수에 대한 값을 제공하도록 요구하는 경우, 
+`required` 어노테이션을 추가합니다.
 
 <?code-excerpt "misc/lib/language_tour/functions.dart (required-named-parameters)" replace="/required/[!$&!]/g"?>
 ```dart
 const Scrollbar({super.key, [!required!] Widget child});
 ```
 
-If someone tries to create a `Scrollbar`
-without specifying the `child` argument,
-then the analyzer reports an issue.
+누군가 `child` 인수를 지정하지 않고 `Scrollbar`를 생성하려고 하면, 분석기가 문제를 보고합니다.
 
 :::note
-A parameter marked as `required` can still be nullable:
+`required`로 표시된 매개변수는 여전히 null이 될 수 있습니다.
 
 <?code-excerpt "misc/lib/language_tour/functions.dart (required-named-parameters-nullable)" replace="/Widget\?/[!$&!]/g; /ScrollbarTwo/Scrollbar/g;"?>
 ```dart
@@ -142,10 +123,8 @@ const Scrollbar({super.key, required [!Widget?!] child});
 ```
 :::
 
-You might want to place positional arguments first,
-but Dart doesn't require it.
-Dart allows named arguments to be placed anywhere in the
-argument list when it suits your API:
+위치 인수를 먼저 배치하고 싶을 수도 있지만, Dart에서는 필요하지 않습니다. 
+Dart에서는 API에 맞는 경우 명명된 인수를 인수 리스트의 아무 곳에나 배치할 수 있습니다.
 
 <?code-excerpt "misc/lib/language_tour/functions.dart (named-arguments-anywhere)"?>
 ```dart
@@ -154,13 +133,10 @@ repeat(times: 2, () {
 });
 ```
 
-### Optional positional parameters
+### 선택적인 위치 매개변수 {:#optional-positional-parameters}
 
-Wrapping a set of function parameters in `[]`
-marks them as optional positional parameters.
-If you don't provide a default value,
-their types must be nullable
-as their default value will be `null`:
+함수 매개변수 집합을 `[]`로 래핑하면, 선택적 위치 매개변수로 표시됩니다. 
+기본값을 제공하지 않으면, 기본값이 `null`이 되므로 해당 타입은 null 가능해야 합니다.
 
 <?code-excerpt "misc/test/language_tour/functions_test.dart (optional-positional-parameters)"?>
 ```dart
@@ -173,15 +149,14 @@ String say(String from, String msg, [String? device]) {
 }
 ```
 
-Here's an example of calling this function
-without the optional parameter:
+선택적 매개변수 없이, 이 함수를 호출하는 예는 다음과 같습니다.
 
 <?code-excerpt "misc/test/language_tour/functions_test.dart (call-without-optional-param)"?>
 ```dart
 assert(say('Bob', 'Howdy') == 'Bob says Howdy');
 ```
 
-And here's an example of calling this function with the third parameter:
+다음은 세 번째 매개변수와 함께 이 함수를 호출하는 예입니다.
 
 <?code-excerpt "misc/test/language_tour/functions_test.dart (call-with-optional-param)"?>
 ```dart
@@ -189,10 +164,8 @@ assert(say('Bob', 'Howdy', 'smoke signal') ==
     'Bob says Howdy with a smoke signal');
 ```
 
-To define a default value for an optional positional parameter besides `null`,
-use `=` to specify a default value.
-The specified value must be a compile-time constant.
-For example:
+`null` 외에 선택적 위치 매개변수에 대한 기본값을 정의하려면, `=`를 사용하여 기본값을 지정합니다. 
+지정된 값은 컴파일 타임 상수여야 합니다. 예를 들어:
 
 <?code-excerpt "misc/test/language_tour/functions_test.dart (optional-positional-param-default)"?>
 ```dart
@@ -206,13 +179,12 @@ assert(say('Bob', 'Howdy') == 'Bob says Howdy with a carrier pigeon');
 
 <a id="the-main-function" aria-hidden="true"></a>
 
-## The main() function {:#main}
+## main() 함수 {:#main}
 
-Every app must have a top-level `main()` function, which serves as the
-entrypoint to the app. The `main()` function returns `void` and has an
-optional `List<String>` parameter for arguments.
+모든 앱에는 앱의 진입점 역할을 하는, 최상위 `main()` 함수가 있어야 합니다. 
+`main()` 함수는 `void`를 반환하고, 인수에 대한 선택적 `List<String>` 매개변수를 갖습니다.
 
-Here's a simple `main()` function:
+간단한 `main()` 함수는 다음과 같습니다.
 
 <?code-excerpt "misc/test/samples_test.dart (hello-world)"?>
 ```dart
@@ -221,12 +193,11 @@ void main() {
 }
 ```
 
-Here's an example of the `main()` function for a command-line app that
-takes arguments:
+인수를 받는 명령줄 앱의 `main()` 함수 예는 다음과 같습니다.
 
 <?code-excerpt "misc/test/language_tour/functions_test.dart (main-args)"?>
 ```dart title="args.dart"
-// Run the app like this: dart run args.dart 1 test
+// 다음과 같이 앱을 실행합니다: dart run args.dart 1 test
 void main(List<String> arguments) {
   print(arguments);
 
@@ -236,12 +207,11 @@ void main(List<String> arguments) {
 }
 ```
 
-You can use the [args library]({{site.pub-pkg}}/args) to
-define and parse command-line arguments.
+[args 라이브러리]({{site.pub-pkg}}/args)를 사용하여, 명령줄 인수를 정의하고 구문 분석할 수 있습니다.
 
-## Functions as first-class objects
+## 일급 객체로서의 함수 {:#functions-as-first-class-objects}
 
-You can pass a function as a parameter to another function. For example:
+함수를 다른 함수에 매개변수로 전달할 수 있습니다. 예를 들어:
 
 <?code-excerpt "misc/lib/language_tour/functions.dart (function-as-param)"?>
 ```dart
@@ -251,11 +221,11 @@ void printElement(int element) {
 
 var list = [1, 2, 3];
 
-// Pass printElement as a parameter.
+// printElement를 매개변수로 전달합니다.
 list.forEach(printElement);
 ```
 
-You can also assign a function to a variable, such as:
+다음과 같이 변수에 함수를 할당할 수도 있습니다.
 
 <?code-excerpt "misc/test/language_tour/functions_test.dart (function-as-var)"?>
 ```dart
@@ -263,21 +233,20 @@ var loudify = (msg) => '!!! ${msg.toUpperCase()} !!!';
 assert(loudify('hello') == '!!! HELLO !!!');
 ```
 
-This example uses an anonymous function.
-More about those in the next section.
+이 예에서는 익명 함수를 사용합니다. 다음 섹션에서 이에 대해 자세히 설명합니다.
 
-## Anonymous functions
+## 익명 함수 {:#anonymous-functions}
 
-Though you name most functions, such as `main()` or `printElement()`.
-you can also create functions without names.
-These functions are called _anonymous functions_, _lambdas_, or _closures_.
+`main()` 또는 `printElement()`와 같이 대부분 함수에 이름을 지정하지만, 
+이름 없이 함수를 만들 수도 있습니다. 
+이러한 함수를 _익명 함수(anonymous functions)_, _람다(lambdas)_ 또는 _클로저(closures)_ 라고 합니다.
 
-An anonymous function resembles a named function as it has:
+익명 함수는 다음과 같은 점에서 명명된 함수와 유사합니다.
 
-* Zero or more parameters, comma-separated
-* Optional type annotations between parentheses.
+* 0개 이상의 매개변수, 쉼표로 구분.
+* 괄호 사이에 선택적 타입 어노테이션.
 
-The following code block contains the function's body:
+다음 코드 블록에는 함수의 본문이 포함되어 있습니다.
 
 ```dart
 ([[Type] param1[, ...]]) {
@@ -285,13 +254,10 @@ The following code block contains the function's body:
 }
 ```
 
-The following example defines an anonymous function
-with an untyped parameter, `item`.
-The anonymous function passes it to the `map` function.
-The `map` function, invoked for each item in the list,
-converts each string to uppercase.
-Then, the anonymous function passed to `forEach`,
-prints each converted string with its length.
+다음 예에서는 타입이 지정되지 않은 매개변수인 `item`을 갖는 익명 함수를 정의합니다. 
+익명 함수는 이를 `map` 함수에 전달합니다. 
+리스트의 각 항목에 대해 호출된 `map` 함수는, 각 문자열을 대문자로 변환합니다. 
+그런 다음, `forEach`에 전달된 익명 함수는, 변환된 각 문자열을 길이와 함께 출력합니다.
 
 <?code-excerpt "misc/test/language_tour/functions_test.dart (anonymous-function)"?>
 ```dart
@@ -300,14 +266,14 @@ const list = ['apples', 'bananas', 'oranges'];
 var uppercaseList = list.map((item) {
   return item.toUpperCase();
 }).toList();
-// Convert to list after mapping
+// 매핑 후 리스트로 변환
 
 for (var item in uppercaseList) {
   print('$item: ${item.length}');
 }
 ```
 
-Click **Run** to execute the code.
+**Run**을 클릭하여 코드를 실행합니다.
 
 <?code-excerpt "misc/test/language_tour/functions_test.dart (anonymous-function-main)"?>
 ```dartpad
@@ -317,7 +283,7 @@ void main() {
   var uppercaseList = list.map((item) {
     return item.toUpperCase();
   }).toList();
-  // Convert to list after mapping
+  // 매핑 후 리스트로 변환
 
   for (var item in uppercaseList) {
     print('$item: ${item.length}');
@@ -325,10 +291,8 @@ void main() {
 }
 ```
 
-If the function contains only a single expression or return statement,
-you can shorten it using arrow notation.
-Paste the following line into DartPad and click **Run**
-to verify that it is functionally equivalent.
+함수에 단일 표현식 또는 반환 문만 포함된 경우, 화살표 표기법을 사용하여 줄일 수 있습니다. 
+다음 줄을 DartPad에 붙여넣고 **Run**을 클릭하여, 기능적으로 동일한지 확인합니다.
 
 <?code-excerpt "misc/test/language_tour/functions_test.dart (anon-func)"?>
 ```dart
@@ -336,13 +300,13 @@ var uppercaseList = list.map((item) => item.toUpperCase()).toList();
 uppercaseList.forEach((item) => print('$item: ${item.length}'));
 ```
 
-## Lexical scope
+## 어휘 범위 (Lexical scope) {:#lexical-scope}
 
-Dart determines the scope of variables based on the layout of its code.
-A programming language with this feature is termed a lexically scoped language.
-You can "follow the curly braces outwards" to see if a variable is in scope.
+Dart는 코드 레이아웃에 따라 변수의 범위를 결정합니다. 
+이 기능이 있는 프로그래밍 언어는 어휘 범위 언어(lexically scoped language)라고 합니다. 
+"중괄호를 바깥쪽으로 따라가면" 변수가 범위에 있는지 확인할 수 있습니다.
 
-**Example:** A series of nested functions with variables at each scope level:
+**예제:** 각 범위 레벨에 변수가 있는 일련의 중첩 함수:
 
 <?code-excerpt "misc/test/language_tour/functions_test.dart (nested-functions)"?>
 ```dart
@@ -366,31 +330,28 @@ void main() {
 }
 ```
 
-The `nestedFunction()` method can use variables from every level,
-all the way up to the top level.
+`nestedFunction()` 메서드는 모든 레벨의 변수를 사용할 수 있으며, 최상위 레벨까지 올라갈 수 있습니다.
 
-## Lexical closures
+## 어휘 클로저 (Lexical closures) {:#lexical-closures}
 
-A function object that can access variables in its lexical scope
-when the function sits outside that scope is called a _closure_.
+함수가 해당 범위 밖에 있을 때 어휘 범위의 변수에 액세스할 수 있는 함수 객체를 _클로저(closure)_ 라고 합니다.
 
-Functions can close over variables defined in surrounding scopes. In the
-following example, `makeAdder()` captures the variable `addBy`. Wherever the
-returned function goes, it remembers `addBy`.
+함수는 주변 범위에서 정의된 변수를 닫을 수 있습니다. 
+다음 예에서 `makeAdder()`는 변수 `addBy`를 캡처합니다. 
+반환된 함수가 어디로 가든 `addBy`를 기억합니다.
 
 <?code-excerpt "misc/test/language_tour/functions_test.dart (function-closure)"?>
 ```dart
-/// Returns a function that adds [addBy] to the
-/// function's argument.
+/// [addBy]를 함수 인수에 더하는 함수를 반환합니다.
 Function makeAdder(int addBy) {
   return (int i) => addBy + i;
 }
 
 void main() {
-  // Create a function that adds 2.
+  // 2를 더하는 함수를 만듭니다.
   var add2 = makeAdder(2);
 
-  // Create a function that adds 4.
+  // 4를 더하는 함수를 만듭니다.
   var add4 = makeAdder(4);
 
   assert(add2(3) == 5);
@@ -398,14 +359,13 @@ void main() {
 }
 ```
 
-## Tear-offs
+## 떼어내기 (Tear-offs) {:#tear-offs}
 
-When you refer to a function, method, or named constructor without parentheses,
-Dart creates a _tear-off_. This is a closure that takes the same
-parameters as the function and invokes the underlying function when you call it.
-If your code needs a closure that invokes a named function with the same
-parameters as the closure accepts, don't wrap the call in a lambda.
-Use a tear-off.
+괄호 없이 함수, 메서드 또는 명명된 생성자를 참조할 때 Dart는 _tear-off (떼어내기)_ 를 생성합니다. 
+이것은 함수와 동일한 매개변수를 사용하고 호출할 때 기본 함수를 호출하는 클로저입니다. 
+코드에 클로저가 허용하는 것과 동일한 매개변수를 사용하여 명명된 함수를 호출하는 클로저가 필요한 경우, 
+람다로 호출을 래핑하지 마세요. 
+tear-off를 사용하세요.
 
 <?code-excerpt "misc/lib/language_tour/tear_offs.dart (variables)" ?>
 ```dart
@@ -415,72 +375,69 @@ var buffer = StringBuffer();
 
 <?code-excerpt "misc/lib/language_tour/tear_offs.dart (good-example)" ?>
 ```dart tag=good
-// Function tear-off
+// 함수 tear-off
 charCodes.forEach(print);
 
-// Method tear-off
+// 메서드 tear-off
 charCodes.forEach(buffer.write);
 ```
 
 <?code-excerpt "misc/lib/language_tour/tear_offs.dart (bad-example)" ?>
 ```dart tag=bad
-// Function lambda
+// 함수 람다
 charCodes.forEach((code) {
   print(code);
 });
 
-// Method lambda
+// 메서드 람다
 charCodes.forEach((code) {
   buffer.write(code);
 });
 ```
 
-## Testing functions for equality
+## 동등성을 위한 함수 테스트 {:#testing-functions-for-equality}
 
-Here's an example of testing top-level functions, static methods, and
-instance methods for equality:
+다음은 최상위 함수, 정적 메서드, 인스턴스 메서드의 동등성을 테스트하는 예입니다.
 
 <?code-excerpt "misc/lib/language_tour/function_equality.dart"?>
 ```dart
-void foo() {} // A top-level function
+void foo() {} // 최상위 함수
 
 class A {
-  static void bar() {} // A static method
-  void baz() {} // An instance method
+  static void bar() {} // 정적 메서드
+  void baz() {} // 인스턴스 메서드
 }
 
 void main() {
   Function x;
 
-  // Comparing top-level functions.
+  // 최상위 함수 비교.
   x = foo;
   assert(foo == x);
 
-  // Comparing static methods.
+  // 정적 메서드 비교.
   x = A.bar;
   assert(A.bar == x);
 
-  // Comparing instance methods.
-  var v = A(); // Instance #1 of A
-  var w = A(); // Instance #2 of A
+  // 인스턴스 메서드 비교.
+  var v = A(); // A의 인스턴스 #1
+  var w = A(); // A의 인스턴스 #2
   var y = w;
   x = w.baz;
 
-  // These closures refer to the same instance (#2),
-  // so they're equal.
+  // 이러한 클로저는 동일한 인스턴스(#2)를 참조하므로, 동일합니다.
   assert(y.baz == x);
 
-  // These closures refer to different instances,
-  // so they're unequal.
+  // 이러한 클로저는 서로 다른 인스턴스를 참조하므로, 동일하지 않습니다.
   assert(v.baz != w.baz);
 }
 ```
 
 
-## Return values
+## 값 리턴 {:#return-values}
 
-All functions return a value. If no return value is specified, the
-statement `return null;` is implicitly appended to the function body.
+모든 함수는 값을 반환합니다. 
+반환 값이 지정되지 않으면, `return null;` 문이 함수 본문에 암묵적으로 추가됩니다.
 
 <?code-excerpt "misc/test/language_tour/functions_test.dart (implicit-return-null)"?>
 ```dart
@@ -489,7 +446,7 @@ foo() {}
 assert(foo() == null);
 ```
 
-To return multiple values in a function, aggregate the values in a [record][].
+함수에서 여러 값을 반환하려면, [레코드][record]에 있는 값을 집계합니다.
 
 ```dart
 (String, int) foo() {
@@ -499,18 +456,16 @@ To return multiple values in a function, aggregate the values in a [record][].
 
 [record]: /language/records#multiple-returns
 
-## Generators
+## Generators {:#generators}
 
-When you need to lazily produce a sequence of values,
-consider using a _generator function_.
-Dart has built-in support for two kinds of generator functions:
+값 시퀀스를 지연(lazily) 생성해야 하는 경우, _생성기 함수(generator function)_ 를 사용하는 것을 고려하세요. 
+Dart에는 두 가지 종류의 생성기 함수에 대한 빌트인 지원이 있습니다.
 
-* **Synchronous** generator: Returns an [`Iterable`] object.
-* **Asynchronous** generator: Returns a [`Stream`] object.
+* **동기** 생성기: [`Iterable`] 객체를 반환합니다.
+* **비동기** 생성기: [`Stream`] 객체를 반환합니다.
 
-To implement a **synchronous** generator function,
-mark the function body as `sync*`,
-and use `yield` statements to deliver values:
+**동기** 생성기 함수를 구현하려면, 함수 본문을 `sync*`로 표시하고, 
+`yield` 문을 사용하여 값을 전달합니다.
 
 <?code-excerpt "misc/test/language_tour/async_test.dart (sync-generator)"?>
 ```dart
@@ -520,9 +475,8 @@ Iterable<int> naturalsTo(int n) sync* {
 }
 ```
 
-To implement an **asynchronous** generator function,
-mark the function body as `async*`,
-and use `yield` statements to deliver values:
+**비동기** 생성기 함수를 구현하려면, 함수 본문을 `async*`로 표시하고, 
+`yield` 문을 사용하여 값을 전달합니다.
 
 <?code-excerpt "misc/test/language_tour/async_test.dart (async-generator)"?>
 ```dart
@@ -532,8 +486,7 @@ Stream<int> asynchronousNaturalsTo(int n) async* {
 }
 ```
 
-If your generator is recursive,
-you can improve its performance by using `yield*`:
+생성기가 재귀적이라면, `yield*`를 사용하여 성능을 개선할 수 있습니다.
 
 <?code-excerpt "misc/test/language_tour/async_test.dart (recursive-generator)"?>
 ```dart
@@ -549,27 +502,25 @@ Iterable<int> naturalsDownFrom(int n) sync* {
 [`Iterable`]: {{site.dart-api}}/{{site.sdkInfo.channel}}/dart-core/Iterable-class.html
 [`Stream`]: {{site.dart-api}}/{{site.sdkInfo.channel}}/dart-async/Stream-class.html
 
-## External functions {:#external}
+## 외부 함수 {:#external}
 
-An external function is a function whose body is implemented separately from its
-declaration. Include the `external` keyword before a function declaration, like so:
+외부 함수는 선언과 별도로 구현된 본문을 가진 함수입니다. 
+다음과 같이 함수 선언 앞에 `external` 키워드를 포함합니다.
 
 ```dart
 external void someFunc(int i);
 ```
 
-An external function's implementation can come from another Dart library,
-or, more commonly, from another language. In interop contexts, `external`
-introduces type information for foreign functions or values,
-making them usable in Dart. Implementation and usage is
-heavily platform specific, so check out the interop docs on, for example,
-[C][] or [JavaScript][] to learn more.
+외부 함수의 구현은 다른 Dart 라이브러리에서 제공되거나, 
+보다 일반적으로 다른 언어에서 제공될 수 있습니다. 
+상호 운용 컨텍스트(interop contexts)에서, `external`은 외부 함수 또는 값에 대한 타입 정보를 도입하여, 
+Dart에서 사용할 수 있도록 합니다. 
+구현 및 사용은 플랫폼에 따라 크게 다르므로,
+자세한 내용은 예를 들어 [C][] 또는 [JavaScript][]에 대한 상호 운용 문서를 확인하세요.
 
-External functions can be top-level functions, [instance methods][],
-[getters or setters][], or [non-redirecting constructors][].
-An [instance variable][] can be `external` too,
-which is equivalent to an external getter and (if the variable
-is not `final`) an external setter.
+외부 함수는 최상위 함수, [인스턴스 메서드][instance methods], [getters 또는 setters][getters or setters] 또는 [비리디렉션 생성자(non-redirecting constructors)][non-redirecting constructors]일 수 있습니다. 
+[인스턴스 변수][instance variable]도 `external`일 수 있으며, 
+이는 외부 getter 및 (변수가 `final`이 아닌 경우) 외부 setter와 동일합니다.
 
 [instance methods]: /language/methods#instance-methods
 [getters or setters]: /language/methods#getters-and-setters
