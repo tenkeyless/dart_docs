@@ -1,59 +1,56 @@
 ---
-title: Extension methods
-description: Learn how to add to existing APIs.
+# title: Extension methods
+title: 확장 메서드
+description: 기존 API에 추가하는 방법을 알아보세요.
 prevpage:
   url: /language/enums
   title: Enums
 nextpage:
   url: /language/extension-types
-  title: Extension types
+  # title: Extension types
+  title: 확장 타입
 ---
 
-Extension methods add functionality to existing libraries.
-You might use extension methods without even knowing it.
-For example, when you use code completion in an IDE,
-it suggests extension methods alongside regular methods.
+확장 메서드는 기존 라이브러리에 기능을 추가합니다. 
+확장 메서드를 알지 못한 채 사용할 수도 있습니다. 
+예를 들어, IDE에서 코드 완성을 사용하면, 일반 메서드와 함께 확장 메서드를 제안합니다.
 
-If watching videos helps you learn,
-check out this overview of extension methods.
+비디오를 시청하는 것이 학습에 도움이 된다면, 확장 메서드 개요를 확인하세요.
 
 {% ytEmbed "D3j0OSfT9ZI", "Dart extension methods" %}
 
-## Overview
+## 개요 {:#overview}
 
-When you're using someone else's API or
-when you implement a library that's widely used,
-it's often impractical or impossible to change the API.
-But you might still want to add some functionality.
+다른 사람의 API를 사용하거나 널리 사용되는 라이브러리를 구현할 때, 
+API를 변경하는 것은 종종 비실용적이거나 불가능합니다. 
+하지만 여전히 일부 기능을 추가하고 싶을 수 있습니다.
 
-For example, consider the following code that parses a string into an integer:
+예를 들어, 문자열을 정수로 구문 분석하는 다음 코드를 고려해 보세요.
 
 ```dart
 int.parse('42')
 ```
 
-It might be nice—shorter and easier to use with tools—to
-have that functionality be on `String` instead:
+그 기능을 대신 `String`에 두는 게 더 좋을 듯합니다. 
+도구를 사용하면, 더 짧고 사용하기 쉽습니다.
 
 ```dart
 '42'.parseInt()
 ```
 
-To enable that code,
-you can import a library that contains an extension of the `String` class:
+해당 코드를 활성화하려면, `String` 클래스의 확장을 포함하는 라이브러리를 import 할 수 있습니다.
 
 <?code-excerpt "extension_methods/lib/string_extensions/usage_simple_extension.dart (basic)" replace="/  print/print/g"?>
 ```dart
 import 'string_apis.dart';
 // ···
-print('42'.parseInt()); // Use an extension method.
+print('42'.parseInt()); // 확장 메서드를 사용하세요.
 ```
 
-Extensions can define not just methods,
-but also other members such as getter, setters, and operators.
-Also, extensions can have names, which can be helpful if an API conflict arises.
-Here's how you might implement the extension method `parseInt()`,
-using an extension (named `NumberParsing`) that operates on strings:
+확장은 메서드뿐만 아니라, getter, setter, operator와 같은 다른 멤버도 정의할 수 있습니다. 
+또한, 확장은 이름을 가질 수 있으며, 이는 API 충돌이 발생할 경우 도움이 될 수 있습니다. 
+다음은, 문자열에 대해 작동하는 확장(`NumberParsing`이라는 이름)을 사용하여, 
+확장 메서드 `parseInt()`를 구현하는 방법입니다.
 
 <?code-excerpt "extension_methods/lib/string_extensions/string_apis.dart (parseInt)"?>
 ```dart title="lib/string_apis.dart"
@@ -65,44 +62,41 @@ extension NumberParsing on String {
 }
 ```
 
-The next section describes how to _use_ extension methods.
-After that are sections about _implementing_ extension methods.
+다음 섹션에서는 확장 메서드를 _사용_ 하는 방법을 설명합니다. 
+그 다음에는 확장 메서드 _구현_ 에 대한 섹션이 있습니다.
 
+## 확장 메서드 사용 {:#using-extension-methods}
 
-## Using extension methods
-
-Like all Dart code, extension methods are in libraries.
-You've already seen how to use an extension method—just 
-import the library it's in, and use it like an ordinary method:
+모든 Dart 코드와 마찬가지로, 확장 메서드는 라이브러리에 있습니다. 
+확장 메서드를 사용하는 방법은 이미 살펴보았습니다. 
+해당 메서드가 있는 라이브러리를 import 하고, 일반 메서드처럼 사용하면 됩니다.
 
 <?code-excerpt "extension_methods/lib/string_extensions/usage_simple_extension.dart (import-and-use)" replace="/  print/print/g"?>
 ```dart
-// Import a library that contains an extension on String.
+// String에 대한 확장이 포함된 라이브러리를 import 합니다.
 import 'string_apis.dart';
 // ···
-print('42'.padLeft(5)); // Use a String method.
-print('42'.parseInt()); // Use an extension method.
+print('42'.padLeft(5)); // String 메서드를 사용합니다.
+print('42'.parseInt()); // 확장 메서드를 사용합니다.
 ```
 
-That's all you usually need to know to use extension methods.
-As you write your code, you might also need to know
-how extension methods depend on static types (as opposed to `dynamic`) and
-how to resolve [API conflicts](#api-conflicts).
+확장 메서드를 사용하는 데 일반적으로 알아야 할 모든 내용입니다. 
+코드를 작성할 때, 확장 메서드가 정적 타입(`동적`과 대조적으로)에 어떻게 의존하는지, 
+[API 충돌](#api-conflicts)을 해결하는 방법도 알아야 할 수 있습니다.
 
-### Static types and dynamic
+### 정적 타입과 동적 타입 {:#static-types-and-dynamic}
 
-You can't invoke extension methods on variables of type `dynamic`.
-For example, the following code results in a runtime exception:
+`dynamic` 타입의 변수에 확장 메서드를 호출할 수 없습니다. 
+예를 들어, 다음 코드는 런타임 예외를 발생시킵니다.
 
 <?code-excerpt "extension_methods/lib/string_extensions/usage_simple_extension.dart (dynamic)" plaster="none" replace="/  \/\/ print/print/g"?>
 ```dart
 dynamic d = '2';
-print(d.parseInt()); // Runtime exception: NoSuchMethodError
+print(d.parseInt()); // 런타임 오류: NoSuchMethodError
 ```
 
-Extension methods _do_ work with Dart's type inference.
-The following code is fine because
-the variable `v` is inferred to have type `String`:
+확장 메서드는 Dart의 타입 추론과 함께 _작동합니다_. 
+다음 코드는 변수 `v`가 `String` 타입으로 추론되기 때문에 괜찮습니다.
 
 <?code-excerpt "extension_methods/lib/string_extensions/usage_simple_extension.dart (var)"?>
 ```dart
@@ -110,94 +104,85 @@ var v = '2';
 print(v.parseInt()); // Output: 2
 ```
 
-The reason that `dynamic` doesn't work is that
-extension methods are resolved against the static type of the receiver.
-Because extension methods are resolved statically,
-they're as fast as calling a static function.
+`dynamic`이 작동하지 않는 이유는, 
+확장 메서드가 수신자의 정적 타입에 대해 해결되기 때문입니다. 
+확장 메서드는 정적으로 해결되므로, 정적 함수를 호출하는 것만큼 빠릅니다.
 
-For more information about static types and `dynamic`, see
-[The Dart type system](/language/type-system).
+정적 타입과 `dynamic`에 대한 자세한 내용은, [Dart 타입 시스템](/language/type-system)을 참조하세요.
 
-### API conflicts
+### API 충돌 {:#api-conflicts}
 
-If an extension member conflicts with
-an interface or with another extension member,
-then you have a few options.
+확장 멤버가 인터페이스 또는 다른 확장 멤버와 충돌하는 경우, 몇 가지 옵션이 있습니다.
 
-One option is changing how you import the conflicting extension,
-using `show` or `hide` to limit the exposed API:
+한 가지 옵션은 충돌하는 확장을 import 하는 방법을 변경하여,
+`show` 또는 `hide`를 사용하여 노출된 API를 제한하는 것입니다.
 
 <?code-excerpt "extension_methods/lib/string_extensions/usage_import.dart (hide-conflicts)" replace="/  //g"?>
 ```dart
-// Defines the String extension method parseInt().
+// String 확장 메서드 parseInt()를 정의합니다.
 import 'string_apis.dart';
 
-// Also defines parseInt(), but hiding NumberParsing2
-// hides that extension method.
+// parseInt()도 정의하지만, NumberParsing2를 숨기면, 해당 확장 메서드가 숨겨집니다.
 import 'string_apis_2.dart' hide NumberParsing2;
 
 // ···
-// Uses the parseInt() defined in 'string_apis.dart'.
+// 'string_apis.dart'에 정의된, parseInt()를 사용합니다.
 print('42'.parseInt());
 ```
 
-Another option is applying the extension explicitly,
-which results in code that looks as if the extension is a wrapper class:
+또 다른 옵션은 확장을 명시적으로 적용하는 것인데, 
+그러면 확장이 래퍼 클래스인 것처럼 보이는 코드가 생성됩니다.
 
 <?code-excerpt "extension_methods/lib/string_extensions/usage_explicit.dart (conflicts-explicit)" replace="/  //g"?>
 ```dart
-// Both libraries define extensions on String that contain parseInt(),
-// and the extensions have different names.
-import 'string_apis.dart'; // Contains NumberParsing extension.
-import 'string_apis_2.dart'; // Contains NumberParsing2 extension.
+// 두 라이브러리 모두 parseInt()를 포함하는 String에 대한 확장을 정의하며, 
+// 확장의 이름이 서로 다릅니다.
+import 'string_apis.dart'; // NumberParsing 확장을 포함합니다.
+import 'string_apis_2.dart'; // NumberParsing2 확장을 포함합니다.
 
 // ···
-// print('42'.parseInt()); // Doesn't work.
+// print('42'.parseInt()); // 작동하지 않습니다.
 print(NumberParsing('42').parseInt());
 print(NumberParsing2('42').parseInt());
 ```
 
-If both extensions have the same name,
-then you might need to import using a prefix:
+두 확장자의 이름이 같은 경우, 접두사를 사용하여 가져와야 할 수도 있습니다.
 
 <?code-excerpt "extension_methods/lib/string_extensions/usage_prefix.dart (conflicts-prefix)" replace="/  //g"?>
 ```dart
-// Both libraries define extensions named NumberParsing
-// that contain the extension method parseInt(). One NumberParsing
-// extension (in 'string_apis_3.dart') also defines parseNum().
+// 두 라이브러리 모두 확장 메서드 parseInt()를 포함하는 NumberParsing이라는 확장을 정의합니다. 
+// 한 NumberParsing 확장('string_apis_3.dart'에 있음)도 parseNum()을 정의합니다.
 import 'string_apis.dart';
 import 'string_apis_3.dart' as rad;
 
 // ···
-// print('42'.parseInt()); // Doesn't work.
+// print('42'.parseInt()); // 작동하지 않습니다.
 
-// Use the ParseNumbers extension from string_apis.dart.
+// string_apis.dart의 ParseNumbers 확장을 사용하세요.
 print(NumberParsing('42').parseInt());
 
-// Use the ParseNumbers extension from string_apis_3.dart.
+// string_apis_3.dart의 ParseNumbers 확장을 사용하세요.
 print(rad.NumberParsing('42').parseInt());
 
-// Only string_apis_3.dart has parseNum().
+// parseNum()은 string_apis_3.dart에만 있습니다.
 print('42'.parseNum());
 ```
 
-As the example shows,
-you can invoke extension methods implicitly even if you import using a prefix.
-The only time you need to use the prefix is
-to avoid a name conflict when invoking an extension explicitly.
+예에서 보듯이, 접두사를 사용하여 import 하더라도 확장 메서드를 암묵적으로 호출할 수 있습니다. 
+접두사를 사용해야 하는 유일한 경우는, 확장을 명시적으로 호출할 때 이름 충돌을 피하기 위한 것입니다.
 
 
-## Implementing extension methods
+## 확장 메서드 구현 {:#implementing-extension-methods}
 
-Use the following syntax to create an extension:
+다음 구문을 사용하여 확장을 만드세요.
 
 ```plaintext
-extension <extension name>? on <type> { // <extension-name> is optional
-  (<member definition>)* // Can provide one or more <member definition>.
+extension <extension name>? on <type> { // <extension-name> 은 선택 사항입니다.
+  (<member definition>)* // 하나 이상의 <member definition>를 제공할 수 있습니다.
 }
 ```
 
-For example, here's how you might implement an extension on the `String` class:
+예를 들어, `String` 클래스에 확장을 구현하는 방법은 다음과 같습니다.
 
 <?code-excerpt "extension_methods/lib/string_extensions/string_apis.dart"?>
 ```dart title="lib/string_apis.dart"
@@ -212,21 +197,18 @@ extension NumberParsing on String {
 }
 ```
 
-The members of an extension can be methods, getters, setters, or operators.
-Extensions can also have static fields and static helper methods.
-To access static members outside the extension declaration, 
-invoke them through the declaration name like [class variables and methods][]. 
+확장의 멤버는 메서드, getters, setters 또는 연산자일 수 있습니다. 
+확장은 정적 필드와 정적 헬퍼 메서드를 가질 수도 있습니다. 
+확장 선언 외부의 정적 멤버에 액세스하려면, 
+[클래스 변수 및 메서드][class variables and methods]와 같은 선언 이름을 통해 호출합니다.
 
 [class variables and methods]: /language/classes#class-variables-and-methods
 
-### Unnamed extensions
+### 이름 없는 확장 {:#unnamed-extensions}
 
-When declaring an extension, you can omit the name.
-Unnamed extensions are visible only
-in the library where they're declared.
-Since they don't have a name,
-they can't be explicitly applied
-to resolve [API conflicts](#api-conflicts).
+확장을 선언할 때, 이름을 생략할 수 있습니다. 
+이름 없는 확장은 선언된 라이브러리에서만 볼 수 있습니다. 
+이름이 없으므로, [API 충돌](#api-conflicts)을 해결하기 위해 명시적으로 적용할 수 없습니다.
 
 <?code-excerpt "extension_methods/lib/string_extensions/string_apis_unnamed.dart (unnamed)"?>
 ```dart
@@ -236,15 +218,13 @@ extension on String {
 ```
 
 :::note
-You can invoke an unnamed extension's static members
-only within the extension declaration.
+명명되지 않은 확장의 정적 멤버는, 확장 선언 내에서만 호출할 수 있습니다.
 :::
 
-## Implementing generic extensions
+## 제네릭 확장 구현 {:#implementing-generic-extensions}
 
-Extensions can have generic type parameters.
-For example, here's some code that extends the built-in `List<T>` type
-with a getter, an operator, and a method:
+확장에는 제네릭 타입 매개변수가 있을 수 있습니다. 
+예를 들어, 다음은 getter, 연산자 및 메서드로 빌트인 `List<T>` 타입을 확장하는 코드입니다.
 
 <?code-excerpt "extension_methods/lib/fancylist.dart (generic)"?>
 ```dart
@@ -255,8 +235,7 @@ extension MyFancyList<T> on List<T> {
 }
 ```
 
-The type `T` is bound based on the static type of the list that
-the methods are called on.
+타입 `T`는 메서드가 호출되는 리스트의 정적 타입에 따라 바인딩됩니다.
 {% comment %}
 TODO (https://github.com/dart-lang/site-www/issues/2171):
 Add more info about generic extensions. 
@@ -267,13 +246,13 @@ For example, in the following code, `T` is `PENDING` because PENDING:
 [PENDING: Explain why it matters in normal usage.]
 {% endcomment %}
 
-## Resources
+## 리소스 {:#resources}
 
-For more information about extension methods, see the following:
+확장 메서드에 대한 자세한 내용은 다음을 참조하세요.
 
-* [Article: Dart Extension Methods Fundamentals][article]
-* [Feature specification][specification]
-* [Extension methods sample][sample]
+* [글: Dart 확장 메서드 기본][article]
+* [기능 사양][specification]
+* [확장 메서드 샘플][sample]
 
 [specification]: {{site.repo.dart.lang}}/blob/main/accepted/2.7/static-extension-methods/feature-specification.md#dart-static-extension-methods-design
 [article]: https://medium.com/dartlang/extension-methods-2d466cd8b308
