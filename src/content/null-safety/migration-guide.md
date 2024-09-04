@@ -1,51 +1,48 @@
 ---
-title: Migrating to null safety
-description: How to move your existing Dart code to the world of null safety
+# title: Migrating to null safety
+title: 널 세이프티로 마이그레이션
+# description: How to move your existing Dart code to the world of null safety
+description: 기존 Dart 코드를 널 세이프티 세계로 옮기는 방법
 ---
 
 :::version-note
-Dart 2.19 is the final release that supports null-safety migration,
-including the `dart migrate` tool.
-To migrate your package to null safety,
-use the Dart 2.19.6 SDK.
-To learn more,
-see [Dart 3 and null safety](/null-safety#dart-3-and-null-safety).
+Dart 2.19는 `dart migrate` 도구를 포함하여, 널 세이프티 마이그레이션을 지원하는 최종 릴리스입니다. 
+패키지를 널 세이프티로 마이그레이션하려면, Dart 2.19.6 SDK를 사용하세요. 
+자세한 내용은 [Dart 3 및 널 세이프티](/null-safety#dart-3-and-null-safety)를 참조하세요.
 :::
 
-This page describes how and when to migrate your code to [null safety][].
-Here are the basic steps for migrating each package that you own:
+이 페이지에서는 코드를 [널 세이프티][null safety]로 마이그레이션하는 방법과 시기를 설명합니다. 
+소유한 각 패키지를 마이그레이션하기 위한 기본 단계는 다음과 같습니다.
 
-1. [**Wait**](#step1-wait) for the packages
-   that you depend on to migrate.
-2. [**Migrate**](#step2-migrate) your package's code,
-   preferably using the interactive migration tool.
-3. [**Statically analyze**](#step3-analyze) your package's code.
-4. [**Test**](#step4-test) to make sure your changes work.
-5. If the package is already on pub.dev,
-   [**publish**](#step5-publish) the null-safe version
-   as a **prerelease** version.
+1. [**대기**](#step1-wait). 
+   - 마이그레이션할 패키지가 있을 때까지 대기합니다.
+2. [**마이그레이션**](#step2-migrate). 
+   - 상호작용 마이그레이션 도구를 사용하여, 패키지의 코드를 마이그레이션합니다.
+3. [**정적으로 분석**](#step3-analyze)
+   - 패키지의 코드를 정적으로 분석합니다.
+4. [**테스트**](#step4-test)
+   - 변경 사항이 작동하는지 확인하기 위해 테스트합니다.
+5. [**게시**](#step5-publish)
+   - 패키지가 이미 pub.dev에 있는 경우, 널 세이프 버전을 **사전 릴리스** 버전으로 게시합니다.
 
 :::tip
-If your application or library is large, check out
-[Gradual null safety migration for large Dart projects][].
+애플리케이션이나 라이브러리가 큰 경우, 
+[대규모 Dart 프로젝트를 위한 점진적인 널 세이프티 마이그레이션][Gradual null safety migration for large Dart projects]을 확인하세요.
 :::
 
 :::note
-**Migrating an app is technically the same as migrating a package.**
-Before migrating an app,
-make sure that all of your dependencies are ready.
+**앱 마이그레이션은 기술적으로 패키지 마이그레이션과 같습니다.** 
+앱을 마이그레이션하기 전에, 모든 종속성이 준비되었는지 확인하세요.
 :::
 
-To get an informal look at the experience of using the migration tool,
-watch this video:
+마이그레이션 도구 사용 경험을 비공식적으로 살펴보려면, 이 비디오를 시청하세요.
 
 {% ytEmbed "eBr5tlumwlg", "How to migrate Dart packages to null safety" %}
 
 [null safety]: /null-safety
 [Gradual null safety migration for large Dart projects]: https://medium.com/dartlang/gradual-null-safety-migration-for-large-dart-projects-85acb10b64a9
 
-
-## 1. Wait to migrate {:#step1-wait}
+## 1. 마이그레이션을 기다리기 {:#step1-wait}
 
 We strongly recommend migrating code in order, 
 with the leaves of the dependency graph being migrated first.
@@ -78,7 +75,7 @@ The instructions assume your code is under **source control**,
 so that you can easily undo any changes.
 
 <a id="switch-to-the-latest-stable-dart-release"></a>
-### Switch to the Dart 2.19.6 release
+### Switch to the Dart 2.19.6 release {:#switch-to-the-dart-2-19-6-release}
 
 Switch to the **2.19.6 release** of the Dart SDK. 
 This is included in the Flutter 3.7.12 SDK.
@@ -90,7 +87,7 @@ $ dart --version
 Dart SDK version: 2.19.6
 ```
 
-### Check dependency status
+### Check dependency status {:#check-dependency-status}
 
 Get the migration state of your package's dependencies,
 using the following command:
@@ -128,7 +125,7 @@ You can find contact details on the package page on [pub.dev][].
 [pub.dev]: {{site.pub}}
 
 
-### Update dependencies
+### Update dependencies {:#update-dependencies}
 
 Before migrating your package's code,
 update its dependencies to null-safe versions:
@@ -140,7 +137,7 @@ update its dependencies to null-safe versions:
 2. Run `dart pub get`.
 
 
-## 2. Migrate {:#step2-migrate}
+## 2. 마이그레이션 {:#step2-migrate}
 
 Most of the changes that your code needs to be null safe
 are easily predictable.
@@ -212,7 +209,7 @@ the tool infers that the `ints` list (previously a list of `int`)
 in line 1 is nullable, and thus should be a list of `int?`.
 
 
-#### Understanding migration results
+#### Understanding migration results {:#understanding-migration-results}
 
 To see the reasons for each change (or non-change),
 click its line number in the **Proposed Edits** pane.
@@ -329,7 +326,7 @@ var zeroOne = <int>[zero, one];
 </tr>
 </table>
 
-#### Opting out files
+#### Opting out files {:#opting-out-files}
 
 Although we recommend migrating all at once,
 sometimes that isn't practical,
@@ -349,7 +346,7 @@ are compatible with Dart 3.
 [version comment]: /guides/language/evolution#per-library-language-version-selection
 
 
-#### Applying changes
+#### Applying changes {:#applying-changes}
 
 When you like all of the changes
 that the migration tool proposes, click **Apply migration**.
@@ -364,7 +361,7 @@ Then, if you've published your code on pub.dev,
 [publish a null-safe prerelease](#step5-publish).
 
 
-### Migrating by hand
+### Migrating by hand {:#migrating-by-hand}
 
 If you prefer not to use the migration tool,
 you can migrate manually.
@@ -422,7 +419,7 @@ for more help on migrating code by hand.
 [Unsound null safety]: /null-safety/unsound-null-safety
 
 
-## 3. Analyze {:#step3-analyze}
+## 3. 분석 {:#step3-analyze}
 
 Update your packages
 (using `dart pub get` in your IDE or on the command line).
@@ -437,7 +434,7 @@ $ dart analyze     # or `flutter analyze`
 [static analysis]: /tools/analysis
 
 
-## 4. Test {:#step4-test}
+## 4. 테스트 {:#step4-test}
 
 If your code passes analysis, run tests:
 
@@ -452,7 +449,7 @@ then you might need to remigrate it.
 If so, revert your code changes before using the migration tool again.
 
 
-## 5. Publish {:#step5-publish}
+## 5. 게시 {:#step5-publish}
 
 We encourage you to publish packages—possibly as prereleases—as 
 soon as you migrate:
@@ -480,7 +477,7 @@ to indicate a breaking change:
   For example, if the previous version is `0.3.2`,
   the new version is either `0.4.0` or `1.0.0`.
 
-### Check your pubspec
+### Check your pubspec {:#check-your-pubspec}
 
 Before you publish a stable null safety version of a package, 
 we strongly recommend following these pubspec rules:
@@ -489,7 +486,7 @@ we strongly recommend following these pubspec rules:
   that you've tested against (at least `2.12.0`).
 * Use stable versions of all direct dependencies.
 
-## Welcome to null safety
+## 널 세이프티에 오신 것을 환영합니다 {:#welcome-to-null-safety}
 
 If you made it this far,
 you should have a fully migrated, null-safe Dart package.

@@ -1,48 +1,44 @@
 ---
-title: Unsound null safety
-description: Mixing language versions lets you migrate to null safety at your own pace, with some of the benefits of null safety.
+# title: Unsound null safety
+title: 언사운드 널 세이프티
+# description: Mixing language versions lets you migrate to null safety at your own pace, with some of the benefits of null safety.
+description: 여러 언어 버전을 혼합하면 원하는 속도에 맞춰 널 세이프티로 이전할 수 있으며, 널 세이프티의 이점을 누릴 수 있습니다.
 ---
 
 :::version-note
-Dart 3 and later does not support code without
-null safety or with unsound null safety.
-All code must be soundly null safe.
-To learn more, check out the [Dart 3 sound null safety tracking issue][].
+Dart 3 이상은 null 안전성이 없거나, unsound null 안전성인 코드를 지원하지 않습니다. 
+모든 코드는 null 안전성이 있어야 합니다. 
+자세한 내용은 [Dart 3 sound null 안전성 추적 문제][Dart 3 sound null safety tracking issue]를 확인하세요.
 :::
 
-A Dart program may contain some libraries that
-are [null safe][] and some that aren't.
-These **mixed-version programs**
-rely on **unsound null safety**.
+Dart 프로그램은 [널 세이프][null safe]인 라이브러리와 그렇지 않은 라이브러리를 포함할 수 있습니다. 
+이러한 **혼합 버전 프로그램**은 **unsound null 안전성**에 의존합니다.
 
 [null safe]: /null-safety
 [migrated]: /null-safety#migrate
 [Dart 3 sound null safety tracking issue]: {{site.repo.dart.sdk}}/issues/49530
 
-The ability to mix [language versions][]
-frees package maintainers to migrate their code,
-with the knowledge that even legacy users can get new
-bug fixes and other improvements.
-However, mixed-version programs don't get all the advantages
-that null safety can bring.
+[언어 버전][language versions]을 혼합할 수 있는 기능은, 
+패키지 유지 관리자가 코드를 마이그레이션할 수 있도록 해주며, 
+레거시 사용자도 새로운 버그 수정 및 기타 개선 사항을 얻을 수 있다는 사실을 알 수 있습니다. 
+그러나, 혼합 버전 프로그램은 null 안전성이 가져올 수 있는 모든 이점을 얻지 못합니다.
 
 [language versions]: /guides/language/evolution#language-versioning
 
-This page describes the differences between sound and unsound null safety,
-with the goal of helping you decide when to migrate to null safety.
-After the conceptual discussion are instructions for migrating incrementally,
-followed by details on testing and running mixed-version programs.
+이 페이지에서는 sound 널 안전성과 unsound 널 안전성의 차이점을 설명하여, 
+널 안전성으로 마이그레이션할 시기를 결정하는 데 도움을 줍니다. 
+개념적 논의 후 점진적 마이그레이션에 대한 지침이 나오고, 
+그 다음에는 혼합 버전 프로그램을 테스트하고 실행하는 방법에 대한 세부 정보가 나옵니다.
 
 :::note
-We recommend that, if possible, you wait for dependencies to migrate
-before you migrate your package.
-For details, see the [migration guide][].
+가능하다면, 패키지를 마이그레이션하기 전에 종속성이 마이그레이션될 때까지 기다리는 것이 좋습니다. 
+자세한 내용은 [마이그레이션 가이드][migration guide]를 참조하세요.
 :::
 
 [migration guide]: /null-safety/migration-guide
 
 
-## Sound and unsound null safety
+## Sound 및 unsound null 안정성 {:#sound-and-unsound-null-safety}
 
 Dart provides sound null safety through a combination of
 static and runtime checks.
@@ -80,7 +76,7 @@ the tools print a warning to let you know that
 they can only run with unsound null safety.
 
 
-## Migrating incrementally
+## 점진적으로 마이그레이션 {:#migrating-incrementally}
 
 Because Dart supports mixed-version programs,
 you can migrate one library (generally one Dart file) at a time,
@@ -101,7 +97,7 @@ If any libraries have cyclic imports
 (for example, A imports B which imports C, and C imports A),
 consider migrating those libraries together.
 
-### Using the migration tool
+### Using the migration tool {:#using-the-migration-tool}
 
 You can migrate incrementally using the
 [migration tool][].
@@ -119,7 +115,7 @@ You can later run `dart migrate` again to continue the migration.
 Any files that are already migrated feature a disabled checkbox:
 you cannot un-migrate a file once it has been migrated.
 
-### Migrating by hand
+### Migrating by hand {:#migrating-by-hand}
 
 If you want to incrementally migrate a package by hand, follow these steps:
 
@@ -169,7 +165,7 @@ If you want to incrementally migrate a package by hand, follow these steps:
    as needed.
 
 
-## Testing or running mixed-version programs
+## 혼합 버전 프로그램 테스트 또는 실행 {:#testing-or-running-mixed-version-programs}
 
 To test or run mixed-version code,
 you need to disable sound null safety.
