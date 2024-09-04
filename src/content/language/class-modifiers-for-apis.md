@@ -1,51 +1,53 @@
 ---
-title: Class modifiers for API maintainers
+# title: Class modifiers for API maintainers
+title: API 유지 관리자를 위한 클래스 수정자
+# description: >-
+#  How to use the class modifiers added in Dart 3.0
+#  to make your package's API more robust and maintainable.
 description: >-
- How to use the class modifiers added in Dart 3.0
- to make your package's API more robust and maintainable.
+ Dart 3.0에 추가된 클래스 수정자를 사용하여, 패키지의 API를 보다 강력하고 유지 관리하기 쉽게 만드는 방법.
 prevpage:
   url: /language/class-modifiers
-  title: Class modifiers
+  # title: Class modifiers
+  title: 클래스 수정자
 nextpage:
   url: /language/modifier-reference
-  title: Class modifiers reference
+  # title: Class modifiers reference
+  title: 클래스 수정자 참조
 ---
 
-Dart 3.0 adds a few [new modifiers][class modifiers]
-that you can place on class and [mixin declarations][mixin].
-If you are the author of a library package,
-these modifiers give you more control over what users are allowed to do
-with the types that your package exports.
-This can make it easier to evolve your package,
-and easier to know if a change to your code may break users.
+Dart 3.0은 클래스와 [믹스인 선언][mixin]에 배치할 수 있는, 
+몇 가지 [새로운 수정자][class modifiers]를 추가합니다. 
+라이브러리 패키지의 작성자인 경우, 
+이러한 수정자를 사용하면 당신의 패키지에서 export 하는 타입으로, 
+사용자가 수행할 수 있는 작업을 더 많이 제어할 수 있습니다. 
+이를 통해 패키지를 더 쉽게 개발하고, 
+코드 변경으로 인해 사용자에게 문제가 발생할 수 있는지 더 쉽게 알 수 있습니다.
 
 [class modifiers]: /language/class-modifiers
 [mixin]: /language/mixins
 
-Dart 3.0 also includes a [breaking change](/resources/dart-3-migration#mixin)
-around using classes as mixins.
-This change might not break *your* class,
-but it could break *users* of your class.
+Dart 3.0에는 클래스를 믹스인으로 사용하는 것과 관련된 [중단 변경 사항](/resources/dart-3-migration#mixin)도 포함되어 있습니다.
+이 변경은 *당신의* 클래스를 손상시키지는 않지만, 당신의 클래스의 *사용자*를 손상시킬 수 있습니다.
 
-This guide walks you through these changes
-so you know how to use the new modifiers,
-and how they affect users of your libraries.
+이 가이드는 이러한 변경 사항을 안내하여 새로운 수정자를 사용하는 방법과, 
+라이브러리 사용자에게 어떤 영향을 미치는지 알 수 있도록 합니다.
 
-## The `mixin` modifier on classes
+## 클래스의 `mixin` 수정자 {:#the-mixin-modifier-on-classes}
 
-The most important modifier to be aware of is `mixin`.
-Language versions prior to Dart 3.0 allow any class to be used as a mixin
-in another class's `with` clause, _UNLESS_ the class:
+가장 중요한 수정자는 `mixin`입니다. 
+Dart 3.0 이전의 언어 버전에서는, 
+클래스가 다른 클래스의 `with` 절에서 믹스인으로 사용될 수 있도록 허용합니다. 
+단, 클래스가 다음과 같은 경우는 _예외입니다._
 
-*   Declares any non-factory constructors.
-*   Extends any class other than `Object`.
+* 팩토리가 아닌 생성자를 선언합니다.
+* `Object`가 아닌 클래스를 확장합니다.
 
-This makes it easy to accidentally break someone else's code,
-by adding a constructor or `extends` clause to a class
-without realizing that others are using it in a `with` clause.
+이렇게 하면 다른 사람이 `with` 절에서 사용하고 있다는 사실을 깨닫지 못한 채 생성자나 `extends` 절을 클래스에 추가하여, 
+다른 사람의 코드를 실수로 손상시키기 쉽습니다.
 
-Dart 3.0 no longer allows classes to be used as mixins by default.
-Instead, you must explicitly opt-in to that behavior by declaring a `mixin class`:
+Dart 3.0에서는 더 이상 기본적으로 클래스를 믹스인으로 사용할 수 없습니다. 
+대신 `mixin class`를 선언하여, 해당 동작을 명시적으로 선택해야(opt-in) 합니다.
 
 ```dart
 mixin class Both {}
@@ -54,111 +56,94 @@ class UseAsMixin with Both {}
 class UseAsSuperclass extends Both {}
 ```
 
-If you update your package to Dart 3.0 and don't change any of your code,
-you may not see any errors.
-But you may inadvertently break users of your package
-if they were using your classes as mixins.
+패키지를 Dart 3.0으로 업데이트하고 코드를 변경하지 않으면, 오류가 표시되지 않을 수 있습니다. 
+하지만, 사용자가 클래스를 믹스인으로 사용하는 경우, 실수로 패키지 사용자를 망가뜨릴 수 있습니다.
 
-### Migrating classes as mixins
+### 믹스인으로 클래스 마이그레이션 {:#migrating-classes-as-mixins}
 
-If the class has a non-factory constructor, an `extends` clause,
-or a `with` clause, then it already can't be used as a mixin.
-Behavior won't change with Dart 3.0; 
-there's nothing to worry about and nothing you need to do.
+클래스에 팩토리가 아닌 생성자, `extends` 절 또는 `with` 절이 있는 경우, 이미 믹스인으로 사용할 수 없습니다. 
+동작은 Dart 3.0에서 변경되지 않습니다. 걱정할 것도 없고, 할 일도 없습니다.
 
-In practice, this describes about 90% of existing classes.
-For the remaining classes that can be used as mixins,
-you have to decide what you want to support.
+실제로, 이는 기존 클래스의 약 90%를 설명합니다. 
+믹스인으로 사용할 수 있는 나머지 클래스의 경우, 무엇을 지원할지 결정해야 합니다.
 
-Here are a few questions to help decide. The first is pragmatic:
+다음은 결정하는 데 도움이 되는 몇 가지 질문입니다. 첫 번째는 실용적(pragmatic)입니다.
 
-*   **Do you want to risk breaking any users?** If the answer is a hard "no",
-    then place `mixin` before any and all classes that
-    [could be used as a mixin](#the-mixin-modifier-on-classes).
-    This exactly preserves the existing behavior of your API.
+* **사용자를 중단시킬 위험을 감수하고 싶습니까?** 
+  * 답이 단호하게 "아니오"인 경우, 
+    [믹스인으로 사용할 수 있는](#the-mixin-modifier-on-classes) 모든 클래스 앞에 `mixin`을 붙입니다. 
+    이렇게 하면, API의 기존 동작이 그대로 유지됩니다.
 
-On the other hand, if you want to take this opportunity to rethink the
-affordances your API offers, then you may want to *not* turn it into a `mixin
-class`. Consider these two design questions:
+반면, API가 제공하는 기능을 재고할 기회를 잡고 싶다면, 
+그것을 `mixin class`로 바꾸지 *않는* 것이 좋습니다. 
+다음 두 가지 디자인 질문을 고려하세요.
 
-*   **Do you want users to be able to construct instances of it directly?**
-    In other words, is the class deliberately not abstract?
+* **사용자가 직접 인스턴스를 구성할 수 있기를 원하십니까?**
+  * 다시 말해, 클래스가 의도적으로 추상적이지 않습니까?
 
-*   **Do you *want* people to be able to use the declaration as a mixin?**
-    In other words, do you want them to be able to use it in `with` clauses?
+* **사람들이 선언을 믹스인으로 사용할 수 있기를 *원하십니까?***
+  * 다시 말해, `with` 절에서 사용할 수 있기를 원하십니까?
 
-If the answer to both is "yes", then make it a mixin class. If the answer to
-the second is "no", then just leave it as a class. If the answer to the first
-is "no" and the second is "yes", then change it from a class to a mixin
-declaration.
+두 질문에 대한 답이 모두 "예"이면 믹스인 클래스로 만드세요. 
+두 번째 질문에 대한 답이 "아니요"이면, 그냥 클래스로 두세요. 
+첫 번째 질문에 대한 답이 "아니요"이고, 두 번째 질문에 대한 답이 "예"이면, 클래스에서 믹스인 선언으로 변경하세요.
 
-The last two options, leaving it a class or turning it into a pure mixin,
-are breaking API changes. You'll want to bump the major version of your package
-if you do this.
+마지막 두 가지 옵션, 즉 클래스로 두거나, 순수한 믹스인으로 바꾸는 것은 API 변경을 깨는 것입니다. 
+이렇게 하면 패키지의 major 버전을 올려야 합니다.
 
-## Other opt-in modifiers
+## 기타 선택형(opt-in) 수정자 {:#other-opt-in-modifiers}
 
-Handling classes as mixins is the only critical change in Dart 3.0
-that affects the API of your package. Once you've gotten this far,
-you can stop if you don't want to make other changes
-to what your package allows users to do.
+클래스를 믹스인으로 처리하는 것은 패키지의 API에 영향을 미치는 Dart 3.0의 유일한 중요한 변경 사항입니다. 
+여기까지 왔다면, 패키지에서 사용자가 할 수 있는 다른 변경 사항을 만들고 싶지 않으면 중단할 수 있습니다.
 
-Note that if you do continue and use any of the modifiers described below,
-it is potentially a breaking change to your package's API which necessitates
-a major version increment.
+아래에 설명된 수정자를 계속 사용하고 사용하는 경우, 
+패키지의 API에 대한 잠재적인 중단 변경이 되어, major 버전 증가가 필요합니다.
 
-## The `interface` modifier
+## `interface` 수정자 {:#the-interface-modifier}
 
-Dart doesn't have a separate syntax for declaring pure interfaces.
-Instead, you declare an abstract class that happens to contain only
-abstract methods.
-When a user sees that class in your package's API,
-they may not know if it contains code they can reuse by extending the class,
-or whether it is instead meant to be used as an interface.
+Dart에는 순수 인터페이스를 선언하기 위한 별도의 구문이 없습니다. 
+대신, 추상 메서드만 포함하는 추상 클래스를 선언합니다. 
+사용자가 패키지의 API에서 해당 클래스를 볼 때, 
+클래스를 확장하여 재사용할 수 있는 코드가 포함되어 있는지, 
+또는 인터페이스로 사용하도록 의도된 것인지 알 수 없습니다.
 
-You can clarify that by putting the [`interface`](/language/class-modifiers#interface)
-modifier on the class.
-That allows the class to be used in an `implements` clause,
-but prevents it from being used in `extends`.
+클래스에 [`interface`](/language/class-modifiers#interface) 수정자를 넣어 이를 명확히 할 수 있습니다. 
+그러면 `implements` 절에서 클래스를 사용할 수 있지만, `extends`에서 사용할 수는 없습니다.
 
-Even when the class *does* have non-abstract methods, you may want to prevent
-users from extending it.
-Inheritance is one of the most powerful kinds of coupling in software,
-because it enables code reuse.
-But that coupling is also [dangerous and fragile][].
-When inheritance crosses package boundaries,
-it can be hard to evolve the superclass without breaking subclasses.
+클래스에 추상이 아닌 메서드가 *있는 경우에도*, 
+사용자가 클래스를 확장하지 못하도록 할 수 있습니다. 
+상속은 코드 재사용을 가능하게 하기 때문에, 소프트웨어에서 가장 강력한 결합 중 하나입니다. 
+하지만 이러한 결합은 [위험하고 취약합니다][dangerous and fragile]. 
+상속이 패키지 경계를 넘을 때, 
+하위 클래스를 깨지 않고 슈퍼클래스를 진화시키기 어려울 수 있습니다.
 
 [dangerous and fragile]: https://en.wikipedia.org/wiki/Fragile_base_class
 
-Marking the class `interface` lets users construct it (unless it's [also marked
-`abstract`](/language/class-modifiers#abstract-interface))
-and implement the class's interface,
-but prevents them from reusing any of its code.
+클래스를 `interface`로 표시하면, 
+사용자가 클래스를 구성하고(`abstract`로 표시된 경우 제외), 
+클래스의 인터페이스를 구현할 수 있지만, 
+해당 클래스의 코드를 재사용할 수는 없습니다.
 
-When a class is marked `interface`, the restriction can be ignored within
-the library where the class is declared.
-Inside the library, you're free to extend it since it's all your code
-and presumably you know what you're doing.
-The restriction applies to other packages,
-and even other libraries within your own package.
+클래스가 `interface`로 표시되면, 
+클래스가 선언된 라이브러리 내에서 제한을 무시할 수 있습니다. 
+라이브러리 내부에서는, 모든 코드가 자신의 코드이고, 
+무엇을 하는지 알고 있으므로 자유롭게 확장할 수 있습니다. 
+이 제한은 다른 패키지와, 자신의 패키지 내의 다른 라이브러리에도 적용됩니다.
 
-## The `base` modifier
+## `base` 수정자 {:#the-base-modifier}
 
-The [`base`](/language/class-modifiers#base)
-modifier is somewhat the opposite of `interface`.
-It allows you to use the class in an `extends` clause,
-or use a mixin or mixin class in a `with` clause.
-But, it disallows code outside of the class's library
-from using the class or mixin in an `implements` clause.
+[`base`](/language/class-modifiers#base) 수정자는 `interface`와 다소 반대입니다. 
+`extends` 절에서 클래스를 사용하거나, 
+`with` 절에서 mixin 또는 mixin 클래스를 사용할 수 있습니다. 
+하지만, 클래스 라이브러리 외부의 코드가, 
+`implements` 절에서 클래스 또는 mixin을 사용하는 것을, 
+허용하지 않습니다.
 
-This ensures that every object that is an instance
-of your class or mixin's interface inherits your actual implementation.
-In particular, this means that every instance will include
-all of the private members your class or mixin declares.
-This can help prevent runtime errors that might otherwise occur.
+이렇게 하면 클래스 또는 mixin 인터페이스의 인스턴스인 모든 객체가 실제 구현을 상속합니다. 
+특히, 이는 모든 인스턴스에 클래스 또는 mixin이 선언하는 모든 private 멤버가 포함된다는 것을 의미합니다. 
+이렇게 하면 그렇지 않으면 발생할 수 있는 런타임 오류를 방지하는 데 도움이 될 수 있습니다.
 
-Consider this library:
+다음 라이브러리를 고려하세요.
 
 ```dart title="a.dart"
 class A {
@@ -172,71 +157,62 @@ void callPrivateMethod(A a) {
 }
 ```
 
-This code seems fine on its own,
-but there's nothing preventing a user from creating another library like this:
+이 코드는 그 자체로는 괜찮아 보이지만, 
+사용자가 이와 같이 또 다른 라이브러리를 만드는 것을 막을 수는 없습니다.
 
 ```dart title="b.dart"
 import 'a.dart';
 
 class B implements A {
-  // No implementation of _privateMethod()!
+  // _privateMethod()를 구현하지 않았습니다!
 }
 
 main() {
-  callPrivateMethod(B()); // Runtime exception!
+  callPrivateMethod(B()); // 런타임 예외!
 }
 ```
 
-Adding the `base` modifier to the class can help prevent these runtime errors.
-As with `interface`, you can ignore this restriction
-in the same library where the `base` class or mixin is declared.
-Then subclasses in the same library
-will be reminded to implement the private methods.
-But note that the next section *does* apply:
+클래스에 `base` 수정자를 추가하면, 이러한 런타임 오류를 방지하는 데 도움이 될 수 있습니다. 
+`interface`와 마찬가지로, `base` 클래스나 믹스인이 선언된 동일한 라이브러리에서 이 제한을 무시할 수 있습니다. 그러면 동일한 라이브러리의 하위 클래스에 private 메서드를 구현하라는 알림이 표시됩니다. 
+하지만 다음 섹션은 *적용됩니다*.
 
-### Base transitivity
+### 베이스 전이성 {:#base-transitivity}
 
-The goal of marking a class `base` is to ensure that
-every instance of that type concretely inherits from it.
-To maintain this, the base restriction is "contagious".
-Every subtype of a type marked `base` -- *direct or indirect* --
-must also prevent being implemented.
-That means it must be marked `base`
-(or `final` or `sealed`, which we'll get to next).
+클래스를 `base`로 표시하는 목적은 해당 타입의 모든 인스턴스가 구체적으로 상속하도록 하는 것입니다. 
+이를 유지하기 위해, base 제한은 "전염성(contagious)"이 있습니다. 
+`base`로 표시된 타입의 모든 하위 타입(*직접적이든 간접적이든*)도 구현되지 않아야 합니다. 
+즉, `base`(또는 다음에 다룰 `final` 또는 `sealed`)로 표시되어야 합니다.
 
-Applying `base` to a type requires some care, then.
-It affects not just what users can do with your class or mixin,
-but also the affordances *their* subclasses can offer.
-Once you've put `base` on a type, the whole hierarchy under it
-is prohibited from being implemented.
+따라서, 타입에 `base`를 적용하려면 약간의 주의가 필요합니다. 
+이는 사용자가 클래스나 믹스인으로 무엇을 할 수 있는지에 영향을 미칠 뿐만 아니라, 
+*그들의* 하위 클래스가 제공할 수 있는 가능성에도 영향을 미칩니다. 
+타입에 `base`를 적용하면, 그 아래의 전체 계층 구조가 구현되지 않습니다.
 
-That sounds intense, but it's how most other programming languages
-have always worked.
-Most don't have implicit interfaces at all,
-so when you declare a class in Java, C#, or other languages,
-you effectively have the same constraint.
+이는 강렬한 것처럼 들리지만, 대부분의 다른 프로그래밍 언어는 항상 이런 방식으로 작동했습니다. 
+대부분은 암묵적 인터페이스가 전혀 없으므로, 
+Java, C# 또는 다른 언어에서 클래스를 선언하면, 
+사실상 동일한 제약 조건이 적용됩니다.
 
-## The `final` modifier
+## `final` 수정자 {:#the-final-modifier}
 
-If you want all of the restrictions of both `interface` and `base`,
-you can mark a class or mixin class [`final`](/language/class-modifiers#final).
-This prevents anyone outside of your library from creating
-any kind of subtype of it:
-no using it in `implements`, `extends`, `with`, or `on` clauses.
+`interface`와 `base`의 모든 제한을 원하면, 
+클래스나 믹스인 클래스를 [`final`](/language/class-modifiers#final)로 표시할 수 있습니다. 
+이렇게 하면, 라이브러리 외부의 누구도 어떤 종류의 하위 타입도 만들 수 없습니다. 
+`implements`, `extends`, `with` 또는 `on` 절에서 사용할 수 없습니다.
 
-This is the most restrictive for users of the class.
-All they can do is construct it (unless it's marked `abstract`).
-In return, you have the fewest restrictions as the class maintainer.
-You can add new methods, turn constructors into factory constructors, etc.
-without worrying about breaking any downstream users.
+이는 클래스 사용자에게 가장 제한적입니다. 
+할 수 있는 일은 클래스를 구성하는 것뿐입니다. (`abstract`로 표시되지 않는 한)
+그 대가로, 클래스 유지 관리자로서 가장 적은 제한을 받습니다. 
+하위 사용자를 망가뜨릴 걱정 없이, 새로운 메서드를 추가하고, 
+생성자를 팩토리 생성자로 전환할 수 있습니다.
 
 <a id="the-sealed-modifer"></a>
-## The `sealed` modifier
+## `sealed` 수정자 {:#the-sealed-modifier}
 
-The last modifier, [`sealed`](/language/class-modifiers#sealed), is special.
-It exists primarily to enable [exhaustiveness checking][] in pattern matching.
-If a switch has cases for every direct subtype of a type marked `sealed`,
-then the compiler knows the switch is exhaustive.
+마지막 수정자, [`sealed`](/language/class-modifiers#sealed)는 특별합니다. 
+주로 패턴 매칭에서 [철저성(exhaustiveness) 검사][exhaustiveness checking]를 가능하게 하기 위해 존재합니다. 
+스위치에 `sealed`로 표시된 유형의 모든 직접 하위 타입에 대한 케이스가 있는 경우, 
+컴파일러는 스위치가 철저(exhaustive)하다는 것을 알고 있습니다.
 
 [exhaustiveness checking]: /language/branches#exhaustiveness-checking
 
@@ -257,27 +233,24 @@ String lastName(Amigo amigo) => switch (amigo) {
     };
 ```
 
-This switch has a case for each of the subtypes of `Amigo`.
-The compiler knows that every instance of `Amigo` must be an instance of one
-of those subtypes, so it knows the switch is safely exhaustive and doesn't
-require any final default case.
+이 스위치는 `Amigo`의 각 하위 타입에 대한 케이스를 갖습니다. 
+컴파일러는 `Amigo`의 모든 인스턴스가 해당 하위 타입 중 하나의 인스턴스여야 한다는 것을 알고 있으므로, 
+스위치가 안전하게 철저(exhaustive)하며, 최종 디폴트 케이스가 필요하지 않다는 것을 알고 있습니다.
 
-For this to be sound, the compiler enforces two restrictions:
+이를 sound하게 하기 위해, 컴파일러는 두 가지 제한을 적용합니다.
 
-1.  The sealed class can't itself be directly constructible.
-    Otherwise, you could have an instance of `Amigo` that isn't
-    an instance of *any* of the subtypes.
-    So every `sealed` class is implicitly `abstract` too.
+1. sealed 클래스 자체는 직접 생성할 수 없습니다. 
+   그렇지 않으면, 하위 타입의 *어떤* 인스턴스도 아닌 `Amigo`의 인스턴스가 있을 수 있습니다. 
+   따라서, 모든 `sealed` 클래스는 암묵적으로 `abstract`이기도 합니다.
 
-2.  Every direct subtype of the sealed type must be in the same library
-    where the sealed type is declared.
-    This way, the compiler can find them all. It knows that there aren't
-    other hidden subtypes floating around that would not match any of the cases.
+2. sealed 타입의 모든 직접 하위 타입은 sealed 타입이 선언된 동일한 라이브러리에 있어야 합니다. 
+   이렇게 하면 컴파일러가 모든 하위 타입을 찾을 수 있습니다. 
+   케이스와 일치하지 않는 다른 숨겨진 하위 타입이 떠다니지 않는다는 것을 알고 있습니다.
 
-The second restriction is similar to `final`.
-Like `final`, it means that a class marked `sealed` can't be directly
-extended, implemented, or mixed in outside of the library where it's declared.
-But, unlike `base` and `final`, there is no *transitive* restriction:
+두 번째 제한은 `final`과 비슷합니다. 
+`final`과 마찬가지로, `sealed`로 표시된 클래스는, 
+선언된 라이브러리 외부에서 직접 확장(extended), 구현(implemented) 또는 혼합(mixed in)될 수 없음을 의미합니다. 
+그러나, `base` 및 `final`과 달리 *전이적* 제한은 없습니다.
 
 ```dart title="amigo.dart"
 sealed class Amigo {}
@@ -287,86 +260,76 @@ class Ned extends Amigo {}
 ```
 
 ```dart title="other.dart"
-// This is an error:
+// 이것은 오류입니다:
 class Bad extends Amigo {}
 
-// But these are both fine:
+// 하지만 이들은 둘 다 괜찮습니다.
 class OtherLucky extends Lucky {}
 class OtherDusty implements Dusty {}
 ```
 
-Of course, if you *want* the subtypes of your sealed type
-to be restricted as well, you can get that by marking them
-using `interface`, `base`, `final`, or `sealed`.
+물론, sealed 타입의 하위 타입도 제한되기를 원한다면, 
+`interface`, `base`, `final` 또는 `sealed`를 사용하여 표시하면 됩니다.
 
-### `sealed` versus `final`
+### `sealed` vs `final` {:#sealed-versus-final}
 
-If you have a class that you don't want users to be able to directly subtype,
-when should you use `sealed` versus `final`?
-A couple of simple rules:
+사용자가 직접 하위 타입을 지정할 수 없게 하려는 클래스가 있는 경우, 
+언제 `sealed`를 사용하고 언제 `final`을 사용해야 할까요? 
+몇 가지 간단한 규칙이 있습니다.:
 
-*   If you want users to be able to directly construct instances of the class,
-    then it *can't* use `sealed` since sealed types are implicitly abstract.
+* 사용자가 클래스 인스턴스를 직접 생성할 수 있게 하려는 경우, 
+  sealed 타입이 암묵적으로 추상화되므로 `sealed`를 사용할 수 없습니다.
 
-*   If the class has no subtypes in your library, then there's no point in using
-    `sealed` since you get no exhaustiveness checking benefits.
+* 클래스에 라이브러리에 하위 타입이 없는 경우, 
+  완전성(exhaustiveness) 검사의 이점을 얻을 수 없으므로, `sealed`를 사용할 필요가 없습니다.
 
-Otherwise, if the class does have some subtypes that you define,
-then `sealed` is likely what you want.
-If users see that the class has a few subtypes, it's handy to be able
-to handle each of them separately as switch cases
-and have the compiler know that the entire type is covered.
+그렇지 않으면, 클래스에 정의한 하위 타입이 있는 경우, `sealed`가 원하는 것일 가능성이 큽니다. 
+사용자가 클래스에 몇 가지 하위 타입이 있는 것을 알게 되면, 
+각각을 스위치 케이스로 별도로 처리하고, 
+컴파일러가 전체 타입이 포함된다는 것을 알 수 있으면 편리합니다.
 
-Using `sealed` does mean that if you later add another subtype to the library,
-it's a breaking API change.
-When a new subtype appears,
-all of those existing switches become non-exhaustive
-since they don't handle the new type.
-It's exactly like adding a new value to an enum.
+`sealed`를 사용하면, 나중에 라이브러리에 다른 하위 타입을 추가하면, 
+API 변경이 중단된다는 것을 의미합니다. 
+새 하위 타입이 나타나면, 모든 기존 스위치는 새 타입을 처리하지 않으므로 비철저(non-exhaustive)해집니다. 
+열거형에 새 값을 추가하는 것과 똑같습니다.
 
-Those non-exhaustive switch compile errors are *useful* to users
-because they draw the user's attention to places in their code
-where they'll need to handle the new type.
+이러한 비철저(non-exhaustive)한 스위치 컴파일 오류는 사용자에게 *유용합니다*. 
+사용자가 코드에서 새 타입을 처리해야 하는 위치에 주의를 기울이기 때문입니다.
 
-But it does mean that whenever you add a new subtype, it's a breaking change.
-If you want the freedom to add new subtypes in a non-breaking way,
-then it's better to mark the supertype using `final` instead of `sealed`.
-That means that when a user switches on a value of that supertype,
-even if they have cases for all of the subtypes,
-the compiler will force them to add another default case.
-That default case will then be what is executed if you add more subtypes later.
+하지만 새 하위 타입을 추가할 때마다, 중요한 변경사항(breaking change)이라는 것을 의미합니다. 
+중단되지 않는(non-breaking) 방식으로 새 하위 타입을 추가할 수 있는 자유를 원한다면, 
+`sealed` 대신 `final`을 사용하여 슈퍼타입을 표시하는 것이 좋습니다. 
+즉, 사용자가 해당 슈퍼타입의 값을 switches on 하면, 
+모든 하위 타입에 대한 케이스가 있더라도, 
+컴파일러가 다른 디폴트 케이스를 추가하도록 강제합니다. 
+그러면 나중에 하위 타입을 더 추가하면, 해당 기본 케이스가 실행됩니다.
 
-## Summary
+## 요약 {:#summary}
 
-As an API designer,
-these new modifiers give you control over how users work with your code,
-and conversely how you are able to evolve your code without breaking theirs.
+API 설계자로서, 이러한 새로운 수정자는 사용자가 코드를 사용하는 방식을 제어할 수 있게 해주고, 
+반대로 사용자의 코드를 손상시키지 않고 코드를 어떻게 발전시킬 수 있는지 제어할 수 있게 해줍니다.
 
-But these options carry complexity with them:
-you now have more choices to make as an API designer.
-Also, since these features are new,
-we still don't know what the best practices will be.
-Every language's ecosystem is different and has different needs.
+하지만 이러한 옵션은 복잡성을 수반합니다. 이제 API 설계자로서 더 많은 선택권을 갖게 되었습니다. 
+또한 이러한 기능이 새롭기 때문에 모범 사례가 무엇인지 아직 알 수 없습니다. 
+모든 언어의 생태계는 다르고 요구 사항도 다릅니다.
 
-Fortunately, you don't need to figure it out all at once.
-We chose the defaults deliberately so that even if you do nothing,
-your classes mostly have the same affordances they had before 3.0.
-If you just want to keep your API the way it was,
-put `mixin` on the classes that already supported that, and you're done.
+다행히도, 한꺼번에 모든 것을 알아낼 필요는 없습니다. 
+아무것도 하지 않더라도 클래스가 대부분 3.0 이전과 동일한 기능을 갖도록, 의도적으로 기본값을 선택했습니다. 
+API를 원래대로 유지하고 싶다면, 이미 해당 기능을 지원하는 클래스에 `mixin`을 추가하면 됩니다.
 
-Over time, as you get a sense of where you want finer control,
-you can consider applying some of the other modifiers:
+시간이 지나면서, 더 세밀하게 제어하고 싶은 부분이 어디인지 알게 되면, 
+다른 수정자를 적용하는 것을 고려할 수 있습니다.
 
-*   Use `interface` to prevent users from reusing your class's code
-    while allowing them to re-implement its interface.
+* `interface`를 사용하면, 사용자가 클래스의 코드를 재사용하지 못하게 하면서, 
+  인터페이스를 다시 구현할 수 있습니다.
 
-*   Use `base` to require users to reuse your class's code
-    and ensure every instance of your class's type is an instance
-    of that actual class or a subclass.
+* `base`를 사용하면, 
+  사용자가 클래스의 코드를 재사용하도록 요구하고, 
+  클래스 타입의 모든 인스턴스가 해당 실제 클래스 또는 하위 클래스의 인스턴스인지 확인할 수 있습니다.
 
-*   Use `final` to completely prevent a class from being extended.
+* `final`을 사용하면, 클래스가 확장되는 것을 완전히 방지할 수 있습니다.
 
-*   Use `sealed` to opt in to exhaustiveness checking on a family of subtypes.
+* `sealed`를 사용하면, 하위 타입 패밀리에 대한 완전성 검사(exhaustiveness checking)를 선택할 수 있습니다.
 
-When you do, increment the major version when publishing your package,
-since these modifiers all imply restrictions that are breaking changes.
+그럴 경우, 패키지를 게시할 때 major 버전을 증가시킵니다. 
+이러한 수정자는 모두 중요한 변경사항인 제한을 의미하기 때문입니다.

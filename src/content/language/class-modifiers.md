@@ -1,29 +1,32 @@
 ---
-title: Class modifiers
+# title: Class modifiers
+title: 클래스 수정자
+# description: >-
+#   Modifier keywords for class declarations to control external library access.
 description: >-
-  Modifier keywords for class declarations to control external library access.
+  외부 라이브러리 액세스를 제어하기 위한, 클래스 선언에 대한 수정자 키워드입니다.
 prevpage:
   url: /language/callable-objects
-  title: Callable objects
+  # title: Callable objects
+  title: 호출 가능한 객체
 nextpage:
   url: /language/class-modifiers-for-apis
-  title: Class modifiers for API maintainers
+  # title: Class modifiers for API maintainers
+  title: API 유지 관리자를 위한 클래스 수정자
 ---
 
 <?code-excerpt replace="/ *\/\/\s+ignore_for_file:[^\n]+\n//g; /(^|\n) *\/\/\s+ignore: (stable|beta|dev)[^\n]+\n/$1/g; /(\n[^\n]+) *\/\/\s+ignore: (stable|beta|dev)[^\n]+\n/$1\n/g; /. • (lib|test)\/\w+\.dart:\d+:\d+//g"?>
 
 :::version-note
-Class modifiers, besides `abstract`, require
-a [language version][] of at least 3.0.
+`abstract` 외의 클래스 수정자는, 최소 3.0의 [언어 버전][language version]이 필요합니다.
 :::
 
-Class modifiers control how a class or mixin can be used, both
-[from within its own library](#abstract), and
-from outside the library where it's defined.
+클래스 수정자는 클래스 또는 믹스인이 [자체 라이브러리 내부에서](#abstract)와, 
+정의된 라이브러리 외부에서 어떻게 사용될 수 있는지 제어합니다.
 
-Modifier keywords come before a class or mixin declaration.
-For example, writing `abstract class` defines an abstract class.
-The full set of modifiers that can appear before a class declaration include:
+수정자(Modifier) 키워드는 클래스 또는 믹스인 선언 앞에 옵니다. 
+예를 들어, `abstract class`를 쓰면 추상 클래스가 정의됩니다. 
+클래스 선언 앞에 나타날 수 있는 수정자의 전체 세트는 다음과 같습니다.
 
 - `abstract`
 - `base`
@@ -32,36 +35,35 @@ The full set of modifiers that can appear before a class declaration include:
 - `sealed`
 - [`mixin`][class, mixin, or mixin class]
 
-Only the `base` modifier can appear before a mixin declaration.
-The modifiers do not apply to other declarations like
-`enum`, `typedef`, `extension`, or `extension type`.
+`base` 수정자만 믹스인 선언 앞에 나타날 수 있습니다. 
+수정자는 `enum`, `typedef`, `extension` 또는 `extension type`과 같은 다른 선언에는 적용되지 않습니다.
 
-When deciding whether to use class modifiers, consider the intended uses of
-the class, and what behaviors the class needs to be able to rely on.
+클래스 수정자를 사용할지 여부를 결정할 때, 
+클래스의 의도된 용도와 클래스가 의존할 수 있어야 하는 동작을 고려하세요.
 
 :::note
-If you maintain a library, read the
-[Class modifiers for API maintainers](/language/class-modifiers-for-apis)
-page for guidance on how to navigate these changes for your libraries. 
+라이브러리를 유지 관리하는 경우, 
+[API 유지 관리자를 위한 클래스 수정자](/language/class-modifiers-for-apis) 페이지를 읽어, 
+라이브러리에 대한 이러한 변경 사항을 탐색하는 방법에 대한 지침을 확인하세요.
 :::
 
-## No modifier
+## 수정자 없음 {:#no-modifier}
 
-To allow unrestricted permission to construct or subtype from any library,
-use a `class` or `mixin` declaration without a modifier. By default, you can:
+라이브러리에서 생성하거나 하위 타입에 무제한 권한을 허용하려면, 
+수정자 없이 `class` 또는 `mixin` 선언을 사용합니다. 
+기본적으로 다음을 수행할 수 있습니다.
 
-- [Construct][] new instances of a class.
-- [Extend][] a class to create a new subtype.
-- [Implement][] a class or mixin's interface.
-- [Mix in][mixin] a mixin or mixin class.
+- 클래스의 새 인스턴스를 [생성][Construct]합니다.
+- 클래스를 [확장][Extend]하여 새 하위 타입을 만듭니다.
+- 클래스 또는 믹스인의 인터페이스를 [구현][Implement]합니다.
+- 믹스인 또는 믹스인 클래스를 [믹스인][mixin]합니다.
 
-## `abstract`
+## `abstract` {:#abstract}
 
-To define a class that doesn't require a full, concrete implementation of
-its entire interface, use the `abstract` modifier.
+전체 인터페이스의, 완전하고 구체적인 구현이 필요하지 않은 클래스를 정의하려면, `abstract` 수정자를 사용합니다.
 
-Abstract classes cannot be constructed from any library, whether its own or
-an outside library. Abstract classes often have [abstract methods][].
+추상 클래스는 자체 라이브러리나 외부 라이브러리에서 생성할 수 없습니다. 
+추상 클래스는 종종 [추상 메서드][abstract methods]를 갖습니다.
 
 <?code-excerpt "language/lib/class_modifiers/ex1/a.dart"?>
 ```dart title="a.dart"
@@ -74,10 +76,10 @@ abstract class Vehicle {
 ```dart title="b.dart"
 import 'a.dart';
 
-// Error: Can't be constructed.
+// 오류: 생성할 수 없습니다.
 Vehicle myVehicle = Vehicle();
 
-// Can be extended.
+// 확장 가능합니다.
 class Car extends Vehicle {
   int passengers = 4;
 
@@ -87,7 +89,7 @@ class Car extends Vehicle {
   }
 }
 
-// Can be implemented.
+// 구현 가능합니다.
 class MockVehicle implements Vehicle {
   @override
   void moveForward(int meters) {
@@ -96,27 +98,21 @@ class MockVehicle implements Vehicle {
 }
 ```
 
-If you want your abstract class to appear to be instantiable,
-define a [factory constructor][].
+추상 클래스가 인스턴스화 가능한 것처럼 보이게 하려면, [팩토리 생성자][factory constructor]를 정의하세요.
 
-## `base`
+## `base` {:#base}
 
-To enforce inheritance of a class or mixin's implementation,
-use the `base` modifier.
-A base class disallows implementation outside of its own library.
-This guarantees:
+클래스 또는 믹스인 구현의 상속을 강제하려면, `base` 수정자를 사용합니다. 
+베이스 클래스는 자체 라이브러리 외부에서 구현하는 것을 허용하지 않습니다. 
+이렇게 하면 다음을 보장합니다.
 
-- The base class constructor is called whenever
-  an instance of a subtype of the class is created.
-- All implemented private members exist in subtypes.
-- A new implemented member in a `base` class does not break subtypes,
-  since all subtypes inherit the new member.
-  - This is true unless the subtype already declares a member with
-    the same name and an incompatible signature.
+- 베이스 클래스 생성자는 클래스 하위 타입의 인스턴스가 생성될 때마다 호출됩니다.
+- 구현된 모든 private 멤버는 하위 타입에 존재합니다.
+- `base` 클래스에서 새로 구현된 멤버는, 모든 하위 타입이 새 멤버를 상속하기 때문에, 하위 타입을 깨지 않습니다.
+  - 하위 타입이 이미 같은 이름과 호환되지 않는 서명을 가진 멤버를 선언하지 않는 한, 이는 사실입니다.
 
-You must mark any class which implements or extends a base class as
-`base`, `final`, or `sealed`. This prevents outside libraries from
-breaking the base class guarantees.
+베이스 클래스를 구현하거나 확장하는 모든 클래스는 `base`, `final` 또는 `sealed`로 표시해야 합니다. 
+이렇게 하면 외부 라이브러리가 베이스 클래스 보장을 깨는 것을 방지할 수 있습니다.
 
 <?code-excerpt "language/lib/class_modifiers/ex2/a.dart"?>
 ```dart title="a.dart"
@@ -131,16 +127,16 @@ base class Vehicle {
 ```dart title="b.dart"
 import 'a.dart';
 
-// Can be constructed.
+// 생성할 수 있습니다.
 Vehicle myVehicle = Vehicle();
 
-// Can be extended.
+// 확장 가능합니다.
 base class Car extends Vehicle {
   int passengers = 4;
   // ...
 }
 
-// ERROR: Can't be implemented.
+// 오류: 구현할 수 없습니다.
 base class MockVehicle implements Vehicle {
   @override
   void moveForward() {
@@ -149,19 +145,17 @@ base class MockVehicle implements Vehicle {
 }
 ```
 
-## `interface`
+## `interface` {:#interface}
 
-To define an interface, use the `interface` modifier.
-Libraries outside of the interface's own defining library can
-implement the interface, but not extend it.
-This guarantees:
+인터페이스를 정의하려면, `interface` 수정자를 사용합니다. 
+인터페이스 자체 정의 라이브러리 외부의 라이브러리는 인터페이스를 구현할 수 있지만, 확장할 수는 없습니다.
+ 이렇게 하면 다음을 보장합니다.
 
-- When one of the class's instance methods calls
-  another instance method on `this`, it will always
-  invoke a known implementation of the method from the same library.
-- Other libraries can't override methods that the interface
-  class's own methods might later call in unexpected ways.
-  This reduces the [fragile base class problem][].
+- 클래스의 인스턴스 메서드 중 하나가 `this`에서 다른 인스턴스 메서드를 호출하면, 
+  항상 동일한 라이브러리에서 메서드의 알려진 구현을 호출합니다.
+- 다른 라이브러리는 인터페이스 클래스 자체 메서드가 
+  나중에 예상치 못한 방식으로 호출할 수 있는 메서드를 재정의할 수 없습니다. 
+  이렇게 하면 [취약한 베이스 클래스 문제][fragile base class problem]가 줄어듭니다.
 
 <?code-excerpt "language/lib/class_modifiers/ex3/a.dart"?>
 ```dart title="a.dart"
@@ -176,16 +170,16 @@ interface class Vehicle {
 ```dart title="b.dart"
 import 'a.dart';
 
-// Can be constructed.
+// 생성할 수 있습니다.
 Vehicle myVehicle = Vehicle();
 
-// ERROR: Can't be inherited.
+// 오류: 상속받을 수 없습니다.
 class Car extends Vehicle {
   int passengers = 4;
   // ...
 }
 
-// Can be implemented.
+// 구현 가능합니다.
 class MockVehicle implements Vehicle {
   @override
   void moveForward(int meters) {
@@ -194,30 +188,27 @@ class MockVehicle implements Vehicle {
 }
 ```
 
-### `abstract interface`
+### `abstract interface` {:#abstract-interface}
 
-The most common use for the `interface` modifier is to define a pure interface. 
-[Combine](#combining-modifiers) the `interface` and [`abstract`](#abstract)
-modifiers for an `abstract interface class`.
+`interface` 수정자의 가장 일반적인 용도는 순수 인터페이스를 정의하는 것입니다. 
+`abstract interface class`은 `interface`와 [`abstract`](#abstract) 수정자를 [결합](#combining-modifiers)하는 것입니다.
 
-Like an `interface` class, other libraries can
-implement, but can't inherit, a pure interface.
-Like an `abstract` class, a pure interface can have abstract members.
+`interface` 클래스와 마찬가지로, 다른 라이브러리는 순수 인터페이스를 구현할 수 있지만, 상속할 수는 없습니다. 
+`abstract` 클래스와 마찬가지로, 순수 인터페이스는 추상 멤버를 가질 수 있습니다.
 
-## `final` 
+## `final` {:#final}
 
-To close the type hierarchy, use the `final` modifier.
-This prevents subtyping from a class outside of the current library. 
-Disallowing both inheritance and implementation prevents subtyping entirely.
-This guarantees:
+타입 계층을 닫으려면, `final` 수정자를 사용합니다. 
+이렇게 하면 현재 라이브러리 외부의 클래스에서 하위 타입 지정이 방지됩니다. 
+상속과 구현을 모두 허용하지 않으면, 하위 타입 지정이 완전히 방지됩니다. 
+이렇게 하면 다음을 보장합니다.
 
-- You can safely add incremental changes to the API.
-- You can call instance methods knowing that they haven't been overwritten in
-  a third-party subclass.
+- API에 증분 변경 사항(incremental changes)을 안전하게 추가할 수 있습니다.
+- 타사 하위 클래스에서 덮어쓰이지 않았다는 것을 알고, 인스턴스 메서드를 호출할 수 있습니다.
 
-Final classes can be extended or implemented within the same library.
-The `final` modifier encompasses the effects of `base`, and
-therefore any subclasses must also be marked `base`, `final`, or `sealed`.
+Final 클래스는 동일한 라이브러리 내에서 확장되거나 구현될 수 있습니다. 
+`final` 수정자는 `base`의 효과를 포함하므로, 
+모든 하위 클래스도 `base`, `final` 또는 `sealed`로 표시되어야 합니다.
 
 <?code-excerpt "language/lib/class_modifiers/ex4/a.dart"?>
 ```dart title="a.dart"
@@ -232,17 +223,17 @@ final class Vehicle {
 ```dart title="b.dart"
 import 'a.dart';
 
-// Can be constructed.
+// 생성할 수 있습니다.
 Vehicle myVehicle = Vehicle();
 
-// ERROR: Can't be inherited.
+// 오류: 상속받을 수 없습니다.
 class Car extends Vehicle {
   int passengers = 4;
   // ...
 }
 
 class MockVehicle implements Vehicle {
-  // ERROR: Can't be implemented.
+  // 오류: 구현할 수 없습니다.
   @override
   void moveForward(int meters) {
     // ...
@@ -250,26 +241,23 @@ class MockVehicle implements Vehicle {
 }
 ```
 
-## `sealed`
+## `sealed` {:#sealed}
 
-To create a known, enumerable set of subtypes, use the `sealed` modifier.
-This allows you to create a switch over those subtypes that
-is statically ensured to be [_exhaustive_][exhaustive].
+알려진 열거형 하위 타입 세트를 만들려면, `sealed` 수정자를 사용합니다. 
+이렇게 하면, 정적으로 [_완전함(exhaustive)_][exhaustive]이 보장되는, 
+하위 타입에 대한 스위치를 만들 수 있습니다.
 
-The `sealed` modifier prevents a class from being extended or
-implemented outside its own library. Sealed classes are implicitly
-[abstract](#abstract).
+`sealed` 수정자는 클래스가 자체 라이브러리 외부에서 확장되거나 구현되는 것을 방지합니다. 
+Sealed 클래스는 암묵적으로 [추상](#abstract)입니다.
 
-- They cannot be constructed themselves.
-- They can have [factory constructors](/language/constructors#factory-constructors).
-- They can define constructors for their subclasses to use.
+- 스스로 생성할 수 없습니다.
+- [팩토리 생성자](/language/constructors#factory-constructors)를 가질 수 있습니다.
+- 하위 클래스에서 사용할 생성자를 정의할 수 있습니다.
 
-Subclasses of sealed classes are, however, not implicitly abstract.
+그러나, Sealed 클래스의 하위 클래스는, 암묵적으로 추상적이지 않습니다.
 
-The compiler is aware of any possible direct subtypes
-because they can only exist in the same library. 
-This allows the compiler to alert you when a switch does not
-exhaustively handle all possible subtypes in its cases:
+컴파일러는, 동일한 라이브러리에만 존재할 수 있기 때문에, 가능한 모든 직접 하위 타입을 인식합니다. 
+이를 통해, 컴파일러는 스위치가 해당 케이스에서 가능한 모든 하위 타입을 철저히 처리하지 못할 때 경고할 수 있습니다.
 
 <?code-excerpt "language/lib/class_modifiers/ex5/sealed.dart"?>
 ```dart
@@ -281,14 +269,14 @@ class Truck implements Vehicle {}
 
 class Bicycle extends Vehicle {}
 
-// ERROR: Can't be instantiated.
+// 오류: 인스턴스화할 수 없습니다.
 Vehicle myVehicle = Vehicle();
 
-// Subclasses can be instantiated.
+// 하위 클래스를 인스턴스화할 수 있습니다.
 Vehicle myCar = Car();
 
 String getVehicleSound(Vehicle vehicle) {
-  // ERROR: The switch is missing the Bicycle subtype or a default case.
+  // 오류: 스위치에 Bicycle 하위 타입이나 디폴트 케이스가 없습니다.
   return switch (vehicle) {
     Car() => 'vroom',
     Truck() => 'VROOOOMM',
@@ -296,33 +284,33 @@ String getVehicleSound(Vehicle vehicle) {
 }
 ```
 
-If you don't want [exhaustive switching][exhaustive], 
-or want to be able to add subtypes later without breaking the API, 
-use the [`final`](#final) modifier. For a more in depth comparison,
-read [`sealed` versus `final`](/language/class-modifiers-for-apis#sealed-versus-final).
+[철저한(exhaustive) 스위치][exhaustive]를 원하지 않거나, 
+나중에 API를 손상시키지 않고 하위 타입을 추가할 수 있게 하려는 경우, 
+[`final`](#final) 수정자를 사용하세요. 
+더 자세한 비교는 [`sealed` vs `final`](/language/class-modifiers-for-apis#sealed-versus-final)을 읽어보세요.
 
-## Combining modifiers
+## 수정자 결합 {:#combining-modifiers}
 
-You can combine some modifiers for layered restrictions. 
-A class declaration can be, in order:
+레이어 제한에 대한 일부 수정자를 결합할 수 있습니다. 클래스 선언은 다음과 같습니다.
 
-1. (Optional) `abstract`, describing whether the class can
-   contain abstract members and prevents instantiation.
-2. (Optional) One of `base`, `interface`, `final` or `sealed`, describing
-   restrictions on other libraries subtyping the class.
-3. (Optional) `mixin`, describing whether the declaration can be mixed in.
-4. The `class` keyword itself.
+1. (선택 사항) `abstract`
+   * 클래스가 추상 멤버를 포함할 수 있는지 여부를 설명하고, 인스턴스화를 방지합니다.
+2. (선택 사항) `base`, `interface`, `final` 또는 `sealed` 중 하나
+   * 클래스를 하위 타입으로 지정하는 다른 라이브러리에 대한 제한 사항을 설명합니다.
+3. (선택 사항) `mixin`
+   * 선언을 혼합(mixed in)할 수 있는지 여부를 설명합니다.
+4. `class` 
+   * 키워드 자체.
 
-You can't combine some modifiers because they are
-contradictory, redundant, or otherwise mutually exclusive:
+일부 수정자는 모순되거나, 중복되거나, 상호 배타적이기 때문에 결합할 수 없습니다.
 
-* `abstract` with `sealed`. A [sealed](#sealed) class is
-  implicitly [abstract](#abstract).
-* `interface`, `final` or `sealed` with `mixin`. These access modifiers
-  prevent [mixing in][mixin].
+* `abstract`와 `sealed`. 
+  * [sealed](#sealed) 클래스는 암묵적으로 [abstract](#abstract)입니다.
+* `interface`, `final` 또는 `sealed`와 `mixin`. 
+  * 이러한 액세스 수정자는 [혼합(mixed in)][mixin]을 방지합니다.
 
-For further guidance on how class modifiers can be combined,
-check out the [Class modifiers reference][].
+클래스 수정자를 결합하는 방법에 대한 자세한 내용은, 
+[클래스 수정자 참조][Class modifiers reference]를 확인하세요.
 
 [Class modifiers reference]: /language/modifier-reference
 
