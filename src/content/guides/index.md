@@ -20,7 +20,7 @@ Dart 문서에 오신 것을 환영합니다!
 |       |      |
 |:-----:|:----|
 | Dart 버전 | 3.5.0 |
-| 최종 업데이트 | 2024-08-30 |
+| 최종 업데이트 | 2024-09-04 |
 | 웹사이트 주소 | [dart-docs-kr.web.app](https://dart-docs-kr.web.app/) |
 | GitHub 주소 | <https://github.com/tenkeyless/dart_docs/tree/develop> |
 
