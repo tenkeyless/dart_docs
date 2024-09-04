@@ -47,10 +47,14 @@ main 브랜치에 한해서 번역되며, Dart_[버전]-[날짜] 와 같은 태�
 
 ## 배포
 
-```console
-$ firebase use dart-docs-kr
-$ firebase deploy --only hosting
-```
+1. src/content/index.md 번역 개요 변경
+2. Git에 태그 붙이기 (예: `Dart_3.5.0-240831`)
+3. Firebase 배포
+
+   ```console
+   $ firebase use dart-docs-kr
+   $ firebase deploy --only hosting
+   ```
 
 ## Docker를 활용한 빌드
 

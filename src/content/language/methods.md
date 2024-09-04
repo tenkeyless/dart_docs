@@ -1,23 +1,25 @@
 ---
-title: Methods
-description: Learn about methods in Dart.
+# title: Methods
+title: 메서드
+description: Dart의 메서드에 대해 알아보세요.
 prevpage:
   url: /language/constructors
-  title: Constructors
+  # title: Constructors
+  title: 생성자
 nextpage:
   url: /language/extend
-  title: Extend a class
+  # title: Extend a class
+  title: 클래스 확장
 ---
 
 <?code-excerpt replace="/ *\/\/\s+ignore_for_file:[^\n]+\n//g; /(^|\n) *\/\/\s+ignore:[^\n]+\n/$1/g; /(\n[^\n]+) *\/\/\s+ignore:[^\n]+\n/$1\n/g"?>
 
-Methods are functions that provide behavior for an object.
+메서드는 객체에 대한 동작을 제공하는 함수입니다.
 
-## Instance methods
+## 인스턴스 메서드 {:#instance-methods}
 
-Instance methods on objects can access instance variables and `this`.
-The `distanceTo()` method in the following sample is an example of an
-instance method:
+객체의 인스턴스 메서드는 인스턴스 변수와 `this`에 액세스할 수 있습니다. 
+다음 샘플의 `distanceTo()` 메서드는 인스턴스 메서드의 예입니다.
 
 <?code-excerpt "misc/lib/language_tour/classes/point.dart (class-with-distance-to)" plaster="none"?>
 ```dart
@@ -27,8 +29,7 @@ class Point {
   final double x;
   final double y;
 
-  // Sets the x and y instance variables
-  // before the constructor body runs.
+  // 생성자 본문이 실행되기 전에 x 및 y 인스턴스 변수를 설정합니다.
   Point(this.x, this.y);
 
   double distanceTo(Point other) {
@@ -39,10 +40,10 @@ class Point {
 }
 ```
 
-## Operators
+## 연산자 {:#operators}
 
-Most operators are instance methods with special names.
-Dart allows you to define operators with the following names:
+대부분 연산자는 특별한 이름을 가진 인스턴스 메서드입니다.
+Dart에서는 다음 이름으로 연산자를 정의할 수 있습니다.
 
 |       |      |      |      |       |      |
 |-------|------|------|------|-------|------|
@@ -54,9 +55,9 @@ Dart allows you to define operators with the following names:
 {:.table}
 
 :::note
-You may have noticed that some [operators][], like `!=`, aren't in
-the list of names. These operators aren't instance methods.
-Their behavior is built in to Dart.
+일부 [연산자][operators](예: `!=`)가 이름 리스트에 없는 것을 알아차렸을 것입니다. 
+이러한 연산자는 인스턴스 메서드가 아닙니다. 
+해당 동작은 Dart에 내장되어 있습니다.
 :::
 
 {%- comment %}
@@ -65,10 +66,8 @@ Their behavior is built in to Dart.
   - `!` is probably excluded for historical reasons
 {% endcomment %}
 
-To declare an operator, use the built-in identifier
-`operator` then the operator you are defining.
-The following example defines vector addition (`+`), subtraction (`-`),
-and equality (`==`):
+연산자를 선언하려면, 빌트인 식별자 `operator`를 사용한 다음, 정의하려는 연산자를 사용합니다. 
+다음 예에서는 벡터 덧셈(`+`), 뺄셈(`-`), 동등(`==`)을 정의합니다.
 
 <?code-excerpt "misc/lib/language_tour/classes/vector.dart"?>
 ```dart
@@ -97,14 +96,11 @@ void main() {
 }
 ```
 
+## Getters 및 setters {:#getters-and-setters}
 
-## Getters and setters
-
-Getters and setters are special methods that provide read and write
-access to an object's properties. Recall that each instance variable has
-an implicit getter, plus a setter if appropriate. You can create
-additional properties by implementing getters and setters, using the
-`get` and `set` keywords:
+getters와 setters는 객체의 속성에 대한 읽기 및 쓰기 액세스를 제공하는 특수 메서드입니다. 
+각 인스턴스 변수에는 암묵적 getter와 적절한 경우, setter가 있다는 점을 기억하세요. 
+`get` 및 `set` 키워드를 사용하여, getters와 setters를 구현하여 추가 속성을 만들 수 있습니다.
 
 <?code-excerpt "misc/lib/language_tour/classes/rectangle.dart"?>
 ```dart
@@ -113,7 +109,7 @@ class Rectangle {
 
   Rectangle(this.left, this.top, this.width, this.height);
 
-  // Define two calculated properties: right and bottom.
+  // 두 개의 계산된 속성(right 및 bottom)을 정의합니다.
   double get right => left + width;
   set right(double value) => left = value - width;
   double get bottom => top + height;
@@ -128,35 +124,34 @@ void main() {
 }
 ```
 
-With getters and setters, you can start with instance variables, later
-wrapping them with methods, all without changing client code.
+getters와 setters를 사용하면, 
+인스턴스 변수로 시작한 다음 나중에 메서드로 래핑할 수 있으며, 
+클라이언트 코드를 변경하지 않아도 됩니다.
 
 :::note
-Operators such as increment (++) work in the expected way, whether or
-not a getter is explicitly defined. To avoid any unexpected side
-effects, the operator calls the getter exactly once, saving its value
-in a temporary variable.
+증가(++)와 같은 연산자는 getter가 명시적으로 정의되어 있든 아니든 예상대로 작동합니다. 
+예상치 못한 부수 효과를 피하기 위해, 연산자는 getter를 정확히 한 번 호출하여, 임시 변수에 값을 저장합니다.
 :::
 
-## Abstract methods
+## 추상 메서드 {:#abstract-methods}
 
-Instance, getter, and setter methods can be abstract, defining an
-interface but leaving its implementation up to other classes.
-Abstract methods can only exist in [abstract classes][] or [mixins][].
+인스턴스, getter, setter 메서드는 추상화할 수 있으며, 
+인터페이스를 정의하지만, 구현은 다른 클래스에 맡길 수 있습니다. 
+추상 메서드는 [추상 클래스][abstract classes] 또는 [믹스인][mixins]에만 존재할 수 있습니다.
 
-To make a method abstract, use a semicolon (`;`) instead of a method body:
+메서드를 추상화하려면, 메서드 본문 대신 세미콜론(`;`)을 사용합니다.
 
 <?code-excerpt "misc/lib/language_tour/classes/doer.dart"?>
 ```dart
 abstract class Doer {
-  // Define instance variables and methods...
+  // 인스턴스 변수와 메서드를 정의합니다...
 
-  void doSomething(); // Define an abstract method.
+  void doSomething(); // 추상 메서드를 정의합니다.
 }
 
 class EffectiveDoer extends Doer {
   void doSomething() {
-    // Provide an implementation, so the method is not abstract here...
+    // 구현을 제공해서, 여기서는 메서드가 추상적이지 않도록 하세요...
   }
 }
 ```

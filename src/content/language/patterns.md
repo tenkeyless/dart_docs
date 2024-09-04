@@ -1,100 +1,102 @@
 ---
-title: Patterns
-description: Summary of patterns in Dart.
+# title: Patterns
+title: 패턴
+# description: Summary of patterns in Dart.
+description: Dart의 패턴 요약.
 prevpage:
   url: /language/type-system
-  title: Type system
+  # title: Type system
+  title: 타입 시스템
 nextpage:
   url: /language/pattern-types
-  title: Pattern types
+  # title: Pattern types
+  title: 패턴 타입
 ---
 
 :::version-note
-Patterns require a [language version][] of at least 3.0.
+패턴에는 최소 3.0의 [언어 버전][language version]이 필요합니다.
 :::
 
-Patterns are a syntactic category in the Dart language, like statements and expressions.
-A pattern represents the shape of a set of values that it may match against actual
-values.
+패턴은 (구문과 표현식과 같은) Dart 언어의 구문적 카테고리입니다. 
+패턴은 실제 값과 일치할 수 있는 값 세트의 모양을 나타냅니다.
 
-This page describes:
-- What patterns do.
-- Where patterns are allowed in Dart code.
-- What the common use cases for patterns are.
+이 페이지에서는 다음을 설명합니다.
 
-To learn about the different kinds of patterns, visit the [pattern types][types]
-page.
+- 패턴의 기능.
+- Dart 코드에서 패턴이 허용되는 곳.
+- 패턴의 일반적인 사용 사례.
 
-## What patterns do
+다양한 종류의 패턴에 대해 알아보려면 [패턴 타입][types] 페이지를 방문하세요.
 
-In general, a pattern may **match** a value, **destructure** a value, or both,
-depending on the context and shape of the pattern.
+## 패턴의 기능 {:#what-patterns-do}
 
-First, _pattern matching_ allows you to check whether a given value:
-- Has a certain shape.
-- Is a certain constant.
-- Is equal to something else.
-- Has a certain type.
+일반적으로, 패턴은 패턴의 컨텍스트과 모양에 따라, 
+값과 **일치(match)**하거나, 값과 **구조 분해(destructure)**하거나, 둘 다 할 수 있습니다.
 
-Then, _pattern destructuring_ provides you with a convenient declarative syntax to
-break that value into its constituent parts. The same pattern can also let you 
-bind variables to some or all of those parts in the process.
+먼저, _패턴 매칭(pattern matching)_ 을 사용하면, 주어진 값이 다음과 같은지 확인할 수 있습니다.
 
-### Matching
+- 특정 모양을 가지고 있는지.
+- 특정 상수(constant)인지.
+- 다른 것과 같은지.
+- 특정 타입을 가지고 있는지.
 
-A pattern always tests against a value to determine if the value has the form
-you expect. In other words, you are checking if the value _matches_ the pattern. 
+그런 다음, _패턴 구조 분해(pattern destructuring)_ 는 해당 값을 구성 요소로 분해하는, 
+편리한 선언적 구문을 제공합니다. 
+동일한 패턴을 사용하면, 프로세스에서 해당 부분 중 일부 또는 전체에 변수를 바인딩할 수도 있습니다.
 
-What constitutes a match depends on [what kind of pattern][types] you are using.
-For example, a constant pattern matches if the value is equal to the pattern's 
-constant:
+### 매칭 {:#matching}
+
+패턴은 항상 값에 대해 테스트하여, 값이 예상하는 형태인지 확인합니다. 
+즉, 값이 패턴과 _일치_ 하는지 확인하는 것입니다.
+
+일치를 구성하는 것은 당신이 사용하는 [어떤 종류의 패턴][types]에 따라 달라집니다. 
+예를 들어, 상수 패턴은 값이 패턴의 상수와 같으면 일치합니다.
 
 <?code-excerpt "language/lib/patterns/switch.dart (constant-pattern)"?>
 ```dart
 switch (number) {
-  // Constant pattern matches if 1 == number.
+  // 1 == number인 경우, 상수 패턴이 일치합니다.
   case 1:
     print('one');
 }
 ```
 
-Many patterns make use of subpatterns, sometimes called _outer_ and _inner_
-patterns, respectively. Patterns match recursively on their subpatterns.
-For example, the individual fields of any [collection-type][] pattern could be 
-[variable patterns][variable] or [constant patterns][constant]:
+많은 패턴은 때때로 각각 _outer_ 및 _inner_ 패턴이라고도 하는 하위 패턴을 사용합니다. 
+패턴은 하위 패턴에서 재귀적으로 일치합니다. 
+예를 들어, 모든 [collection-type][] 패턴의 개별 필드는, 
+[변수 패턴][variable] 또는 [상수 패턴][constant]이 될 수 있습니다.
 
 <?code-excerpt "language/lib/patterns/switch.dart (list-pattern)"?>
 ```dart
 const a = 'a';
 const b = 'b';
 switch (obj) {
-  // List pattern [a, b] matches obj first if obj is a list with two fields,
-  // then if its fields match the constant subpatterns 'a' and 'b'.
+  // 리스트 패턴 [a, b]는 obj가 두 개의 필드를 갖는 리스트인 경우 먼저 obj와 일치하고, 
+  // 해당 필드가 상수 하위 패턴 'a' 및 'b'와 일치하는 경우입니다.
   case [a, b]:
     print('$a, $b');
 }
 ```
 
-To ignore parts of a matched value, you can use a [wildcard pattern][]
-as a placeholder. In the case of list patterns, you can use a [rest element][].
+일치하는 값의 일부를 무시하려면, [와일드카드 패턴][wildcard pattern]을 플레이스홀더로 사용할 수 있습니다. 
+리스트 패턴의 경우, [나머지 요소][rest element]를 사용할 수 있습니다.
 
-### Destructuring
+### 구조 분해 {:#destructuring}
 
-When an object and pattern match, the pattern can then access the object's data 
-and extract it in parts. In other words, the pattern _destructures_ the object:
+객체와 패턴이 일치하면, 패턴은 객체의 데이터에 액세스하여, 부분적으로 추출할 수 있습니다. 
+즉, 패턴은 객체를 _구조 분해(destructures)_ 합니다.
 
 <?code-excerpt "language/lib/patterns/destructuring.dart (list-pattern)"?>
 ```dart
 var numList = [1, 2, 3];
-// List pattern [a, b, c] destructures the three elements from numList...
+// 리스트 패턴 [a, b, c]는 numList...의 세 요소를 구조 분해합니다.
 var [a, b, c] = numList;
-// ...and assigns them to new variables.
+// ...그리고 이를 새로운 변수에 할당합니다.
 print(a + b + c);
 ```
 
-You can nest [any kind of pattern][types] inside a destructuring pattern. 
-For example, this case pattern matches and destructures a two-element
-list whose first element is `'a'` or `'b'`:
+구조 분해 패턴 안에 [모든 종류의 패턴][types]을 중첩할 수 있습니다. 
+예를 들어, 이 케이스 패턴은 첫 번째 요소가 `'a'` 또는 `'b'`인 두 요소 리스트를 매치하고 구조 분해합니다.
 
 <?code-excerpt "language/lib/patterns/destructuring.dart (nested-pattern)"?>
 ```dart
@@ -104,79 +106,75 @@ switch (list) {
 }
 ```
 
-## Places patterns can appear
+## 패턴이 나타날 수 있는 곳 {:#places-patterns-can-appear}
 
-You can use patterns in several places in the Dart language:
+Dart 언어의 여러 곳에서 패턴을 사용할 수 있습니다.
 
 <a id="pattern-uses"></a>
 
-- Local variable [declarations](#variable-declaration) and [assignments](#variable-assignment)
-- [for and for-in loops][for]
-- [if-case][if] and [switch-case][switch]
-- Control flow in [collection literals][]
+- 지역 변수 [선언](#variable-declaration) 및 [할당](#variable-assignment)
+- [for 및 for-in 루프][for]
+- [if-case][if] 및 [switch-case][switch]
+- [컬렉션 리터럴][collection literals]의 흐름 제어
 
-This section describes common use cases for matching and destructuring with patterns.
+이 섹션에서는, 패턴을 사용한 매칭 및 구조 분해의 일반적인 사용 사례를 설명합니다.
 
-### Variable declaration
+### 변수 선언 {:#variable-declaration}
 
-You can use a _pattern variable declaration_ anywhere Dart allows local variable
-declaration. 
-The pattern matches against the value on the right of the declaration.
-Once matched, it destructures the value and binds it to new local variables:
+Dart가 로컬 변수 선언을 허용하는 모든 곳에서 _패턴 변수 선언_ 을 사용할 수 있습니다. 
+패턴은 선언 오른쪽의 값과 일치합니다. 
+일치하면, 값을 구조 분해하고 새 로컬 변수에 바인딩합니다.
 
 <?code-excerpt "language/lib/patterns/destructuring.dart (variable-declaration)"?>
 ```dart
-// Declares new variables a, b, and c.
+// 새로운 변수 a, b, c를 선언합니다.
 var (a, [b, c]) = ('str', [1, 2]);
 ```
 
-A pattern variable declaration must start with either `var` or `final`, followed
-by a pattern. 
+패턴 변수 선언은 `var` 또는 `final`로 시작해야 하며, 그 뒤에 패턴이 와야 합니다.
 
-### Variable assignment 
+### 변수 할당 {:#variable-assignment}
 
-A _variable assignment pattern_ falls on the left side of an assignment.
-First, it destructures the matched object. Then it assigns the values to
-_existing_ variables, instead of binding new ones. 
+_변수 할당 패턴_ 은 할당의 왼쪽에 있습니다. 
+먼저, 일치하는 객체를 구조 분해합니다. 
+그런 다음, 새 변수를 바인딩하는 대신, _기존_ 변수에 값을 할당합니다.
 
-Use a variable assignment pattern to swap the values of two variables without
-declaring a third temporary one:
+변수 할당 패턴을 사용하여, 세 번째 임시 변수를 선언하지 않고, 두 변수의 값을 바꿉니다. 
 
 <?code-excerpt "language/lib/patterns/destructuring.dart (variable-assignment)"?>
 ```dart
 var (a, b) = ('left', 'right');
-(b, a) = (a, b); // Swap.
-print('$a $b'); // Prints "right left".
+(b, a) = (a, b); // 바꾸기.
+print('$a $b'); // "right left"을 출력.
 ```
 
-### Switch statements and expressions
+### 스위치 문과 표현식 {:#switch-statements-and-expressions}
 
-Every case clause contains a pattern. This applies to [switch statements][switch]
-and [expressions][], as well as [if-case statements][if].
-You can use [any kind of pattern][types] in a case.
+모든 case 절에는 패턴이 포함됩니다. 
+이는 [switch 문][switch] 및 [표현식][expressions]과 [if-case 문][if]에 적용됩니다. 
+case에서 [모든 종류의 패턴][types]을 사용할 수 있습니다.
 
-_Case patterns_ are [refutable][].
-They allow control flow to either:
-- Match and destructure the object being switched on.
-- Continue execution if the object doesn't match.
+_Case 패턴_ 은 [반박 가능(refutable)][refutable]합니다. 
+이를 통해, 흐름 제어가 다음 중 하나를 수행할 수 있습니다.
 
-The values that a pattern destructures in a case become local variables.
-Their scope is only within the body of that case.
+- 스위치에 오는 객체를 일치시키고, 구조 분해합니다.
+- 객체가 일치하지 않으면, 실행을 계속합니다.
+
+패턴이 case에서 구조 분해하는 값은 로컬 변수가 됩니다. 
+해당 범위는 해당 case의 body 내에만 있습니다.
 
 <?code-excerpt "language/lib/patterns/switch.dart (switch-statement)"?>
 ```dart
 switch (obj) {
-  // Matches if 1 == obj.
+  // 1 == obj인 경우, 일치합니다.
   case 1:
     print('one');
 
-  // Matches if the value of obj is between the
-  // constant values of 'first' and 'last'.
+  // obj의 값이 'first'와 'last'의 상수 값 사이에 있는 경우, 일치합니다.
   case >= first && <= last:
     print('in range');
 
-  // Matches if obj is a record with two fields,
-  // then assigns the fields to 'a' and 'b'.
+  // obj가 두 개의 필드가 있는 레코드인 경우 일치하며, 해당 필드를 'a'와 'b'에 할당합니다.
   case (var a, var b):
     print('a = $a, b = $b');
 
@@ -186,8 +184,8 @@ switch (obj) {
 
 <a id="or-pattern-switch"></a>
 
-[Logical-or patterns][logical-or] are useful for having multiple cases share a
-body in switch expressions or statements:
+[Logical-or 패턴][logical-or]은 스위치 표현식이나 명령문에서, 
+여러 케이스가 본문을 공유하는 데 유용합니다.
 
 <?code-excerpt "language/lib/patterns/switch.dart (or-share-body)"?>
 ```dart
@@ -197,9 +195,8 @@ var isPrimary = switch (color) {
 };
 ```
 
-Switch statements can have multiple cases share a body
-[without using logical-or patterns][share], but they are
-still uniquely useful for allowing multiple cases to share a [guard][]:
+Switch 문은 [Logical-or 패턴 공유를 사용하지 않고도][share] 여러 케이스가 본문을 공유할 수 있지만, 
+여전히 여러 케이스가 [guard][]를 공유할 수 있도록 하는 데 고유하게 유용합니다.
 
 <?code-excerpt "language/lib/patterns/switch.dart (or-share-guard)"?>
 ```dart
@@ -209,31 +206,29 @@ switch (shape) {
 }
 ```
 
-[Guard clauses][guard] evaluate an arbitrary conditon as part of a case, without
-exiting the switch if the condition is false
-(like using an `if` statement in the case body would cause).
+[Guard 절][guard]는 조건이 거짓인 경우 switch를 종료하지 않고, 
+케이스의 일부로 임의의 조건을 평가합니다. (케이스 본문에서 `if` 문을 사용하는 것과 같음)
 
 <?code-excerpt "language/lib/control_flow/branches.dart (guard)"?>
 ```dart
 switch (pair) {
   case (int a, int b):
     if (a > b) print('First element greater');
-  // If false, prints nothing and exits the switch.
+  // false이면, 아무것도 출력하지 않고 스위치를 종료합니다.
   case (int a, int b) when a > b:
-    // If false, prints nothing but proceeds to next case.
+    // false이면, 아무것도 출력하지 않고 다음 케이스로 넘어갑니다.
     print('First element greater');
   case (int a, int b):
     print('First element not greater');
 }
 ```
 
-### For and for-in loops
+### For 및 for-in 루프 {:#for-and-for-in-loops}
 
-You can use patterns in [for and for-in loops][for] to iterate-over and destructure
-values in a collection.
+[for 및 for-in 루프][for]에서 패턴을 사용하여, 컬렉션의 값을 반복(iterate-over)하고 구조 분해할 수 있습니다.
 
-This example uses [object destructuring][object] in a for-in loop to destructure
-the [`MapEntry`][] objects that a `<Map>.entries` call returns:
+이 예제에서는 for-in 루프에서 [객체 구조 분해][object]를 사용하여, 
+`<Map>.entries` 호출이 반환하는 [`MapEntry`][] 객체를 구조 분해합니다.
 
 <?code-excerpt "language/lib/patterns/for_in.dart (for-in-pattern)"?>
 ```dart
@@ -247,15 +242,14 @@ for (var MapEntry(key: key, value: count) in hist.entries) {
 }
 ```
 
-The object pattern checks that `hist.entries` has the named type `MapEntry`,
-and then recurses into the named field subpatterns `key` and `value`.
-It calls the `key` getter and `value` getter on the `MapEntry` in each iteration,
-and binds the results to local variables `key` and `count`, respectively.
+객체 패턴은 `hist.entries`에 명명된 타입 `MapEntry`가 있는지 확인한 다음, 
+명명된 필드 하위 패턴 `key`와 `value`로 재귀합니다. 
+각 반복에서 `MapEntry`에서 `key` getter와 `value` getter를 호출하고, 
+결과를 각각 로컬 변수 `key`와 `count`에 바인딩합니다.
 
-Binding the result of a getter call to a variable of the same name is a common
-use case, so object patterns can also infer the getter name from the
-[variable subpattern][variable]. This allows you to simplify the variable pattern
-from something redundant like `key: key` to just `:key`:
+getter 호출의 결과를 같은 이름의 변수에 바인딩하는 것은 일반적인 사용 사례이므로, 
+객체 패턴은 [변수 하위 패턴][variable]에서 getter 이름을 유추할 수도 있습니다. 
+이렇게 하면, `key: key`와 같은 중복된 것에서, `:key`로 변수 패턴을 단순화할 수 있습니다.
 
 <?code-excerpt "language/lib/patterns/for_in.dart (for-in-short)"?>
 ```dart
@@ -264,27 +258,22 @@ for (var MapEntry(:key, value: count) in hist.entries) {
 }
 ```
 
-## Use cases for patterns
+## 패턴의 사용 사례 {:#use-cases-for-patterns}
 
-The [previous section](#places-patterns-can-appear)
-describes _how_ patterns fit into other Dart code constructs. 
-You saw some interesting use cases as examples, like [swapping](#variable-assignment)
-the values of two variables, or
-[destructuring key-value pairs](#for-and-for-in-loops)
-in a map. This section describes even more use cases, answering:
+[이전 섹션](#places-patterns-can-appear)은 패턴이 다른 Dart 코드 구성에 _어떻게_ 들어맞는지 설명합니다. 
+두 변수의 값을 [바꾸기](#variable-assignment) 또는 맵에서 [키-값 쌍을 구조 분해](#for-and-for-in-loops)와 같이, 몇 가지 흥미로운 사용 사례를 예로 들었습니다. 
+이 섹션에서는 다음에 대한 답변을 제공하는 더 많은 사용 사례를 설명합니다.
 
-- _When and why_ you might want to use patterns.
-- What kinds of problems they solve.
-- Which idioms they best suit.
+- 패턴을 사용해야 하는 _시기 및 이유_.
+- 어떤 종류의 문제를 해결하는지.
+- 어떤 관용구에 가장 적합한지.
 
-### Destructuring multiple returns
+### 다중 반환 구조 분해 {:#destructuring-multiple-returns}
 
-Records allow aggregating and [returning multiple values][] from a single
-function call. Patterns add the ability to destructure a record's fields
-directly into local variables, inline with the function call.
+레코드는 단일 함수 호출에서 [여러 값을 집계하고 반환][returning multiple values]할 수 있습니다. 
+패턴은 함수 호출과 함께 인라인으로, 레코드의 필드를 로컬 변수로 직접 구조 분해할 수 있는 기능을 추가합니다.
 
-Instead of individually declaring new local variables for each record field,
-like this:
+다음과 같이, 각 레코드 필드에 대해 새 로컬 변수를 개별적으로 선언하는 대신:
 
 <?code-excerpt "language/lib/patterns/destructuring.dart (destructure-multiple-returns-1)"?>
 ```dart
@@ -293,32 +282,29 @@ var name = info.$1;
 var age = info.$2;
 ```
 
-You can destructure the fields of a record that a function returns into local
-variables using a [variable declaration](#variable-declaration) or
-[assigment pattern](#variable-assignment), and a [record pattern][record]
-as its subpattern:
+[변수 선언](#variable-declaration) 또는 [할당 패턴](#variable-assignment)과 [레코드 패턴][record]를 하위 패턴으로 사용하여, 
+함수가 반환하는 레코드의 필드를 로컬 변수로 구조 분해할 수 있습니다.
 
 <?code-excerpt "language/lib/patterns/destructuring.dart (destructure-multiple-returns-2)"?>
 ```dart
 var (name, age) = userInfo(json);
 ```
 
-To destructure a record with named fields using a pattern:
+패턴을 사용하여, 명명된 필드가 있는 레코드를 구조 분해하려면:
 
 <?code-excerpt "language/lib/patterns/destructuring.dart (destructure-multiple-returns-3)"?>
 ```dart
 final (:name, :age) =
-    getData(); // For example, return (name: 'doug', age: 25);
+    getData(); // 예를 들어, (name: 'doug', age: 25)를 반환합니다;
 ```
 
-### Destructuring class instances
+### 클래스 인스턴스 구조 분해 {:#destructuring-class-instances}
 
-[Object patterns][object] match against named object types, allowing
-you to destructure their data using the getters the object's class already exposes.
+[객체 패턴][object]는 명명된 객체 타입과 일치하여, 
+객체 클래스가 이미 노출한 getters를 사용하여 데이터를 구조 분해할 수 있습니다.
 
-To destructure an instance of a class, use the named type, 
-followed by the properties to 
-destructure enclosed in parentheses:
+클래스 인스턴스를 구조 분해하려면, 명명된 타입을 사용하고, 
+그 뒤에 괄호로 묶은 구조 분해할 속성을 사용합니다.
 
 <?code-excerpt "language/lib/patterns/destructuring.dart (destructure-class-instances)"?>
 ```dart
@@ -327,18 +313,17 @@ var Foo(:one, :two) = myFoo;
 print('one $one, two $two');
 ```
 
-### Algebraic data types 
+### 대수적 데이터 타입 {:#algebraic-data-types}
 
-Object destructuring and switch cases are conducive to writing
-code in an [algebraic data type][] style.
-Use this method when:
-- You have a family of related types.
-- You have an operation that needs specific behavior for each type.
-- You want to group that behavior in one place instead of spreading it across all
-the different type definitions. 
+객체 구조 분해와 스위치 케이스는 [대수적 데이터 타입][algebraic data type] 스타일로 코드를 작성하는 데, 
+도움이 됩니다.
+이 메서드를 사용하는 경우:
+- 관련된 타입의 패밀리가 있는 경우
+- 각 타입에 대해 특정 동작이 필요한 연산이 있는 경우
+- 모든 다른 타입 정의에 걸쳐, 동작을 분산하는 대신 한곳에서 동작을 그룹화하려는 경우
 
-Instead of implementing the operation as an instance method for every type,
-keep the operation's variations in a single function that switches over the subtypes:
+모든 타입에 대한 인스턴스 메서드로 작업을 구현하는 대신, 
+하위 타입을 전환하는 단일 함수에 작업의 변형을 유지합니다.
 
 <?code-excerpt "language/lib/patterns/algebraic_datatypes.dart (algebraic-datatypes)"?>
 ```dart
@@ -360,10 +345,9 @@ double calculateArea(Shape shape) => switch (shape) {
     };
 ```
 
-### Validating incoming JSON
+### 들어오는 JSON 검증 {:#validating-incoming-json}
 
-[Map][] and [list][] patterns work well for destructuring key-value pairs in
-JSON data:
+[Map][] 및 [list][] 패턴은 JSON 데이터의 키-값 쌍을 구조 분해하는 데 적합합니다.
 
 <?code-excerpt "language/lib/patterns/json.dart (json-1)"?>
 ```dart 
@@ -373,12 +357,11 @@ var json = {
 var {'user': [name, age]} = json;
 ```
 
-If you know that the JSON data has the structure you expect,
-the previous example is realistic.
-But data typically comes from an external source, like over the network.
-You need to validate it first to confirm its structure. 
+JSON 데이터가 예상한 구조를 가지고 있다는 것을 알고 있다면, 이전 예는 현실적입니다. 
+하지만, 데이터는 일반적으로 네트워크와 같은 외부 소스에서 제공됩니다. 
+먼저, 유효성 검사를 통해 구조를 확인해야 합니다.
 
-Without patterns, validation is verbose:
+패턴이 없으면, 유효성 검사가 장황합니다.
 
 <?code-excerpt "language/lib/patterns/json.dart (json-2)"?>
 ```dart
@@ -397,11 +380,9 @@ if (json is Map<String, Object?> &&
 }
 ```
 
-A single [case pattern](#switch-statements-and-expressions)
-can achieve the same validation.
-Single cases work best as [if-case][if] statements.
-Patterns provide a more declarative, and much less verbose
-method of validating JSON:
+단일 [case 패턴](#switch-statements-and-expressions)은 동일한 검증을 달성할 수 있습니다. 
+단일 케이스는 [if-case][if] 문으로 가장 잘 작동합니다. 
+패턴은 JSON을 검증하는 더 선언적이고, 훨씬 덜 자세한 방법을 제공합니다.
 
 <?code-excerpt "language/lib/patterns/json.dart (json-3)"?>
 ```dart
@@ -410,15 +391,14 @@ if (json case {'user': [String name, int age]}) {
 }
 ```
 
-This case pattern simultaneously validates that:
+이 케이스 패턴은 다음을 동시에 검증합니다.
 
-- `json` is a map, because it must first match the outer [map pattern][map] to proceed.
-  - And, since it's a map, it also confirms `json` is not null.
-- `json` contains a key `user`.
-- The key `user` pairs with a list of two values.
-- The types of the list values are `String` and `int`.
-- The new local variables to hold the values are `name` and `age`. 
-
+- `json`은 맵입니다. 진행하려면 먼저 외부 [맵 패턴][map]과 일치해야 하기 때문입니다.
+  - 그리고 맵이므로, `json`이 null이 아님을 확인합니다.
+- `json`에는 키 `user`가 있습니다.
+- 키 `user`는 두 값의 리스트와 쌍을 이룹니다.
+- 리스트 값의 타입은 `String`과 `int`입니다.
+- 값을 보관하는 새 로컬 변수는 `name`과 `age`입니다.
 
 [language version]: /guides/language/evolution#language-versioning
 [types]: /language/pattern-types

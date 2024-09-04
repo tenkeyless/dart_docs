@@ -1,46 +1,47 @@
 ---
-title: Pattern types
-description: Pattern type reference in Dart.
+# title: Pattern types
+title: 패턴 타입
+# description: Pattern type reference in Dart.
+description: Dart의 패턴 타입 참조.
 prevpage:
   url: /language/patterns
-  title: Patterns
+  # title: Patterns
+  title: 패턴
 nextpage:
   url: /language/functions
-  title: Functions
+  # title: Functions
+  title: 함수
 ---
 
-This page is a reference for the different kinds of patterns.
-For an overview of how patterns work, where you can use them in Dart, and common
-use cases, visit the main [Patterns][] page.
+이 페이지는 다양한 종류의 패턴에 대한 참조입니다. 
+패턴의 작동 방식, Dart에서 패턴을 사용할 수 있는 곳, 
+일반적인 사용 사례에 대한 개요는 메인 [패턴][Patterns] 페이지를 방문하세요.
 
-#### Pattern precedence
+#### 패턴 우선순위 {:#pattern-precedence}
 
-Similar to [operator precedence](/language/operators#operator-precedence-example),
-pattern evaluation adheres to precedence rules.
-You can use [parenthesized patterns](#parenthesized) to 
-evaluate lower-precedence patterns first.  
+[연산자 우선순위](/language/operators#operator-precedence-example)와 유사하게, 
+패턴 평가는 우선순위 규칙을 따릅니다. 
+[괄호로 묶인 패턴](#parenthesized)을 사용하여, 우선순위가 낮은 패턴을 먼저 평가할 수 있습니다.
 
-This document lists the pattern types in ascending order of precedence:
+이 문서에서는 패턴 타입을 우선순위에 따라 오름차순으로 나열합니다.
 
-* [Logical-or](#logical-or) patterns are lower-precedence than [logical-and](#logical-and),
-logical-and patterns are lower-precedence than [relational](#relational) patterns,
-and so on. 
+* [Logical-or](#logical-or) 패턴은 [Logical-and](#logical-and)보다 우선순위가 낮고, 
+  Logical-and 패턴은 [Relational](#relational) 패턴보다 우선순위가 낮습니다.
 
-* Post-fix unary patterns ([cast](#cast), [null-check](#null-check),
-and [null-assert](#null-assert)) share the same level of precedence. 
+* 후위 단항(Post-fix unary) 패턴([cast](#cast), [null-check](#null-check), [null-assert](#null-assert))은 
+  동일한 우선순위 레벨을 공유합니다.
 
-* The remaining primary patterns share the highest precedence.
-Collection-type ([record](#record), [list](#list), and [map](#map))
-and [Object](#object) patterns encompass other
-data, so are evaluated first as outer-patterns. 
+* 나머지 기본 패턴은 가장 높은 우선순위를 공유합니다. 
+  컬렉션 타입([record](#record), [list](#list), [map](#map)) 및 [Object](#object) 패턴은, 
+  다른 데이터를 포함하므로 먼저 외부 패턴으로 평가됩니다.
 
-## Logical-or
+## Logical-or {:#logical-or}
 
 `subpattern1 || subpattern2`
 
-A logical-or pattern separates subpatterns by `||` and matches if any of the
-branches match. Branches are evaluated left-to-right. Once a branch matches, the
-rest are not evaluated.
+Logical-or 패턴은 하위 패턴을 `||`로 구분하고, 브랜치 중 하나라도 일치하면 일치합니다. 
+브랜치는 왼쪽에서 오른쪽으로 평가됩니다. 
+브랜치가 일치하면, 나머지는 평가되지 않습니다.
 
 <?code-excerpt "language/lib/patterns/pattern_types.dart (logical-or)"?>
 ```dart
@@ -50,43 +51,42 @@ var isPrimary = switch (color) {
 };
 ```
 
-Subpatterns in a logical-or pattern can bind variables, but the branches must
-define the same set of variables, because only one branch will be evaluated when
-the pattern matches.
+Logical-or 패턴의 하위 패턴은 변수를 바인딩할 수 있지만, 
+패턴이 일치할 때 하나의 브랜치만 평가되기 때문에, 
+브랜치는 동일한 변수 세트를 정의해야 합니다.
 
-## Logical-and	
+## Logical-and {:#logical-and}
 
 `subpattern1 && subpattern2`
 
-A pair of patterns separated by `&&` matches only if both subpatterns match. If the
-left branch does not match, the right branch is not evaluated.
+`&&`로 구분된 패턴 쌍은 두 하위 패턴이 모두 일치하는 경우에만 일치합니다. 
+왼쪽 분기가 일치하지 않으면, 오른쪽 분기는 평가되지 않습니다.
 
-Subpatterns in a logical-and pattern can bind variables, but the variables in
-each subpattern must not overlap, because they will both be bound if the pattern
-matches:
+Logical-and 패턴의 하위 패턴은 변수를 바인딩할 수 있지만, 
+각 하위 패턴의 변수는 겹치지 않아야 합니다. 
+패턴이 일치하면, 둘 다 바인딩되기 때문입니다.
 
 <?code-excerpt "language/lib/patterns/pattern_types.dart (logical-and)"?>
 ```dart
 switch ((1, 2)) {
-  // Error, both subpatterns attempt to bind 'b'.
+  // 오류, 두 하위 패턴 모두 'b'를 바인딩하려고 시도했습니다.
   case (var a, var b) && (var b, var c): // ...
 }
 ```
 
-## Relational
+## Relational {:#relational}
 
 `== expression`
 
 `< expression`
 
-Relational patterns compare the matched value to a given constant using any of
-the equality or relational operators: `==`, `!=`, `<`, `>`, `<=`, and `>=`.
+Relational 패턴은 일치된 값을 주어진 상수와 비교하는데, 
+등호 또는 관계 연산자인 `==`, `!=`, `<`, `>`, `<=`, `>=`를 사용합니다.
 
-The pattern matches when calling the appropriate operator on the matched value
-with the constant as an argument returns `true`.
+패턴은, 상수를 인수로 사용하여 일치된 값에 적절한 연산자를 호출할 때, 일치하여 `true`를 반환합니다.
 
-Relational patterns are useful for matching on numeric ranges, especially when
-combined with the [logical-and pattern](#logical-and):
+Relational 패턴은 숫자 범위에서 일치시키는 데 유용하며, 
+특히 [logical-and 패턴](#logical-and)과 결합할 때 유용합니다.
 
 <?code-excerpt "language/lib/patterns/pattern_types.dart (relational)"?>
 ```dart
@@ -105,12 +105,12 @@ String asciiCharType(int char) {
 }
 ```
 
-## Cast
+## Cast {:#cast}
 
 `foo as String`
 
-A cast pattern lets you insert a [type cast][] in the middle of destructuring,
-before passing the value to another subpattern:
+캐스트 패턴을 사용하면, 값을 다른 하위 패턴에 전달하기 전에, 
+구조 분해 중간에 [타입 캐스트][type cast]를 삽입할 수 있습니다.
 
 <?code-excerpt "language/lib/patterns/pattern_types.dart (cast)"?>
 ```dart
@@ -118,54 +118,51 @@ before passing the value to another subpattern:
 var (i as int, s as String) = record;
 ```
 
-Cast patterns will [throw][] if the value doesn't have the stated type.
-Like the [null-assert pattern](#null-assert), this lets you forcibly assert the
-expected type of some destructured value.
+값에 명시된 타입이 없으면 캐스트 패턴은 [throw][]합니다. 
+[null-assert 패턴](#null-assert)과 마찬가지로, 
+이를 통해 일부 구조 분해되지 않은 값의 예상 타입을 강제로 assert 할 수 있습니다.
 
-## Null-check	
+## Null-check	{:#null-check}
 
 `subpattern?`
 
-Null-check patterns match first if the value is not null, and then match the inner
-pattern against that same value. They let you bind a variable whose type is the
-non-nullable base type of the nullable value being matched.
+Null-check 패턴은 값이 null이 아니면 먼저 매치하고, 
+그런 다음 내부 패턴을 같은 값과 매치합니다. 
+이를 통해 매치되는 nullable 값의 null이 불가능한 베이스 타입인 변수를 바인딩할 수 있습니다.
 
-To treat `null` values as match failures
-without throwing, use the null-check pattern.
+throw하지 않고 `null` 값을 매치 실패로 처리하려면, null-check 패턴을 사용합니다.
 
 <?code-excerpt "language/lib/patterns/pattern_types.dart (null-check)"?>
 ```dart
 String? maybeString = 'nullable with base type String';
 switch (maybeString) {
   case var s?:
-  // 's' has type non-nullable String here.
+  // 여기서 's'는 null이 불가능한 문자열 타입을 갖습니다.
 }
 ```
 
-To match when the value _is_ null, use the [constant pattern](#constant) `null`.
+값이 _null인 경우_ 일치시키려면, [상수 패턴](#constant) `null`을 사용하세요.
 
-## Null-assert	
+## Null-assert {:#null-assert}
 
 `subpattern!`
 
-Null-assert patterns match first if the object is not null, then on the value.
-They permit non-null values to flow through, but [throw][] if the matched value
-is null. 
+Null-assert 패턴은 객체가 null이 아니면 먼저 일치하고, 그 다음에는 값에 일치합니다. 
+null이 아닌 값이 흐르도록 허용하지만, 일치된 값이 null이면 [throw][]합니다.
 
-To ensure `null` values are not silently treated as match failures,
-use a null-assert pattern while matching:
+`null` 값이 자동으로 일치 실패로 처리되지 않도록 하려면, 
+일치할 때 null-assert 패턴을 사용합니다.
 
 <?code-excerpt "language/lib/patterns/pattern_types.dart (null-assert-match)"?>
 ```dart
 List<String?> row = ['user', null];
 switch (row) {
   case ['user', var name!]: // ...
-  // 'name' is a non-nullable string here.
+  // 여기서 'name'은 null이 될 수 없는 문자열입니다.
 }
 ```
 
-To eliminate `null` values from variable declaration patterns,
-use the null-assert pattern:
+변수 선언 패턴에서 `null` 값을 제거하려면, null-assert 패턴을 사용하세요.
 
 <?code-excerpt "language/lib/patterns/pattern_types.dart (null-assert-dec)"?>
 ```dart
@@ -174,88 +171,84 @@ use the null-assert pattern:
 var (x!, y!) = position;
 ```
 
-To match when the value _is_ null, use the [constant pattern](#constant) `null`.
+값이 _null인 경우_ 일치시키려면, [상수 패턴](#constant) `null`을 사용하세요.
 
-## Constant	
+## Constant	{:#constant}
 
 `123, null, 'string', math.pi, SomeClass.constant, const Thing(1, 2), const (1 + 2)`
 
-Constant patterns match when the value is equal to the constant: 
+값이 상수와 같을 때, 상수 패턴이 일치합니다.
 
 <?code-excerpt "language/lib/patterns/pattern_types.dart (constant)"?>
 ```dart
 switch (number) {
-  // Matches if 1 == number.
+  // 1 == number인 경우, 일치합니다.
   case 1: // ...
 }
 ```
 
-You can use simple literals and references to named constants directly as constant patterns:
+간단한 리터럴과 명명된 상수에 대한 참조를 상수 패턴으로 직접 사용할 수 있습니다.
 
-- Number literals (`123`, `45.56`)
-- Boolean literals (`true`)
-- String literals (`'string'`)
-- Named constants (`someConstant`, `math.pi`, `double.infinity`)
-- Constant constructors (`const Point(0, 0)`)
-- Constant collection literals (`const []`, `const {1, 2}`)
+- 숫자 리터럴(`123`, `45.56`)
+- Boolean 리터럴(`true`)
+- 문자열 리터럴(`'string'`)
+- 명명된 상수(`someConstant`, `math.pi`, `double.infinity`)
+- 상수 생성자(`const Point(0, 0)`)
+- 상수 컬렉션 리터럴(`const []`, `const {1, 2}`)
 
-More complex constant expressions must be parenthesized and prefixed with
-`const` (`const (1 + 2)`):
+더 복잡한 상수 표현식은 괄호로 묶고, `const` 접두사로 붙여야 합니다. (`const (1 + 2)`):
 
 <?code-excerpt "language/lib/patterns/pattern_types.dart (complex-constant)"?>
 ```dart
-// List or map pattern:
+// 리스트 또는 맵 패턴:
 case [a, b]: // ...
 
-// List or map literal:
+// 리스트 또는 맵 리터럴:
 case const [a, b]: // ...
 ```
 
-## Variable
+## Variable {:#variable}
 
 `var bar, String str, final int _`
 
-Variable patterns bind new variables to values that have been matched or destructured. 
-They usually occur as part of a [destructuring pattern][destructure] to
-capture a destructured value.
+변수 패턴은 일치하거나, 구조 분해된 값에 새 변수를 바인딩합니다. 
+일반적으로 [구조 분해 패턴][destructure]의 일부로 발생하여, 구조 분해된 값을 캡처합니다.
 
-The variables are in scope in a region of code that is only reachable when the
-pattern has matched.
+변수는 패턴이 일치할 때만 도달할 수 있는 코드 영역의 범위에 있습니다.
 
 <?code-excerpt "language/lib/patterns/pattern_types.dart (variable)"?>
 ```dart
 switch ((1, 2)) {
-  // 'var a' and 'var b' are variable patterns that bind to 1 and 2, respectively.
+  // 'var a'와 'var b'는 각각 1과 2에 바인딩되는 변수 패턴입니다.
   case (var a, var b): // ...
-  // 'a' and 'b' are in scope in the case body.
+  // 'a'와 'b'는 case body의 범위에 속합니다.
 }
 ```
 
-A _typed_ variable pattern only matches if the matched value has the declared type,
-and fails otherwise:
+_typed_ 변수 패턴은 일치된 값이 선언된 타입을 가지고 있는 경우에만 일치하고, 그렇지 않으면 실패합니다.
 
 <?code-excerpt "language/lib/patterns/pattern_types.dart (variable-typed)"?>
 ```dart
 switch ((1, 2)) {
-  // Does not match.
+  // 일치하지 않습니다.
   case (int a, String b): // ...
 }
 ```
 
-You can use a [wildcard pattern](#wildcard) as a variable pattern. 
+[와일드카드 패턴](#wildcard)을 변수 패턴으로 사용할 수 있습니다.
 
-## Identifier	
+## Identifier	{:#identifier}
 
 `foo, _`
 
-Identifier patterns may behave like a [constant pattern](#constant) or like a
-[variable pattern](#variable), depending on the context where they appear:
+Identifier 패턴은 나타나는 컨텍스트에 따라, [상수 패턴](#constant) 또는 [변수 패턴](#variable)처럼 동작할 수 있습니다.
 
-- [Declaration][] context: declares a new variable with identifier name:
+- [선언][Declaration] 컨텍스트: 식별자(identifier) 이름으로 새 변수를 선언합니다.
   `var (a, b) = (1, 2);`
-- [Assignment][] context: assigns to existing variable with identifier name:
+- [할당][Assignment] 컨텍스트: 식별자 이름으로 기존 변수에 할당합니다.
   `(a, b) = (3, 4);`
-- [Matching][] context: treated as a named constant pattern (unless its name is `_`):
+- [일치][Matching] 컨텍스트: 명명된 상수 패턴으로 처리합니다. (이름이 `_`인 경우 제외):
+
   <?code-excerpt "language/lib/patterns/pattern_types.dart (match-context)"?>
   ```dart
   const c = 1;
@@ -263,24 +256,23 @@ Identifier patterns may behave like a [constant pattern](#constant) or like a
     case c:
       print('match $c');
     default:
-      print('no match'); // Prints "no match".
+      print('no match'); // "no match" 출력.
   }
   ``` 
-- [Wildcard](#wildcard) identifier in any context: matches any value and discards it:
+
+- 모든 컨텍스트에서 [와일드카드](#wildcard) 식별자: 모든 값과 일치하고 해당 값을 삭제합니다.
   `case [_, var y, _]: print('The middle element is $y');`
 
-## Parenthesized
+## Parenthesized {:#parenthesized}
 
 `(subpattern)`
 
-Like parenthesized expressions, parentheses in a pattern let you control
-[pattern precedence](#pattern-precedence) and insert a lower-precedence
-pattern where a higher precedence one is expected.
+괄호로 묶인 표현식과 마찬가지로, 패턴의 괄호를 사용하면, 
+[패턴 우선순위](#pattern-precedence)를 제어하고, 
+더 높은 우선순위가 예상되는 곳에 더 낮은 우선순위의 패턴을 삽입할 수 있습니다.
 
-For example, imagine the boolean constants `x`, `y`, and `z`
-equal `true`, `true`, and `false`, respectively.
-Though the following example resembles boolean expression evaluation,
-the example matches patterns.
+예를 들어, boolean 상수 `x`, `y`, `z`가 각각 `true`, `true`, `false`와 같다고 가정해 보겠습니다. 
+다음 예제는 boolean 표현식 평가와 비슷하지만, 이 예제는 패턴과 일치합니다.
 
 <?code-excerpt "language/lib/patterns/pattern_types.dart (parens)"?>
 ```dart
@@ -288,107 +280,104 @@ the example matches patterns.
 x || y => 'matches true',
 x || y && z => 'matches true',
 x || (y && z) => 'matches true',
-// `x || y && z` is the same thing as `x || (y && z)`.
+// `x || y && z`는 `x || (y && z)`와 같습니다.
 (x || y) && z => 'matches nothing',
 // ...
 ```
 
-Dart starts matching the pattern from left to right.
+Dart는 왼쪽에서 오른쪽으로 패턴을 일치시키기 시작합니다.
 
-1. The first pattern matches `true` as `x` matches `true`.
-1. The second pattern matches `true` as `x` matches `true`.
-1. The third pattern matches `true` as `x` matches `true`.
-1. The fourth pattern `(x || y) && z` has no match.
+1. 첫 번째 패턴은 `x`가 `true`와 일치하므로, `true`와 일치합니다.
+2. 두 번째 패턴은 `x`가 `true`와 일치하므로, `true`와 일치합니다.
+3. 세 번째 패턴은 `x`가 `true`와 일치하므로, `true`와 일치합니다.
+4. 네 번째 패턴 `(x || y) && z`에는, 일치 항목이 없습니다.
 
-   * The `x` matches `true`, so Dart doesn't try to match `y`.
-   * Though `(x || y)` matches `true`, `z` doesn't match `true`
-   * Therefore, pattern `(x || y) && z` doesn't match `true`.
-   * The subpattern `(x || y)` doesn't match `false`,
-     so Dart doesn't try to match `z`.
-   * Therefore, pattern `(x || y) && z` doesn't match `false`.
-   * As a conclusion, `(x || y) && z` has no match.
+   * `x`는 `true`와 일치하므로, Dart는 `y`와 일치하려고 하지 않습니다.
+   * `(x || y)`는 `true`와 일치하지만, `z`는 `true`와 일치하지 않습니다.
+   * 따라서, 패턴 `(x || y) && z`는 `true`와 일치하지 않습니다.
+   * 하위 패턴 `(x || y)`는 `false`와 일치하지 않으므로, Dart는 `z`와 일치하려고 하지 않습니다.
+   * 따라서, 패턴 `(x || y) && z`는 `false`와 일치하지 않습니다.
+   * 결론적으로, `(x || y) && z`는 일치 항목이 없습니다.
 
-## List
+## List {:#list}
 
 `[subpattern1, subpattern2]`
 
-A list pattern matches values that implement [`List`][], and then recursively
-matches its subpatterns against the list's elements to destructure them by position:
+리스트 패턴은 [`List`][]를 구현하는 값과 일치한 다음, 
+해당 하위 패턴을 리스트의 요소와 재귀적으로 일치시켜, 위치별로 구조 분해합니다.
 
 <?code-excerpt "language/lib/patterns/switch.dart (list-pattern)"?>
 ```dart
 const a = 'a';
 const b = 'b';
 switch (obj) {
-  // List pattern [a, b] matches obj first if obj is a list with two fields,
-  // then if its fields match the constant subpatterns 'a' and 'b'.
+  // 리스트 패턴 [a, b]는 obj가 두 개의 필드를 갖는 리스트인 경우 먼저 obj와 일치하고, 
+  // 해당 필드가 상수 하위 패턴 'a' 및 'b'와 일치하는 경우입니다.
   case [a, b]:
     print('$a, $b');
 }
 ```  
 
-List patterns require that the number of elements in the pattern match the entire
-list. You can, however, use a [rest element](#rest-element) as a place holder to
-account for any number of elements in a list. 
+리스트 패턴은 패턴의 요소 수가 전체 리스트와 일치해야 합니다. 
+그러나, [나머지 요소](#rest-element)를 플레이스 홀더로 사용하여, 
+리스트의 어떤 개수의 요소에 대해서도 설명할 수 있습니다.
 
-### Rest element
+### 나머지 요소 {:#rest-element}
 
-List patterns can contain _one_ rest element (`...`) which allows matching lists
-of arbitrary lengths.
+리스트 패턴에는 _하나의_ 나머지 요소(`...`)가 포함될 수 있으며, 
+이를 통해 임의 길이의 리스트와 일치할 수 있습니다.
 
 <?code-excerpt "language/lib/patterns/pattern_types.dart (rest)"?>
 ```dart
 var [a, b, ..., c, d] = [1, 2, 3, 4, 5, 6, 7];
-// Prints "1 2 6 7".
+// "1 2 6 7" 출력. 
 print('$a $b $c $d');
 ```
 
-A rest element can also have a subpattern that collects elements that don't match
-the other subpatterns in the list, into a new list:
+나머지 요소는 리스트의 다른 하위 패턴과 일치하지 않는 요소를, 
+새 리스트으로 수집하는 하위 패턴을 가질 수도 있습니다.
 
 <?code-excerpt "language/lib/patterns/pattern_types.dart (rest-sub)"?>
 ```dart
 var [a, b, ...rest, c, d] = [1, 2, 3, 4, 5, 6, 7];
-// Prints "1 2 [3, 4, 5] 6 7".
+// "1 2 [3, 4, 5] 6 7" 출력.
 print('$a $b $rest $c $d');
 ```
 
-## Map
+## Map {:#map}
 
 `{"key": subpattern1, someConst: subpattern2}`
 
-Map patterns match values that implement [`Map`][], and then recursively 
-match its subpatterns against the map's keys to destructure them.
+맵 패턴은 [`Map`][]을 구현하는 값과 매치한 다음, 맵의 키와 재귀적으로 매치하여 구조 분해합니다.
 
-Map patterns don't require the pattern to match the entire map. A map pattern
-ignores any keys that the map contains that aren't matched by the pattern.
+맵 패턴은 패턴이 전체 맵과 매치될 필요가 없습니다. 
+맵 패턴은 패턴과 매치되지 않는 맵에 포함된 모든 키를 무시합니다.
 
-## Record
+## Record {:#record}
 
 `(subpattern1, subpattern2)`
 
 `(x: subpattern1, y: subpattern2)`
 
-Record patterns match a [record][] object and destructure its fields.
-If the value isn't a record with the same [shape][] as the pattern, the match
-fails. Otherwise, the field subpatterns are matched against the corresponding
-fields in the record.
+레코드 패턴은 [record][] 객체와 일치하고 해당 필드를 구조 분해합니다. 
+값이 패턴과 동일한 [shape][]를 가진 레코드가 아니면, 일치가 실패합니다. 
+그렇지 않으면, 필드 하위 패턴이 레코드의 해당 필드와 일치합니다.
 
-Record patterns require that the pattern match the entire record. To destructure 
-a record with _named_ fields using a pattern, include the field names in the pattern:
+레코드 패턴은 패턴이 전체 레코드와 일치해야 합니다. 
+패턴을 사용하여 _명명된_ 필드가 있는 레코드를 구조 분해하려면, 패턴에 필드 이름을 포함합니다.
 
 <?code-excerpt "language/lib/patterns/pattern_types.dart (record)"?>
 ```dart
 var (myString: foo, myNumber: bar) = (myString: 'string', myNumber: 1);
 ```
 
-The getter name can be omitted and inferred from the [variable pattern](#variable)
-or [identifier pattern](#identifier) in the field subpattern. These pairs of
-patterns are each equivalent:
+getter 이름은 생략될 수 있으며, 
+필드 하위 패턴의 [변수 패턴](#variable) 또는 [식별자 패턴](#identifier)에서 추론될 수 있습니다. 
+이러한 패턴 쌍은 각각 동등합니다.
 
 <?code-excerpt "language/lib/patterns/pattern_types.dart (record-getter)"?>
 ```dart
-// Record pattern with variable subpatterns:
+// 가변적인 하위 패턴을 사용한 Record 패턴:
 var (untyped: untyped, typed: int typed) = record;
 var (:untyped, :int typed) = record;
 
@@ -397,54 +386,53 @@ switch (record) {
   case (:var untyped, :int typed): // ...
 }
 
-// Record pattern with null-check and null-assert subpatterns:
+// null-check 및 null-assert 하위 패턴을 사용한 Record 패턴:
 switch (record) {
   case (checked: var checked?, asserted: var asserted!): // ...
   case (:var checked?, :var asserted!): // ...
 }
 
-// Record pattern with cast subpattern:
+// 캐스트 하위 패턴이 있는 Record 패턴:
 var (untyped: untyped as int, typed: typed as String) = record;
 var (:untyped as int, :typed as String) = record;
 ```
 
-## Object
+## Object {:#object}
 
 `SomeClass(x: subpattern1, y: subpattern2)`
 
-Object patterns check the matched value against a given named type to destructure
-data using getters on the object's properties. They are [refuted][]
-if the value doesn't have the same type.
+Object 패턴은 객체 속성에 대한 getters를 사용하여 데이터를 구조 분해하기 위해, 
+지정된 명명된 타입과 일치하는 값을 확인합니다. 
+값에 동일한 타입이 없으면 [반박(refuted)][refuted]됩니다.
 
 <?code-excerpt "language/lib/patterns/pattern_types.dart (object)"?>
 ```dart
 switch (shape) {
-  // Matches if shape is of type Rect, and then against the properties of Rect.
+  // shape이 Rect 타입인 경우 일치하고, Rect의 속성과 대조됩니다.
   case Rect(width: var w, height: var h): // ...
 }
 ```  
 
-The getter name can be omitted and inferred from the [variable pattern](#variable)
-or [identifier pattern](#identifier) in the field subpattern:
+getter 이름은 생략될 수 있으며, 
+필드 하위 패턴의 [변수 패턴](#variable) 또는 [식별자 패턴](#identifier)에서 유추될 수 있습니다.
 
 <?code-excerpt "language/lib/patterns/pattern_types.dart (object-getter)"?>
 ```dart
-// Binds new variables x and y to the values of Point's x and y properties.
+// 새로운 변수 x와 y를 Point의 x, y 속성 값에 바인딩합니다.
 var Point(:x, :y) = Point(1, 2);
 ```
 
-Object patterns don't require the pattern to match the entire object.
-If an object has extra fields that the pattern doesn't destructure, it can still match.
+객체 패턴은 패턴이 전체 객체와 일치할 것을 요구하지 않습니다. 
+객체에 패턴이 구조 분해하지 않는 추가 필드가 있는 경우에도, 여전히 일치할 수 있습니다.
 
-## Wildcard
+## Wildcard {:#wildcard}
 
 `_`
 
-A pattern named `_` is a wildcard, either a [variable pattern](#variable) or
-[identifier pattern](#identifier), that doesn't bind or assign to any variable.
+`_`라는 패턴은 [변수 패턴](#variable) 또는 [식별자 패턴](#identifier) 중 하나인 와일드카드로, 
+어떤 변수에도 바인딩하거나 할당하지 않습니다.
 
-It's useful as a placeholder in places where you need a subpattern in order to
-destructure later positional values:
+나중에 위치 값을 구조화하기 위해, 하위 패턴이 필요한 곳에서, 플레이스홀더로 유용합니다.
 
 <?code-excerpt "language/lib/patterns/pattern_types.dart (wildcard)"?>
 ```dart
@@ -452,8 +440,8 @@ var list = [1, 2, 3];
 var [_, two, _] = list;
 ```
 
-A wildcard name with a type annotation is useful when you want to test a value's
-type but not bind the value to a name:
+값의 타입을 테스트하지만 값을 이름에 바인딩하지 않으려는 경우, 
+타입 어노테이션이 있는 와일드카드 이름이 유용합니다.
 
 <?code-excerpt "language/lib/patterns/pattern_types.dart (wildcard-typed)"?>
 ```dart

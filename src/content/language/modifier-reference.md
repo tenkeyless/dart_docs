@@ -1,23 +1,25 @@
 ---
-title: Class modifiers reference
+# title: Class modifiers reference
+title: 클래스 수정자 참조
 description: >-
-  The allowed and disallowed combinations of class modifiers.
+  허용된 클래스 수정자와 허용되지 않는 클래스 수정자 조합.
 prevpage:
   url: /language/class-modifiers
-  title: Class modifiers
+  # title: Class modifiers
+  title: 클래스 수정자
 nextpage:
   url: /language/concurrency
-  title: Concurrency in Dart
+  # title: Concurrency in Dart
+  title: Dart에서의 동시성
 ---
 
-This page contains reference information for
-[class modifiers](/language/class-modifiers).
+이 페이지에는 [클래스 수정자](/language/class-modifiers)에 대한 참조 정보가 포함되어 있습니다.
 
-## Valid combinations
+## 유효한 조합 {:#valid-combinations}
 
-The valid combinations of class modifiers and their resulting capabilities are:
+클래스 수정자의 유효한 조합과 그에 따른 기능은 다음과 같습니다.
 
-| Declaration                 | [Construct][]? | [Extend][]? | [Implement][]? | [Mix in][]? | [Exhaustive][]? |
+| 선언                 | [생성자][Construct]? | [확장][Extend]? | [구현][Implement]? | [믹스인][Mix in]? | [Exhaustive][Exhaustive]? |
 |-----------------------------|----------------|-------------|----------------|-------------|-----------------|
 | `class`                     | **Yes**        | **Yes**     | **Yes**        | No          | No              |
 | `base class`                | **Yes**        | **Yes**     | No             | No          | No              |
@@ -43,19 +45,18 @@ The valid combinations of class modifiers and their resulting capabilities are:
 [Mix in]: /language/mixins
 [Exhaustive]: /language/branches#exhaustiveness-checking
 
-## Invalid combinations
+## 잘못된 조합 {:#invalid-combinations}
 
-Certain [combinations](/language/class-modifiers#combining-modifiers)
-of modifiers are not allowed:
+특정 수정자 [조합](/language/class-modifiers#combining-modifiers)은 허용되지 않습니다.
 
-| Combination                                   | Reasoning                                                                                                                                       |
+| 조합                                   | 이유                                                                                                                                       |
 |-----------------------------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------|
-| `base`, `interface`, and `final`              | All control the same two capabilities (`extend` and `implement`), so are mutually exclusive.                                                    |
-| `sealed` and `abstract`                       | Neither can be constructed, so are redundant together.                                                                                          |
-| `sealed` with `base`, `interface`, or `final` | `sealed` types already cannot be mixed in, extended or implemented from another library, so are redundant to combine with the listed modifiers. |
-| `mixin` and `abstract`                        | Neither can be constructed, so are redundant together.                                                                                          |
-| `mixin` and `interface`, `final`, or `sealed` | A `mixin` or `mixin class` declaration is intended to be mixed in, which the listed modifiers prevent.                                          |
-| `enum` and any modifiers                      | `enum` declarations can't be extended, implemented, mixed in, and can always be instantiated, so no modifiers apply to `enum` declarations.     |
-| `extension type` and any modifiers            | `extension type` declarations can't be extended or mixed in, and can only be implemented by other `extension type` declarations.                |
+| `base`, `interface`, 및 `final`              | 모든 기능은 동일한 두 가지 기능(`extend` 및 `implement`)을 제어하므로, 상호 배타적(mutually exclusive)입니다.                                                    |
+| `sealed` 및 `abstract`                       | 둘 다 구성할 수 없으므로, 함께 사용하면 중복됩니다.                                                                                           |
+| `base`, `interface`, 또는 `final`과 함께 `sealed`  | `sealed` 타입은 다른 라이브러리에서 혼합(mixed in), 확장 또는 구현될 수 없으므로, 나열된 수정자와 결합하는 것은 중복됩니다.   |
+| `mixin` 및 `abstract`                        | 둘 다 구성할 수 없으므로, 함께 사용하면 중복됩니다.                                                                                          |
+| `mixin` 및 `interface`, `final`, 또는 `sealed` | `mixin` 또는 `mixin class` 선언은 혼합(mixed in)되도록 의도된 것이지만, 나열된 수정자는 이를 방지합니다.                                          |
+| `enum` 그리고 모든 수정자                      | `enum` 선언은 확장, 구현, 혼합(mixed in)될 수 없으며, 항상 인스턴스화될 수 있으므로, `enum` 선언에는 수정자가 적용되지 않습니다.     |
+| `extension type` 그리고 모든 수정자            | `extension type` 선언은 확장되거나 혼합(mixed in)될 수 없으며, 다른 `extension type` 선언에 의해서만 구현될 수 있습니다.               |
 
 {:.table .table-striped .nowrap}

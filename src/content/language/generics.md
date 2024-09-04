@@ -1,9 +1,12 @@
 ---
-title: Generics
-description: Learn about generic types in Dart.
+# title: Generics
+title: 제네릭
+# description: Learn about generic types in Dart.
+description: Dart의 제네릭 타입에 대해 알아보세요.
 prevpage:
   url: /language/collections
-  title: Collections
+  # title: Collections
+  title: 컬렉션
 nextpage:
   url: /language/typedefs
   title: Typedefs
@@ -11,37 +14,31 @@ nextpage:
 
 <?code-excerpt replace="/ *\/\/\s+ignore_for_file:[^\n]+\n//g; /(^|\n) *\/\/\s+ignore:[^\n]+\n/$1/g; /(\n[^\n]+) *\/\/\s+ignore:[^\n]+\n/$1\n/g; / *\/\/\s+ignore:[^\n]+//g; /([A-Z]\w*)\d\b/$1/g"?>
 
-If you look at the API documentation for the basic array type,
-[`List`][], you'll see that the
-type is actually `List<E>`. The \<...\> notation marks List as a
-*generic* (or *parameterized*) type—a type that has formal type
-parameters. [By convention][], most type variables have single-letter names,
-such as E, T, S, K, and V.
+기본 배열 타입인 [`List`][]에 대한 API 문서를 보면, 실제로 타입이 `List<E>`라는 것을 알 수 있습니다. 
+\<...\> 표기법은 List를 *제네릭(generic)* (또는 *매개변수화된(parameterized)*) 타입으로 표시합니다. 
+즉, 형식적 타입 매개변수가 있는 타입입니다. 
+[관례에 따라][By convention], 대부분의 타입 변수는 E, T, S, K, V와 같이 단일 문자 이름을 갖습니다.
 
-## Why use generics?
+## 제네릭을 사용하는 이유는 무엇입니까? {:#why-use-generics}
 
-Generics are often required for type safety, but they have more benefits
-than just allowing your code to run:
+제네릭은 종종 타입 안전성을 위해 필요하지만, 코드를 실행하는 것 이상의 이점이 있습니다.
 
-* Properly specifying generic types results in better generated code.
-* You can use generics to reduce code duplication.
+* 제네릭 타입을 올바르게 지정하면, 더 나은 코드가 생성됩니다.
+* 제네릭을 사용하면, 코드 중복을 줄일 수 있습니다.
 
-If you intend for a list to contain only strings, you can
-declare it as `List<String>` (read that as "list of string"). That way
-you, your fellow programmers, and your tools can detect that assigning a non-string to
-the list is probably a mistake. Here's an example:
+문자열만 포함하는 리스트를 원하는 경우 `List<String>`("문자열 리스트"라고 읽음)로 선언할 수 있습니다. 
+이렇게 하면, 여러분, 동료 프로그래머, 도구가 리스트에 문자열이 아닌 항목을 할당하는 것이 실수일 가능성이 있음을 감지할 수 있습니다. 
+다음은 그 예입니다.
 
 ```dart tag=fails-sa
 var names = <String>[];
 names.addAll(['Seth', 'Kathy', 'Lars']);
-names.add(42); // Error
+names.add(42); // 에러
 ```
 
-Another reason for using generics is to reduce code duplication.
-Generics let you share a single interface and implementation between
-many types, while still taking advantage of static
-analysis. For example, say you create an interface for
-caching an object:
+제네릭을 사용하는 또 다른 이유는 코드 중복을 줄이는 것입니다. 
+제네릭을 사용하면 정적 분석의 이점을 활용하면서도, 여러 타입 간에 단일 인터페이스와 구현을 공유할 수 있습니다. 
+예를 들어, 객체를 캐싱하기 위한 인터페이스를 만든다고 가정해 보겠습니다.
 
 <?code-excerpt "misc/lib/language_tour/generics/cache.dart (object-cache)"?>
 ```dart
@@ -51,8 +48,7 @@ abstract class ObjectCache {
 }
 ```
 
-You discover that you want a string-specific version of this interface,
-so you create another interface:
+이 인터페이스의 문자열별 버전이 필요하다는 것을 알게 되어, 다른 인터페이스를 만듭니다.
 
 <?code-excerpt "misc/lib/language_tour/generics/cache.dart (string-cache)"?>
 ```dart
@@ -62,11 +58,10 @@ abstract class StringCache {
 }
 ```
 
-Later, you decide you want a number-specific version of this
-interface... You get the idea.
+나중에, 이 인터페이스의 숫자별 버전을 원한다고 결정하죠... 아이디어를 얻으셨죠.
 
-Generic types can save you the trouble of creating all these interfaces.
-Instead, you can create a single interface that takes a type parameter:
+제네릭 타입은 이 모든 인터페이스를 만드는 번거로움을 덜어줍니다. 
+대신, 타입 매개변수를 취하는 단일 인터페이스를 만들 수 있습니다.
 
 <?code-excerpt "misc/lib/language_tour/generics/cache.dart (cache)"?>
 ```dart
@@ -76,17 +71,15 @@ abstract class Cache<T> {
 }
 ```
 
-In this code, T is the stand-in type. It's a placeholder that you can
-think of as a type that a developer will define later.
+이 코드에서 T는 대체 타입입니다. 개발자가 나중에 정의할 타입이라고 생각할 수 있는 플레이스홀더입니다.
 
+## 컬렉션 리터럴 사용 {:#using-collection-literals}
 
-## Using collection literals
-
-List, set, and map literals can be parameterized. Parameterized literals are
-just like the literals you've already seen, except that you add
-<code>&lt;<em>type</em>></code> (for lists and sets) or
-<code>&lt;<em>keyType</em>, <em>valueType</em>></code> (for maps)
-before the opening bracket. Here is an example of using typed literals:
+리스트, 세트 및 맵 리터럴은 매개변수화될 수 있습니다. 
+매개변수화된 리터럴은 이미 본 리터럴과 똑같지만, 
+여는 괄호 앞에 <code>&lt;<em>type</em>></code>(리스트 및 세트의 경우) 또는, 
+<code>&lt;<em>keyType</em>, <em>valueType</em>></code>(맵의 경우)를 추가합니다. 
+다음은 타입화된 리터럴을 사용하는 예입니다.
 
 <?code-excerpt "misc/lib/language_tour/generics/misc.dart (collection-literals)"?>
 ```dart
@@ -99,19 +92,17 @@ var pages = <String, String>{
 };
 ```
 
+## 생성자로 매개변수화된 타입 사용 {:#using-parameterized-types-with-constructors}
 
-## Using parameterized types with constructors
-
-To specify one or more types when using a constructor, put the types in
-angle brackets (`<...>`) just after the class name. For example:
+생성자를 사용할 때 하나 이상의 타입을 지정하려면, 
+클래스 이름 바로 뒤에 유형을 각괄호(`<...>`)로 묶습니다. 예를 들어:
 
 <?code-excerpt "misc/test/language_tour/generics_test.dart (constructor-1)"?>
 ```dart
 var nameSet = Set<String>.from(names);
 ```
 
-The following code creates a map that has integer keys and values of
-type View:
+다음 코드는 View 타입의 정수 키와 값을 갖는 맵을 생성합니다.
 
 <?code-excerpt "misc/test/language_tour/generics_test.dart (constructor-2)"?>
 ```dart
@@ -119,11 +110,10 @@ var views = Map<int, View>();
 ```
 
 
-## Generic collections and the types they contain
+## 제네릭 컬렉션과 그 안에 포함된 타입 {:#generic-collections-and-the-types-they-contain}
 
-Dart generic types are *reified*, which means that they carry their type
-information around at runtime. For example, you can test the type of a
-collection:
+Dart 제네릭 타입은 *reified(구체화)* 되어 있습니다. 즉, 런타임에 타입 정보를 전달합니다. 
+예를 들어, 컬렉션의 타입을 테스트할 수 있습니다.
 
 <?code-excerpt "misc/test/language_tour/generics_test.dart (generic-collections)"?>
 ```dart
@@ -133,45 +123,44 @@ print(names is List<String>); // true
 ```
 
 :::note
-In contrast, generics in Java use *erasure*, which means that generic
-type parameters are removed at runtime. In Java, you can test whether
-an object is a List, but you can't test whether it's a `List<String>`.
+반면, Java의 제네릭은 *erasure(지우기)* 를 사용하는데, 
+이는 제네릭 타입 매개변수가 런타임에 제거된다는 것을 의미합니다. 
+Java에서 객체가 List인지 테스트할 수 있지만, 
+`List<String>`인지는 테스트할 수 없습니다.
 :::
 
 
-## Restricting the parameterized type
+## 매개변수화된 타입 제한 {:#restricting-the-parameterized-type}
 
-When implementing a generic type,
-you might want to limit the types that can be provided as arguments,
-so that the argument must be a subtype of a particular type.
-You can do this using `extends`.
+제네릭 타입을 구현할 때, 인수로 제공할 수 있는 타입을 제한하여, 
+인수가 특정 타입의 하위 타입이어야 하도록 할 수 있습니다. 
+`extends`를 사용하여 이를 수행할 수 있습니다.
 
-A common use case is ensuring that a type is non-nullable
-by making it a subtype of `Object`
-(instead of the default, [`Object?`][top-and-bottom]).
+일반적인 사용 사례는 타입을 `Object`의 하위 타입으로 만들어서(기본값인 [`Object?`][top-and-bottom] 대신),
+타입이 null이 되지 않도록 하는 것입니다.
 
 <?code-excerpt "misc/lib/language_tour/generics/misc.dart (non-nullable)"?>
 ```dart
 class Foo<T extends Object> {
-  // Any type provided to Foo for T must be non-nullable.
+  // Foo에 T에 대해 제공된 모든 타입은 null을 허용하지 않아야 합니다.
 }
 ```
 
-You can use `extends` with other types besides `Object`.
-Here's an example of extending `SomeBaseClass`,
-so that members of `SomeBaseClass` can be called on objects of type `T`:
+`extends`는 `Object` 외의 다른 타입과 함께 사용할 수 있습니다. 
+다음은 `SomeBaseClass`를 확장하는 예입니다. 
+그러면 `SomeBaseClass`의 멤버를 `T` 타입의 객체에서 호출할 수 있습니다.
 
 <?code-excerpt "misc/lib/language_tour/generics/base_class.dart (generic)" replace="/extends SomeBaseClass(?=. \{)/[!$&!]/g"?>
 ```dart
 class Foo<T [!extends SomeBaseClass!]> {
-  // Implementation goes here...
+  // 구현은 여기에 옵니다...
   String toString() => "Instance of 'Foo<$T>'";
 }
 
 class Extender extends SomeBaseClass {...}
 ```
 
-It's OK to use `SomeBaseClass` or any of its subtypes as the generic argument:
+`SomeBaseClass` 또는 그 하위 타입을 제네릭 인수로 사용해도 됩니다.
 
 <?code-excerpt "misc/test/language_tour/generics_test.dart (SomeBaseClass-ok)" replace="/Foo.\w+./[!$&!]/g"?>
 ```dart
@@ -179,7 +168,7 @@ var someBaseClassFoo = [!Foo<SomeBaseClass>!]();
 var extenderFoo = [!Foo<Extender>!]();
 ```
 
-It's also OK to specify no generic argument:
+제네릭 인수를 지정하지 않아도 됩니다.
 
 <?code-excerpt "misc/test/language_tour/generics_test.dart (no-generic-arg-ok)" replace="/expect\((.*?).toString\(\), .(.*?).\);/print($1); \/\/ $2/g"?>
 ```dart
@@ -187,35 +176,34 @@ var foo = Foo();
 print(foo); // Instance of 'Foo<SomeBaseClass>'
 ```
 
-Specifying any non-`SomeBaseClass` type results in an error:
+`SomeBaseClass`가 아닌 타입을 지정하면 오류가 발생합니다.
 
 ```dart tag=fails-sa
 var foo = [!Foo<Object>!]();
 ```
 
 
-## Using generic methods
+## 제네릭 메서드 사용 {:#using-generic-methods}
 
-Methods and functions also allow type arguments:
+메서드와 함수는 또한 타입 인수를 허용합니다.
 
 <!-- {{site.dartpad}}/a02c53b001977efa4d803109900f21bb -->
 <!-- https://gist.github.com/a02c53b001977efa4d803109900f21bb -->
 <?code-excerpt "misc/test/language_tour/generics_test.dart (method)" replace="/<T.(?=\()|T/[!$&!]/g"?>
 ```dart
 [!T!] first[!<T>!](List<[!T!]> ts) {
-  // Do some initial work or error checking, then...
+  // 초기 작업이나 오류 검사를 수행한 다음...
   [!T!] tmp = ts[0];
-  // Do some additional checking or processing...
+  // 추가적인 검사나 처리를 실시합니다...
   return tmp;
 }
 ```
 
-Here the generic type parameter on `first` (`<T>`)
-allows you to use the type argument `T` in several places:
+여기서 `first`의 제네릭 타입 매개변수(`<T>`)를 사용하면, 여러 곳에서 타입 인수 `T`를 사용할 수 있습니다.
 
-* In the function's return type (`T`).
-* In the type of an argument (`List<T>`).
-* In the type of a local variable (`T tmp`).
+* 함수의 반환 타입(`T`).
+* 인수 타입(`List<T>`).
+* 로컬 변수 타입(`T tmp`).
 
 [`List`]: {{site.dart-api}}/{{site.sdkInfo.channel}}/dart-core/List-class.html
 [By convention]: /effective-dart/design#do-follow-existing-mnemonic-conventions-when-naming-type-parameters

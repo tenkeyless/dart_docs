@@ -1,28 +1,28 @@
 ---
-title: Collections
-description: Summary of the different types of collections in Dart.
+# title: Collections
+title: 컬렉션
+# description: Summary of the different types of collections in Dart.
+description: Dart의 다양한 컬렉션 타입에 대한 요약입니다.
 prevpage:
   url: /language/records
-  title: Records
+  # title: Records
+  title: 레코드
 nextpage:
   url: /language/generics
-  title: Generics
+  # title: Generics
+  title: 제네릭
 ---
 
-Dart has built-in support for list, set, and map [collections][].
-To learn more about configuring the types collections contain,
-check out [Generics][].
+Dart에는 리스트, 집합 및 맵 [컬렉션][collections]에 대한 빌트인 지원이 있습니다. 
+컬렉션에 포함된 타입 구성에 대해 자세히 알아보려면, [제네릭][Generics]을 확인하세요.
 
-## Lists
+## Lists {:#lists}
 
-Perhaps the most common collection in nearly every programming language
-is the *array*, or ordered group of objects. In Dart, arrays are
-[`List`][] objects, so most people just call them *lists*.
+아마도 거의 모든 프로그래밍 언어에서 가장 흔한 컬렉션은 *배열* 또는 정렬된 객체 그룹일 것입니다. 
+Dart에서 배열은 [`List`][] 객체이므로, 대부분 사람들은 그냥 *리스트*라고 부릅니다.
 
-Dart list literals are denoted by
-a comma separated list of expressions or values,
-enclosed in square brackets (`[]`).
-Here's a simple Dart list:
+Dart 리스트 리터럴은 표현식이나 값의 쉼표로 구분된 목록으로 표시되며, 대괄호(`[]`)로 묶입니다. 
+다음은 간단한 Dart 리스트입니다.
 
 <?code-excerpt "misc/lib/language_tour/built_in_types.dart (list-literal)"?>
 ```dart
@@ -30,15 +30,15 @@ var list = [1, 2, 3];
 ```
 
 :::note
-Dart infers that `list` has type `List<int>`. If you try to add non-integer
-objects to this list, the analyzer or runtime raises an error. For more
-information, read about [type inference][].
+Dart는 `list`가 `List<int>` 타입을 가지고 있다고 추론합니다. 
+이 목록에 정수가 아닌 객체를 추가하려고 하면, 분석기나 런타임에서 오류가 발생합니다. 
+자세한 내용은 [타입 추론][type inference]을 읽어보세요.
 :::
 
 <a id="trailing-comma"></a>
-You can add a comma after the last item in a Dart collection literal.
-This _trailing comma_ doesn't affect the collection,
-but it can help prevent copy-paste errors.
+Dart 컬렉션 리터럴의 마지막 항목 뒤에 쉼표를 추가할 수 있습니다. 
+이 _마지막 쉼표(trailing comma)_ 는 컬렉션에 영향을 미치지 않지만, 
+복사-붙여넣기 오류를 방지하는 데 도움이 될 수 있습니다.
 
 <?code-excerpt "misc/lib/language_tour/built_in_types.dart (trailing-commas)"?>
 ```dart
@@ -49,10 +49,10 @@ var list = [
 ];
 ```
 
-Lists use zero-based indexing, where 0 is the index of the first value
-and `list.length - 1` is the index of the last value. 
-You can get a list's length using the `.length` property
-and access a list's values using the subscript operator (`[]`):
+리스트는 0부터 시작하는 인덱싱을 사용하는데, 
+여기서 0은 첫 번째 값의 인덱스이고, `list.length - 1`은 마지막 값의 인덱스입니다. 
+`.length` 속성을 사용하여 리스트의 길이를 얻고, 
+서브스크립트 연산자(`[]`)를 사용하여, 리스트의 값에 접근할 수 있습니다.
 
 <?code-excerpt "misc/test/language_tour/built_in_types_test.dart (list-indexing)"?>
 ```dart
@@ -64,25 +64,22 @@ list[1] = 1;
 assert(list[1] == 1);
 ```
 
-To create a list that's a compile-time constant,
-add `const` before the list literal:
+컴파일 타임 상수인 리스트를 생성하려면, 리스트 리터럴 앞에 `const`를 추가합니다.
 
 <?code-excerpt "misc/lib/language_tour/built_in_types.dart (const-list)"?>
 ```dart
 var constantList = const [1, 2, 3];
-// constantList[1] = 1; // This line will cause an error.
+// constantList[1] = 1; // 이 줄은 오류를 발생시킵니다.
 ```
 
-For more information about lists, refer to the Lists section of the
-[`dart:core` documentation](/libraries/dart-core#lists).
+리스트에 대한 자세한 내용은 [`dart:core` 문서](/libraries/dart-core#lists)의 리스트 섹션을 참조하세요.
 
-## Sets
+## Sets {:#sets}
 
-A set in Dart is an unordered collection of unique items.
-Dart support for sets is provided by set literals and the
-[`Set`][] type.
+Dart의 세트는 고유한 항목의 순서 없는 컬렉션입니다. 
+Dart는 세트 리터럴과 [`Set`][] 타입을 통해 세트를 지원합니다.
 
-Here is a simple Dart set, created using a set literal:
+세트 리터럴을 사용하여 만든, 간단한 Dart 세트는 다음과 같습니다.
 
 <?code-excerpt "misc/lib/language_tour/built_in_types.dart (set-literal)"?>
 ```dart
@@ -90,30 +87,28 @@ var halogens = {'fluorine', 'chlorine', 'bromine', 'iodine', 'astatine'};
 ```
 
 :::note
-Dart infers that `halogens` has the type `Set<String>`. If you try to add the
-wrong type of value to the set, the analyzer or runtime raises an error. For
-more information, read about
-[type inference.](/language/type-system#type-inference)
+Dart는 `halogens`가 `Set<String>` 타입을 가지고 있다고 추론합니다. 
+잘못된 타입의 값을 세트에 추가하려고 하면, 분석기나 런타임에서 오류가 발생합니다. 
+자세한 내용은 [타입 추론](/language/type-system#type-inference)을 참조하세요.
 :::
 
-To create an empty set, use `{}` preceded by a type argument,
-or assign `{}` to a variable of type `Set`:
+빈 세트를 생성하려면, `{}`를 타입 인수 뒤에 사용하거나, `Set` 타입의 변수에 `{}`를 할당합니다.
 
 <?code-excerpt "misc/lib/language_tour/built_in_types.dart (set-vs-map)"?>
 ```dart
 var names = <String>{};
-// Set<String> names = {}; // This works, too.
-// var names = {}; // Creates a map, not a set.
+// Set<String> names = {}; // 이것도 동작합니다.
+// var names = {}; // set가 아닌 map을 만듭니다.
 ```
 
-:::note Set or map?
-The syntax for map literals is similar to that for set
-literals. Because map literals came first, `{}` defaults to the `Map` type. If
-you forget the type annotation on `{}` or the variable it's assigned to, then
-Dart creates an object of type `Map<dynamic, dynamic>`.
+:::note Set 또는 map?
+맵 리터럴의 구문은 세트 리터럴의 구문과 비슷합니다. 
+맵 리터럴이 먼저 나왔기 때문에 `{}`는 기본적으로 `Map` 타입으로 설정됩니다. 
+`{}`에 대한 타입 주석이나 할당된 변수를 잊으면, 
+Dart는 `Map<dynamic, dynamic>` 타입의 객체를 만듭니다.
 :::
 
-Add items to an existing set using the `add()` or `addAll()` methods:
+`add()` 또는 `addAll()` 메서드를 사용하여 기존 세트에 아이템을 추가합니다.
 
 <?code-excerpt "misc/lib/language_tour/built_in_types.dart (set-add-items)"?>
 ```dart
@@ -122,7 +117,7 @@ elements.add('fluorine');
 elements.addAll(halogens);
 ```
 
-Use `.length` to get the number of items in the set:
+`.length`를 사용하여 세트에 있는 아이템의 개수를 가져옵니다.
 
 <?code-excerpt "misc/test/language_tour/built_in_types_test.dart (set-length)"?>
 ```dart
@@ -132,8 +127,7 @@ elements.addAll(halogens);
 assert(elements.length == 5);
 ```
 
-To create a set that's a compile-time constant,
-add `const` before the set literal:
+컴파일 타임 상수인 세트를 생성하려면, 세트 리터럴 앞에 `const`를 추가합니다.
 
 <?code-excerpt "misc/lib/language_tour/built_in_types.dart (const-set)"?>
 ```dart
@@ -144,25 +138,24 @@ final constantSet = const {
   'iodine',
   'astatine',
 };
-// constantSet.add('helium'); // This line will cause an error.
+// constantSet.add('helium'); // 이 줄은 오류를 발생시킵니다.
 ```
 
-For more information about sets, refer to the Sets section of the
-[`dart:core` documentation](/libraries/dart-core#sets).
+세트에 대한 자세한 내용은, [`dart:core` 문서](/libraries/dart-core#sets)의 Sets 섹션을 참조하세요.
 
-## Maps
+## Maps {:#maps}
 
-In general, a map is an object that associates keys and values. Both
-keys and values can be any type of object. Each *key* occurs only once,
-but you can use the same *value* multiple times. Dart support for maps
-is provided by map literals and the [`Map`][] type.
+일반적으로, 맵은 키와 값을 연관짓는 객체입니다. 
+키와 값은 모두 모든 타입의 객체가 될 수 있습니다. 
+각 *키*는 한 번만 발생하지만, 동일한 *값*을 여러 번 사용할 수 있습니다. 
+맵에 대한 Dart 지원은 맵 리터럴과 [`Map`][] 타입에서 제공됩니다.
 
-Here are a couple of simple Dart maps, created using map literals:
+맵 리터럴을 사용하여 만든 간단한 Dart 맵 몇 가지가 있습니다.
 
 <?code-excerpt "misc/lib/language_tour/built_in_types.dart (map-literal)"?>
 ```dart
 var gifts = {
-  // Key:    Value
+  // 키:    값
   'first': 'partridge',
   'second': 'turtledoves',
   'fifth': 'golden rings'
@@ -176,13 +169,13 @@ var nobleGases = {
 ```
 
 :::note
-Dart infers that `gifts` has the type `Map<String, String>` and `nobleGases`
-has the type `Map<int, String>`. If you try to add the wrong type of value to
-either map, the analyzer or runtime raises an error. For more information,
-read about [type inference][].
+Dart는 `gifts`가 `Map<String, String>` 타입을 가지고, 
+`nobleGases`가 `Map<int, String>` 타입을 가지고 있다고 추론합니다. 
+두 맵에 잘못된 타입의 값을 추가하려고 하면 분석기나 런타임에서 오류가 발생합니다. 
+자세한 내용은 [타입 추론][type inference]을 참조하세요.
 :::
 
-You can create the same objects using a Map constructor:
+Map 생성자를 사용하여 동일한 객체를 생성할 수 있습니다.
 
 <?code-excerpt "misc/lib/language_tour/built_in_types.dart (map-constructor)"?>
 ```dart
@@ -198,21 +191,19 @@ nobleGases[18] = 'argon';
 ```
 
 :::note
-If you come from a language like C# or Java, you might expect to see `new Map()` 
-instead of just `Map()`. In Dart, the `new` keyword is optional.
-For details, see [Using constructors][].
+C# 또는 Java와 같은 언어에서 왔다면, `Map()` 대신 `new Map()`을 볼 수 있을 것으로 기대할 수 있습니다. 
+Dart에서, `new` 키워드는 선택 사항입니다. 자세한 내용은 [생성자 사용][Using constructors]을 참조하세요.
 :::
 
-Add a new key-value pair to an existing map
-using the subscript assignment operator (`[]=`):
+`[]=` 서브스크립트 할당 연산자를 사용하여, 기존 맵에 새로운 키-값 쌍을 추가합니다.
 
 <?code-excerpt "misc/lib/language_tour/built_in_types.dart (map-add-item)"?>
 ```dart
 var gifts = {'first': 'partridge'};
-gifts['fourth'] = 'calling birds'; // Add a key-value pair
+gifts['fourth'] = 'calling birds'; // 키-값 쌍 추가
 ```
 
-Retrieve a value from a map using the subscript operator (`[]`):
+서브스크립트 연산자(`[]`)를 사용하여 맵에서 값을 검색합니다.
 
 <?code-excerpt "misc/test/language_tour/built_in_types_test.dart (map-retrieve-item)"?>
 ```dart
@@ -220,7 +211,7 @@ var gifts = {'first': 'partridge'};
 assert(gifts['first'] == 'partridge');
 ```
 
-If you look for a key that isn't in a map, you get `null` in return:
+맵에 없는 키를 찾으면, `null`이 반환됩니다.
 
 <?code-excerpt "misc/test/language_tour/built_in_types_test.dart (map-missing-key)"?>
 ```dart
@@ -228,7 +219,7 @@ var gifts = {'first': 'partridge'};
 assert(gifts['fifth'] == null);
 ```
 
-Use `.length` to get the number of key-value pairs in the map:
+`.length`를 사용하여 맵에 있는 키-값 쌍의 수를 가져옵니다.
 
 <?code-excerpt "misc/test/language_tour/built_in_types_test.dart (map-length)"?>
 ```dart
@@ -237,8 +228,7 @@ gifts['fourth'] = 'calling birds';
 assert(gifts.length == 2);
 ```
 
-To create a map that's a compile-time constant,
-add `const` before the map literal:
+컴파일 타임 상수인 맵을 생성하려면, 맵 리터럴 앞에 `const`를 추가합니다.
 
 <?code-excerpt "misc/lib/language_tour/built_in_types.dart (const-map)"?>
 ```dart
@@ -248,22 +238,19 @@ final constantMap = const {
   18: 'argon',
 };
 
-// constantMap[2] = 'Helium'; // This line will cause an error.
+// constantMap[2] = 'Helium'; // 이 줄은 오류를 발생시킵니다.
 ```
 
-For more information about maps, refer to the Maps section of the
-[`dart:core` documentation](/libraries/dart-core#maps).
+맵에 대한 자세한 내용은, [`dart:core` 문서](/libraries/dart-core#maps)의 Maps 섹션을 참조하세요.
 
-## Operators
+## 연산자 {:#operators}
 
-### Spread operators
+### 스프레드 연산자 {:#spread-operators}
 
-Dart supports the **spread operator** (`...`) and the
-**null-aware spread operator** (`...?`) in list, map, and set literals.
-Spread operators provide a concise way to insert multiple values into a collection.
+Dart는 리스트, 맵, 세트 리터럴에서 **스프레드 연산자** (`...`)와 **null 인식 스프레드 연산자** (`...?`)를 지원합니다. 
+스프레드 연산자는 여러 값을 컬렉션에 삽입하는 간결한 방법을 제공합니다.
 
-For example, you can use the spread operator (`...`) to insert
-all the values of a list into another list:
+예를 들어, 스프레드 연산자(`...`)를 사용하여 리스트의 모든 값을 다른 리스트에 삽입할 수 있습니다.
 
 <?code-excerpt "misc/test/language_tour/built_in_types_test.dart (list-spread)"?>
 ```dart
@@ -272,8 +259,8 @@ var list2 = [0, ...list];
 assert(list2.length == 4);
 ```
 
-If the expression to the right of the spread operator might be null,
-you can avoid exceptions by using a null-aware spread operator (`...?`):
+스프레드 연산자 오른쪽에 있는 표현식이 null일 가능성이 있는 경우, 
+null 인식 스프레드 연산자(`...?`)를 사용하여 예외를 방지할 수 있습니다.
 
 <?code-excerpt "misc/test/language_tour/built_in_types_test.dart (list-null-spread)"?>
 ```dart
@@ -281,33 +268,29 @@ var list2 = [0, ...?list];
 assert(list2.length == 1);
 ```
 
-For more details and examples of using the spread operator, see the
-[spread operator proposal.][spread proposal]
+스프레드 연산자 사용에 대한 자세한 내용과 예는, [스프레드 연산자 제안][spread proposal]을 참조하세요.
 
 <a id="collection-operators"></a>
-### Control-flow operators
+### 흐름 제어 연산자 {:#control-flow-operators}
 
-Dart offers **collection if** and **collection for** for use in list, map,
-and set literals. You can use these operators to build collections using
-conditionals (`if`) and repetition (`for`).
+Dart는 리스트, 맵, 세트 리터럴에서 사용할 수 있는 **컬렉션 if**와 **컬렉션 for**를 제공합니다. 
+이러한 연산자를 사용하면, 조건문(`if`)과 반복(`for`)을 사용하여 컬렉션을 빌드할 수 있습니다.
 
-Here's an example of using **collection if**
-to create a list with three or four items in it:
+다음은 **컬렉션 if**를 사용하여, 3개 또는 4개의 항목이 있는 리스트를 만드는 예입니다.
 
 <?code-excerpt "misc/test/language_tour/built_in_types_test.dart (list-if)"?>
 ```dart
 var nav = ['Home', 'Furniture', 'Plants', if (promoActive) 'Outlet'];
 ```
 
-Dart also supports [if-case][] inside collection literals:
+Dart는 컬렉션 리터럴 내부에서도 [if-case][]를 지원합니다.
 
 ```dart
 var nav = ['Home', 'Furniture', 'Plants', if (login case 'Manager') 'Inventory'];
 ```
 
-Here's an example of using **collection for**
-to manipulate the items of a list before
-adding them to another list:
+다음은 다른 리스트에 아이템을 추가하기 전에, 
+리스트의 아이템을 조작하기 위해 **컬렉션 for**를 사용하는 예입니다.
 
 <?code-excerpt "misc/test/language_tour/built_in_types_test.dart (list-for)"?>
 ```dart
@@ -316,8 +299,8 @@ var listOfStrings = ['#0', for (var i in listOfInts) '#$i'];
 assert(listOfStrings[1] == '#1');
 ```
 
-For more details and examples of using collection `if` and `for`, see the
-[control flow collections proposal.][collections proposal]
+컬렉션 `if` 및 `for` 사용에 대한 자세한 내용과 예는, 
+[흐름 제어 컬렉션 제안][collections proposal]을 참조하세요.
 
 [collections]: /libraries/dart-core#collections
 [type inference]: /language/type-system#type-inference

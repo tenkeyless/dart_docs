@@ -1,13 +1,16 @@
 ---
-title: "Null safety: Frequently asked questions"
-description: FAQs to help you migrate your Dart code to null safety
-short-title: FAQ (null safety)
+# title: "Null safety: Frequently asked questions"
+title: "널 세이프티: 자주 묻는 질문"
+# description: FAQs to help you migrate your Dart code to null safety
+description: Dart 코드를 널 세이프티로 마이그레이션하는 데 도움이 되는 FAQ
+# short-title: FAQ (null safety)
+short-title: FAQ (널 세이프티)
 ---
 
-This page collects some common questions we've heard about [null safety](/null-safety)
-based on the experience of migrating Google internal code.
+이 페이지는 Google 내부 코드 마이그레이션 경험을 바탕으로, 
+[null 안전성](/null-safety)에 대해 들어본 몇 가지 일반적인 질문을 모아 놓았습니다.
 
-## What runtime changes should I be aware of for users of migrated code?
+## 마이그레이션된 코드 사용자는 어떤 런타임 변경 사항을 알고 있어야 합니까? {:#what-runtime-changes-should-i-be-aware-of-for-users-of-migrated-code}
 
 Most of the effects of migration do not immediately affect users of migrated
 code:
@@ -27,12 +30,12 @@ Two exceptions to be aware of are:
     all users. Only mark a field `late` if you are sure it is always initialized
     before it is used.
 
-## What if a value is only `null` in tests?
+## 테스트에서 값이 `null`만인 경우는 어떻게 되나요? {:#what-if-a-value-is-only-null-in-tests}
 
 If a value is only ever `null` in tests, the code can be improved by marking it
 non-nullable and making the tests pass non-null values.
 
-## How does `@required` compare to the new `required` keyword?
+## `@required`는 새로운 `required` 키워드와 어떻게 비교되나요? {:#how-does-required-compare-to-the-new-required-keyword}
 
 The `@required` annotation marks named arguments that must be passed; if not,
 the analyzer reports a hint.
@@ -54,7 +57,7 @@ was no `@required` before. Any callers not passing the newly-required argument
 will no longer compile. Instead, you could add a default or make the argument
 type nullable.
 
-## How should I migrate non-nullable fields that should be `final`, but aren't?
+## `final`이어야 하지만 그렇지 않은 null이 불가능한 필드를 어떻게 마이그레이션해야 합니까? {:#how-should-i-migrate-non-nullable-fields-that-should-be-final-but-arent}
 
 Some computations can be moved to the static initializer. Instead of:
 
@@ -95,7 +98,7 @@ initialized, and must be nullable. Fortunately, you have options:
 -   Or, mark the field `late final`. This enforces that it's initialized exactly
     once. It must be initialized before it can be read.
 
-## How should I migrate a `built_value` class?
+## `built_value` 클래스를 어떻게 마이그레이션해야 하나요? {:#how-should-i-migrate-a-built_value-class}
 
 Getters that were annotated `@nullable` should instead have nullable types; then
 remove all `@nullable` annotations. For example:
@@ -115,7 +118,7 @@ Getters that were *not* marked `@nullable` should *not* have nullable types,
 even if the migration tool suggests them. Add `!` hints as needed then rerun the
 analysis.
 
-## How should I migrate a factory that can return `null`?
+## `null`을 반환할 수 있는 팩토리를 어떻게 마이그레이션해야 하나요? {:#how-should-i-migrate-a-factory-that-can-return-null}
 
 _Prefer factories that do not return null._ We have seen code that meant to
 throw an exception due to invalid input but instead ended up returning null.
@@ -153,7 +156,7 @@ Do:
 If the intent of the factory was indeed to return null, then you can turn it
 into a static method so it is allowed to return `null`.
 
-## How should I migrate an `assert(x != null)` that now shows as unnecessary?
+## 이제 불필요하다고 표시되는 `assert(x != null)`을 어떻게 마이그레이션해야 합니까? {:#how-should-i-migrate-an-assertx-null-that-now-shows-as-unnecessary}
 
 The assert will be unnecessary when everything is fully migrated, but for now it
 *is* needed if you actually want to keep the check. Options:
@@ -166,7 +169,7 @@ The assert will be unnecessary when everything is fully migrated, but for now it
 -   Keep the behavior exactly as is: add `// ignore:
     unnecessary_null_comparison` to bypass the warning.
 
-## How should I migrate a runtime null check that now shows as unnecessary?
+## 이제 불필요하다고 표시되는 런타임 null 검사를 어떻게 마이그레이션해야 합니까? {:#how-should-i-migrate-a-runtime-null-check-that-now-shows-as-unnecessary}
 
 The compiler flags an explicit runtime null check as an unnecessary
 comparison if you make `arg` non-nullable.
@@ -188,12 +191,12 @@ whether `arg` is `null`. It might look like migrating to null safety means `arg`
 can never be `null`, but it could be `null` in unsound null safety. So, to preserve
 behavior, the null check should remain.
 
-## The `Iterable.firstWhere` method no longer accepts `orElse: () => null`.
+## `Iterable.firstWhere` 메서드는 더 이상 `orElse: () => null`을 허용하지 않습니다. {:#the-iterable-firstwhere-method-no-longer-accepts-orelse-null}
 
 Import `package:collection` and use the extension method `firstWhereOrNull`
 instead of `firstWhere`.
 
-## How do I deal with attributes that have setters?
+## setters가 있는 속성을 어떻게 처리하나요? {:#how-do-i-deal-with-attributes-that-have-setters}
 
 Unlike the `late final` suggestion above, these attributes cannot be marked as
 final. Often, settable attributes also do not have initial values since they are
@@ -209,7 +212,7 @@ In such cases, you have two options:
     WARNING: The `late` keyword adds a runtime check. If any user calls `get`
     before `set` they'll get an error at runtime.
 
-## How do I signal that the return value from a Map is non-nullable?
+## Map의 반환 값이 null을 허용하지 않는다는 것을 어떻게 알릴 수 있나요? {:#how-do-i-signal-that-the-return-value-from-a-map-is-non-nullable}
 
 The
 [lookup operator]({{site.dart-api}}/{{site.sdkInfo.channel}}/dart-core/Map/operator_get.html)
@@ -231,7 +234,7 @@ if (result != null) return result;
 // Handle the null case here, e.g. throw with explanation.
 ```
 
-## Why is the generic type on my List/Map nullable?
+## 내 List/Map의 제네릭 타입이 null을 허용하는 이유는 무엇인가요? {:#why-is-the-generic-type-on-my-listmap-nullable}
 
 It is typically a code smell to end up with nullable code like this:
 
@@ -291,7 +294,7 @@ _jellyPoints = List.generate(jellyMax, (_) => Vec2D(), growable: false);
   which is being suggested in https://github.com/dart-lang/language/issues/2477.
 {% endcomment %}
  
-## What happened to the default List constructor?
+## 기본 List 생성자에는 무슨 일이 있나요? {:#what-happened-to-the-default-list-constructor}
 
 You may encounter this error:
 
@@ -303,7 +306,7 @@ The default list constructor fills the list with `null`, which is a problem.
 
 Change it to `List.filled(length, default)` instead.
 
-## I'm using `package:ffi` and get a failure with `Dart_CObject_kUnsupported` when I migrate. What happened?
+## `package:ffi`를 사용하고 있는데, 마이그레이션할 때 `Dart_CObject_kUnsupported` 오류가 발생합니다. 무슨 일이 일어났나요? {:#im-using-package-ffi-and-get-a-failure-with-dart_cobject_kunsupported-when-i-migrate-what-happened}
 
 Lists sent via ffi can only be `List<dynamic>`, not `List<Object>` or
 `List<Object?>`. If you didn't change a list type explicitly in your migration,
@@ -312,7 +315,7 @@ when you enable null safety.
 
 The fix is to explicitly create such lists as `List<dynamic>`.
 
-## Why does the migration tool add comments to my code? {:#migration-comments}
+## 마이그레이션 도구가 내 코드에 주석을 추가하는 이유는 무엇인가요? {:#migration-comments}
 
 The migration tool adds `/* == false */` or `/* == true */` comments when it
 sees conditions that will always be false or true while running in sound mode.
@@ -328,7 +331,7 @@ and situations where a null value is really expected. So the tool tells you what
 it knows ("it looks like this condition will always be false!") and lets you
 decide what to do.
 
-## What should I know about compiling to JavaScript and null safety?
+## JavaScript로 컴파일하는 것과 null 안전성에 대해 알아야 할 사항은 무엇입니까? {:#what-should-i-know-about-compiling-to-javascript-and-null-safety}
 
 Null safety brings many benefits like reduced code size and improved
 app performance. Such benefits surface more when compiled to native
@@ -408,7 +411,7 @@ A few notes that are worth highlighting:
     P.print(a.x + 1);
   ```
     
-## Resources
+## 리소스 {:#resources}
 
 *   [DartPad with Null Safety]({{site.dartpad}})
 *   [Sound null safety](/null-safety)

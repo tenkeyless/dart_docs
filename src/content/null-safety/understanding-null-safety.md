@@ -1,24 +1,27 @@
 ---
-title: Understanding null safety
+# title: Understanding null safety
+title: 널 세이프티 이해하기
+# description: >-
+#     A deep dive into Dart language and library changes related to null safety.
 description: >-
-    A deep dive into Dart language and library changes related to null safety.
+    널 세이프티와 관련된 Dart 언어와 라이브러리 변경 사항에 대해 자세히 알아보세요.
 ---
 
-_Written by Bob Nystrom<br>
-July 2020_
+_Bob Nystrom 작성<br>
+2020년 7월_
 
-Null safety is the largest change we've made to Dart since we replaced the
-original unsound optional type system with [a sound static type system][strong]
-in Dart 2.0. When Dart first launched, compile-time null safety was a rare
-feature needing a long introduction. Today, Kotlin, Swift, Rust, and other
-languages all have their own answers to what has become a very [familiar
-problem.][billion] Here is an example:
+널 세이프티는 원래의 언사운드 선택적 타입 시스템을 Dart 2.0에서 [사운드 정적 타입 시스템][strong]으로 대체한 이후, 
+Dart에 적용한 가장 큰 변경 사항입니다. 
+Dart가 처음 출시되었을 때, 컴파일 타임 널 세이프티는 긴 소개가 필요한 드문 기능이었습니다. 
+오늘날 Kotlin, Swift, Rust 및 기타 언어는 모두, 
+매우 [익숙한 문제][billion]가 된 문제에 대한 자체적인 답을 가지고 있습니다. 
+다음은 그 예입니다.
 
 [strong]: /language/type-system
 [billion]: https://www.infoq.com/presentations/Null-References-The-Billion-Dollar-Mistake-Tony-Hoare/
 
 ```dart
-// Without null safety:
+// 널 세이프티가 없는 경우:
 bool isEmpty(String string) => string.length == 0;
 
 void main() {
@@ -26,95 +29,96 @@ void main() {
 }
 ```
 
-If you run this Dart program without null safety, it throws a
-`NoSuchMethodError` exception on the call to `.length`. The `null` value is an
-instance of the `Null` class, and `Null` has no "length" getter. Runtime
-failures suck. This is especially true in a language like Dart that is designed
-to run on an end-user's device. If a server application fails, you can often
-restart it before anyone notices. But when a Flutter app crashes on a user's
-phone, they are not happy. When your users aren't happy, you aren't happy.
+이 Dart 프로그램을 널 세이프티 없이 실행하면, 
+`.length` 호출 시 `NoSuchMethodError` 예외가 발생합니다. 
+`null` 값은 `Null` 클래스의 인스턴스이고, `Null`에는 "length" getter가 없습니다. 
+런타임 오류는 짜증납니다. 
+이는 특히 최종 사용자의 기기에서 실행되도록 설계된 Dart와 같은 언어에서 그렇습니다. 
+서버 애플리케이션이 실패하면, 아무도 알아차리지 못하고 다시 시작할 수 있습니다. 
+하지만, Flutter 앱이 사용자의 휴대전화에서 충돌하면, 사용자는 만족하지 못합니다. 
+사용자가 만족하지 못하면, 당신도 만족하지 못합니다.
 
-Developers like statically-typed languages like Dart because they enable the
-type checker to find mistakes in code at compile time, usually right in the IDE.
-The sooner you find a bug, the sooner you can fix it. When language designers
-talk about "fixing null reference errors", they mean enriching the static type
-checker so that the language can detect mistakes like the above attempt to call
-`.length` on a value that might be `null`.
+개발자는 Dart와 같은 정적 타입 언어를 좋아하는데, 
+이는 타입 검사기가 컴파일 타임에 코드의 실수를 찾을 수 있기 때문입니다. 
+보통 IDE에서 바로 찾을 수 있습니다. 
+버그를 빨리 찾을수록 빨리 수정할 수 있습니다. 
+언어 설계자가 "널 참조 오류 수정"에 대해 이야기할 때, 
+그들은 언어가 `.length`를 `null`일 수 있는 값에 대해 호출하려는, 
+위의 시도와 같은 실수를 감지할 수 있도록 정적 타입 검사기를 강화하는 것을 의미합니다.
 
-There is no one true solution to this problem. Rust and Kotlin both have their
-own approach that makes sense in the context of those languages. This doc walks
-through all the details of our answer for Dart. It includes changes to the
-static type system and a suite of other modifications and new language features
-to let you not only write null-safe code but hopefully to *enjoy* doing so.
+이 문제에 대한 진정한 해결책은 없습니다. 
+Rust와 Kotlin은 모두 해당 언어의 컨텍스트에서 의미가 있는 고유한 접근 방식을 가지고 있습니다. 
+이 문서는 Dart에 대한 우리의 답변의 모든 세부 사항을 살펴봅니다. 
+여기에는 정적 타입 시스템에 대한 변경 사항과 다른 수정 사항 및 새로운 언어 기능이 포함되어 있어, 
+널 세이프 코드를 작성할 수 있을 뿐만 아니라, 
+그렇게 하는 것을 *즐길* 수 있기를 바랍니다.
 
-This document is long. If you want something shorter that covers just what you
-need to know to get up and running, start with the [overview][]. When you are
-ready for a deeper understanding and have the time, come back here so you can
-understand *how* the language handles `null`, *why* we designed it that way, and
-how to write idiomatic, modern, null-safe Dart. (Spoiler alert: it ends up
-surprisingly close to how you write Dart today.)
+이 문서는 깁니다. 
+시작하고 실행하는 데 필요한 내용만 다루는 더 짧은 내용이 필요한 경우, [개요][overview]부터 시작하세요. 
+더 깊이 이해할 준비가 되었고 시간이 있으면, 
+여기로 돌아와서 언어가 `null`을 *어떻게* 처리하는지, 
+*왜* 그렇게 설계했는지, 관용적이고 현대적이며 널 세이프한 Dart를 작성하는 방법을 이해할 수 있습니다. 
+(스포일러 경고: 오늘날 Dart를 작성하는 방법과 놀랍게도 비슷합니다.)
 
 [overview]: /null-safety
 
-The various ways a language can tackle null reference errors each have their
-pros and cons. These principles guided the choices we made:
+언어가 널 참조 오류를 처리하는 다양한 방법에는 각각 장단점이 있습니다. 
+이러한 원칙은 우리가 내린 선택을 안내했습니다.
 
-*   **Code should be safe by default.** If you write new Dart code and don't use
-    any explicitly unsafe features, it never throws a null reference error at
-    runtime. All possible null reference errors are caught statically. If you
-    want to defer some of that checking to runtime to get greater flexibility,
-    you can, but you have to choose that by using some feature that is textually
-    visible in the code.
+* **기본적으로 코드는 안전해야 합니다.** 
+  
+  새로운 Dart 코드를 작성하고 명시적으로 안전하지 않은 기능을 사용하지 않으면, 
+  런타임에 null 참조 오류가 발생하지 않습니다. 
+  가능한 모든 null 참조 오류는 정적으로 포착됩니다. 
+  더 큰 유연성을 얻기 위해 일부 검사를 런타임으로 연기하려는 경우 그럴 수 있지만, 
+  코드에서 텍스트로 볼 수 있는 기능을 사용하여 선택해야 합니다.
 
-    In other words, we aren't giving you a life jacket and leaving it up to you
-    to remember to put it on every time you go out on the water. Instead, we
-    give you a boat that doesn't sink. You stay dry unless you jump overboard.
+  다시 말해, 구명조끼를 제공하고 물 위로 나갈 때마다 착용하는 것을 기억하도록 내버려 두는 것이 아닙니다. 
+  대신, 가라앉지 않는 보트를 제공합니다. 배에서 뛰어내리지 않는 한 건조하게 유지됩니다.
 
-*   **Null-safe code should be easy to write.** Most existing Dart code is
-    dynamically correct and does not throw null reference errors. You like your
-    Dart program the way it looks now, and we want you to be able to keep
-    writing code that way. Safety shouldn't require sacrificing usability,
-    paying penance to the type checker, or having to significantly change the
-    way you think.
+* **널 세이프 코드는 작성하기 쉬워야 합니다.** 
+  
+  기존 Dart 코드 대부분은 동적으로 정확하며, null 참조 오류를 발생시키지 않습니다. 
+  여러분은 지금의 Dart 프로그램을 좋아하고, 앞으로도 그런 방식으로 코드를 작성할 수 있기를 바랍니다. 
+  세이프티는 사용성을 희생하거나, 타입 검사기에 속죄하거나, 
+  생각하는 방식을 크게 바꿔야 하는 것을 요구하지 않습니다.
 
-*   **The resulting null-safe code should be fully sound.** "Soundness" in the
-    context of static checking means different things to different people. For
-    us, in the context of null safety, that means that if an expression has a
-    static type that does not permit `null`, then no possible execution of that
-    expression can ever evaluate to `null`. The language provides this guarantee
-    mostly through static checks, but there can be some runtime checks involved
-    too. (Though, note the first principle: any place where those runtime checks
-    happen will be your choice.)
+* **결과로 나오는 널 세이프 코드는 완전히 사운드해야 합니다.** 
+  
+  정적 검사의 맥락에서 "Soundness"는 사람마다 의미가 다릅니다. 
+  우리에게, null 세이프티의 맥락에서, 
+  이는 표현식에 `null`을 허용하지 않는 정적 타입이 있는 경우, 
+  해당 표현식의 실행은 결코 `null`로 평가될 수 없음을 의미합니다. 
+  이 언어는 대부분 정적 검사를 통해 이러한 보장을 제공하지만, 
+  일부 런타임 검사도 포함될 수 있습니다. 
+  (하지만 첫 번째 원칙에 유의하세요. 런타임 검사가 발생하는 모든 위치는 여러분의 선택입니다.)
 
-    Soundness is important for user confidence. A boat that *mostly* stays
-    afloat is not one you're enthused to brave the open seas on. But it's also
-    important for our intrepid compiler hackers. When the language makes hard
-    guarantees about semantic properties of a program, it means that the
-    compiler can perform optimizations that assume those properties are true.
-    When it comes to `null`, it means we can generate smaller code that
-    eliminates unneeded `null` checks, and faster code that doesn't need to
-    verify a receiver is non-`null` before calling methods on it.
+  Soundness는 사용자의 신뢰에 중요합니다. 
+  *대부분* 떠 있는 배는 넓은 바다를 헤치고 나가고 싶어하는 배가 아닙니다. 
+  하지만, 우리의 용감한 컴파일러 해커에게도 중요합니다. 
+  언어가 프로그램의 의미적 속성에 대해 엄격한 보장을 할 때, 
+  컴파일러는 해당 속성이 참이라고 가정하는 최적화를 수행할 수 있습니다. 
+  `null`과 관련하여 불필요한 `null` 검사를 제거하는 더 작은 코드와 메서드를 호출하기 전에, 
+  수신기가 `null`이 아닌지 확인할 필요가 없는 더 빠른 코드를 생성할 수 있습니다.
 
-    One caveat: We only guarantee soundness in Dart programs that are fully null
-    safe. Dart supports programs that contain a mixture of newer null-safe code
-    and older legacy code. In these mixed-version programs, null reference errors
-    may still occur. In a mixed-version program, you get all of the *static* safety
-    benefits in the portions that are null safe, but you don't get full runtime
-    soundness until the entire application is null safe.
+  한 가지 주의 사항: 우리는 완전히 null 안전한 Dart 프로그램에서만 soundness를 보장합니다. 
+  Dart는 최신 null 안전 코드와 이전 레거시 코드가 혼합된 프로그램을 지원합니다. 
+  이러한 혼합 버전 프로그램에서는 null 참조 오류가 여전히 발생할 수 있습니다. 
+  혼합 버전 프로그램에서는 null 안전한 부분에서, 
+  모든 *정적* 안전 이점을 얻을 수 있지만, 
+  전체 애플리케이션이 null 안전할 때까지 전체 런타임 soundness을 얻을 수 없습니다.
 
-Note that *eliminating* `null` is not a goal. There's nothing wrong with `null`.
-On the contrary, it's really useful to be able to represent the *absence* of a
-value. Building support for a special "absent" value directly into the language
-makes working with absence flexible and usable. It underpins optional
-parameters, the handy `?.` null-aware operator, and default initialization. It
-is not `null` that is bad, it is having `null` go *where you don't expect it*
-that causes problems.
+`null`을 *제거*하는 것이 목표가 아니라는 점에 유의하세요. 
+`null`에는 아무런 문제가 없습니다. 오히려 값의 *부재*를 나타낼 수 있는 것은 정말 유용합니다. 
+언어에 직접 특수한 "부재" 값에 대한 지원을 빌드하면, 부재에 대한 작업이 유연하고 사용 가능합니다. 
+선택적 매개변수, 편리한 `?.` null 인식 연산자, 기본 초기화를 뒷받침합니다. 
+`null`이 나쁜 것이 아니라, `null`이 *예상하지 않은 곳*으로 이동하는 것이 문제를 일으킵니다.
 
-Thus with null safety, our goal is to give you *control* and *insight* into
-where `null` can flow through your program and certainty that it can't flow
-somewhere that would cause a crash.
+따라서 null 안전성을 통해, 
+우리의 목표는 `null`이 프로그램을 통해 흐를 수 있는 위치에 대한 *제어*와 *통찰력*을 제공하고, 
+충돌을 일으킬 수 있는 곳으로 흐를 수 없다는 확신을 제공하는 것입니다.
 
-## Nullability in the type system
+## 타입 시스템의 널 허용 가능성(Nullability) {:#nullability-in-the-type-system}
 
 Null safety begins in the static type system because everything else rests upon
 that. Your Dart program has a whole universe of types in it: primitive types
@@ -135,7 +139,7 @@ flow into an expression of some other type means any of those operations can
 fail. This is really the crux of null reference errors—every failure comes
 from trying to look up a method or property on `null` that it doesn't have.
 
-### Non-nullable and nullable types
+### Non-nullable and nullable types {:#non-nullable-and-nullable-types}
 
 Null safety eliminates that problem at the root by changing the type hierarchy.
 The `Null` type still exists, but it's no longer a subtype of all types.
@@ -172,7 +176,7 @@ full-featured union types.
 
 [union]: https://en.wikipedia.org/wiki/Union_type
 
-### Using nullable types
+### Using nullable types {:#using-nullable-types}
 
 If you have an expression with a nullable type, what can you do with the result?
 Since our principle is safe by default, the answer is not much. We can't let you
@@ -295,7 +299,7 @@ you can't get away from them. Don't worry, we have a whole suite of features to
 help you move values from the nullable half over to the other side that we will
 get to soon.
 
-### Top and bottom
+### Top and bottom {:#top-and-bottom}
 
 This section is a little esoteric. You can mostly skip it, except for two
 bullets at the very end, unless you're into type system stuff. Imagine all the
@@ -338,7 +342,7 @@ In practice, this means:
     to [help reachability analysis](#never-for-unreachable-code).
     If you don't know if you need a bottom type, you probably don't.
 
-## Ensuring correctness
+## 정확성 보장 {:#ensuring-correctness}
 
 We divided the universe of types into nullable and non-nullable halves. In order
 to maintain soundness and our principle that you can never get a null reference
@@ -351,7 +355,7 @@ from arguments into parameters on function calls. The main remaining places
 where `null` can sneak in are when a variable first comes into being and when
 you leave a function. So there are some additional compile errors:
 
-### Invalid returns
+### Invalid returns {:#invalid-returns}
 
 If a function has a non-nullable return type, then every path through the
 function must reach a `return` statement that returns a value. Before null
@@ -396,7 +400,7 @@ String alwaysReturns(int n) {
 
 We'll dive more deeply into the new flow analysis in the next section.
 
-### Uninitialized variables
+### Uninitialized variables {:#uninitialized-variables}
 
 When you declare a variable, if you don't give it an explicit initializer, Dart
 default initializes the variable with `null`. That's convenient, but obviously
@@ -480,7 +484,7 @@ Even so, the rules do cause friction. Fortunately, we have a suite of new
 language features to lubricate the most common patterns where these new
 limitations slow you down. First, though, it's time to talk about flow analysis.
 
-## Flow analysis
+## 흐름 분석 {:#flow-analysis}
 
 [Control flow analysis][] has been around in compilers for years. It's mostly
 hidden from users and used during compiler optimization, but some newer
@@ -531,7 +535,7 @@ powerful in several ways.][flow analysis]
 
 [flow analysis]: {{site.repo.dart.lang}}/blob/main/resources/type-system/flow-analysis.md
 
-### Reachability analysis
+### Reachability analysis {:#reachability-analysis}
 
 First off, we fixed the [long-standing complaint][18921] that type promotion
 isn't smart about early returns and other unreachable code paths. When analyzing
@@ -553,7 +557,7 @@ Is now perfectly valid. Since the `if` statement will exit the function when
 statement. This is a really nice improvement that helps a lot of Dart code, even
 stuff not related to nullability.
 
-### Never for unreachable code
+### Never for unreachable code {:#never-for-unreachable-code}
 
 You can also *program* this reachability analysis. The new bottom type `Never`
 has no values. (What kind of value is simultaneously a `String`, `bool`, and
@@ -600,7 +604,7 @@ statement can only be reached when `other` is a `Point`, Dart promotes it.
 In other words, using `Never` in your own APIs lets you extend Dart's
 reachability analysis.
 
-### Definite assignment analysis
+### Definite assignment analysis {:#definite-assignment-analysis}
 
 I mentioned this one briefly with local variables. Dart needs to ensure a
 non-nullable local variable is always initialized before it is read. We use
@@ -637,7 +641,7 @@ fine. The analysis can tell that `result` is definitely initialized exactly once
 on every control flow path, so the constraints for marking a variable `final`
 are satisfied.
 
-### Type promotion on null checks
+### Type promotion on null checks {:#type-promotion-on-null-checks}
 
 The smarter flow analysis helps lots of Dart code, even code not related to
 nullability. But it's not a coincidence that we're making these changes now. We
@@ -703,7 +707,7 @@ and now also works on private final fields as of Dart 3.2.
 For more information about working with non-local variables,
 see [Working with nullable fields](#working-with-nullable-fields).
 
-### Unnecessary code warnings
+### Unnecessary code warnings {:#unnecessary-code-warnings}
 
 Having smarter reachability analysis and knowing where `null` can flow through
 your program helps ensure that you *add* code to handle `null`. But we can also
@@ -752,7 +756,7 @@ to clean up pointless code. By removing *unneeded* checks for `null`, we ensure
 that the remaining meaningful checks stand out. We want you to be able to look
 at your code and *see* where `null` can flow.
 
-## Working with nullable types
+## nullable 타입으로 작업 {:#working-with-nullable-types}
 
 We've now corralled `null` into the set of nullable types. With flow analysis,
 we can safely let some non-`null` values hop over the fence to the non-nullable
@@ -764,7 +768,7 @@ To try to regain as much of the flexibility that Dart had before null
 safety—and to go beyond it in some places—we have a handful of other
 new features.
 
-### Smarter null-aware methods
+### Smarter null-aware methods {:#smarter-null-aware-methods}
 
 Dart's null aware operator `?.` is much older than null safety. The runtime
 semantics state that if the receiver is `null` then the property access on the
@@ -875,7 +879,7 @@ function?.call(arg1, arg2);
 ```
 
 <a id="null-assertion-operator"></a>
-### Non-null assertion operator
+### Non-null assertion operator {:#non-null-assertion-operator}
 
 The great thing about using flow analysis to move a nullable variable to the
 non-nullable side of the world is that doing so is provably safe. You get to
@@ -952,7 +956,7 @@ must be checked at runtime to preserve soundness and it may fail and throw an
 exception. But you have control over where these casts are inserted, and you can
 always see them by looking through your code.
 
-### Late variables
+### Late variables {:#late-variables}
 
 The most common place where the type checker cannot prove the safety of code is
 around top-level variables and fields. Here is an example:
@@ -1046,7 +1050,7 @@ field's type is non-nullable now, it is a *compile* error to try to assign
 initialization, but still prohibits you from treating it like a nullable
 variable.
 
-### Lazy initialization
+### Lazy initialization {:#lazy-initialization}
 
 The `late` modifier has some other special powers too. It may seem paradoxical,
 but you can use `late` on a field that has an initializer:
@@ -1070,7 +1074,7 @@ because you don't have access to the new object until all field initializers
 have completed. But with a `late` field, that's no longer true, so you *can*
 access `this`, call methods, or access fields on the instance.
 
-### Late final variables
+### Late final variables {:#late-final-variables}
 
 You can also combine `late` with `final`:
 
@@ -1099,7 +1103,7 @@ variable modifiers covers most of the feature space of `lateinit` in Kotlin and
 `lazy` in Swift. You can even use it on local variables if you want a little
 local lazy evaluation.
 
-### Required named parameters
+### Required named parameters {:#required-named-parameters}
 
 To guarantee that you never see a `null` parameter with a non-nullable type, the
 type checker requires all optional parameters to either have a nullable type or
@@ -1138,7 +1142,7 @@ non-nullable types (if they have a default value).
 This is another one of those features that I think makes Dart better regardless
 of null safety. It simply makes the language feel more complete to me.
 
-### Abstract fields
+### Abstract fields {:#abstract-fields}
 
 One of the neat features of Dart is that
 it upholds a thing called the [uniform access principle][].
@@ -1188,7 +1192,7 @@ abstract class Cup {
 This behaves exactly like the second example.
 It simply declares an abstract getter and setter with the given name and type.
 
-### Working with nullable fields
+### Working with nullable fields {:#working-with-nullable-fields}
 
 These new features cover many common patterns and make working with `null`
 pretty painless most of the time. But even so, our experience is that nullable
@@ -1256,7 +1260,7 @@ local.
 For more information on handling these and other type promotion issues,
 see [Fixing type promotion failures](/tools/non-promotion-reasons).
 
-### Nullability and generics
+### Nullability and generics {:#nullability-and-generics}
 
 Like most modern statically-typed languages, Dart has generic classes and
 generic methods. They interact with nullability in a few ways that seem
@@ -1399,7 +1403,7 @@ no way to *require* a nullable type argument. If you want uses of the type
 parameter to reliably be nullable and be implicitly initialized to `null`, 
 you can use `T?` inside the body of the class.
 
-## Core library changes
+## 코어 라이브러리 변경 사항 {:#core-library-changes}
 
 There are a couple of other tweaks here and there in the language, but they are
 minor. Things like the default type of a `catch` with no `on` clause is now
@@ -1416,7 +1420,7 @@ gracefully accept it with a nullable type.
 
 There are a few important corners, though:
 
-### The Map index operator is nullable
+### The Map index operator is nullable {:#the-map-index-operator-is-nullable}
 
 This isn't really a change, but more a thing to know. The index `[]` operator on
 the Map class returns `null` if the key isn't present. This implies that the
@@ -1455,7 +1459,7 @@ method name would be clearer than seeing a `!` with its built-in semantics right
 there at the call site. So the idiomatic way to access a known-present element
 in a map is to use `[]!`. You get used to it.
 
-### No unnamed List constructor
+### No unnamed List constructor {:#no-unnamed-list-constructor}
 
 The unnamed constructor on `List` creates a new list with the given size but
 does not initialize any of the elements. This would poke a very large hole in
@@ -1473,7 +1477,7 @@ The pattern of creating a completely uninitialized list has always felt out of
 place in Dart, and now it is even more so. If you have code broken by this,
 you can always fix it by using one of the many other ways to produce a list.
 
-### Cannot set a larger length on non-nullable lists
+### Cannot set a larger length on non-nullable lists {:#cannot-set-a-larger-length-on-non-nullable-lists}
 
 This is little known, but the `length` getter on `List` also has a corresponding
 *setter*. You can set the length to a shorter value to truncate the list. And
@@ -1494,7 +1498,7 @@ the implementation of `insert()` in `ListMixin` (which `ListBase` shares) to
 call `add()` instead. Your custom list class should provide a definition of
 `add()` if you want to be able to use that inherited `insert()` method.
 
-### Cannot access Iterator.current before or after iteration
+### Cannot access Iterator.current before or after iteration {:#cannot-access-iterator-current-before-or-after-iteration}
 
 The `Iterator` class is the mutable "cursor" class used to traverse the elements
 of a type that implements `Iterable`. You are expected to call `moveNext()`
@@ -1512,7 +1516,7 @@ element in that erroneous way. Instead, we have made the type of `current` be
 iterating, we've left the iterator's behavior undefined if you call it when you
 aren't supposed to. Most implementations of `Iterator` throw a `StateError`.
 
-## Summary
+## 요약 {:#summary}
 
 That is a very detailed tour through all of the language and library changes
 around null safety. It's a lot of stuff, but this is a pretty big language

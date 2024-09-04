@@ -1,54 +1,51 @@
 ---
-title: Built-in types
-description: Information on the types Dart supports.
+# title: Built-in types
+title: 빌트인 타입
+# description: Information on the types Dart supports.
+description: Dart가 지원하는 타입에 대한 정보.
 prevpage:
   url: /language/keywords
-  title: Keywords
+  # title: Keywords
+  title: 키워드
 nextpage:
   url: /language/records
-  title: Records
+  # title: Records
+  title: 레코드
 ---
 
-The Dart language has special support for the following:
+Dart 언어는 다음에 대한 특별 지원을 제공합니다.
 
-- [Numbers](#numbers) (`int`, `double`)
-- [Strings](#strings) (`String`)
+- [숫자](#numbers) (`int`, `double`)
+- [문자열](#strings) (`String`)
 - [Booleans](#booleans) (`bool`)
-- [Records][] (`(value1, value2)`)
-- [Lists][] (`List`, also known as *arrays*)
-- [Sets][] (`Set`)
-- [Maps][] (`Map`)
-- [Runes](#runes-and-grapheme-clusters) (`Runes`; often replaced by the `characters` API)
-- [Symbols](#symbols) (`Symbol`)
-- The value `null` (`Null`)
+- [레코드][Records] (`(value1, value2)`)
+- [리스트][Lists] (`List`, *배열(arrays)*이라고도 함)
+- [집합][Sets] (`Set`)
+- [맵][Maps] (`Map`)
+- [룬](#runes-and-grapheme-clusters) (`Runes`; 종종 `characters` API로 대체됨)
+- [심볼](#symbols) (`Symbol`)
+- 값 `null` (`Null`)
 
-This support includes the ability to create objects using literals.
-For example, `'this is a string'` is a string literal,
-and `true` is a boolean literal.
+이 지원에는 리터럴을 사용하여 객체를 만드는 기능이 포함됩니다. 
+예를 들어, `'this is a string'`은 문자열 리터럴이고, `true`는 boolean 리터럴입니다.
 
-Because every variable in Dart refers to an object—an instance of a
-*class*—you can usually use *constructors* to initialize variables. Some
-of the built-in types have their own constructors. For example, you can
-use the `Map()` constructor to create a map.
+Dart의 모든 변수는 객체(*클래스*의 인스턴스)를 참조하므로, 
+일반적으로 *생성자*를 사용하여 변수를 초기화할 수 있습니다. 
+일부 기본 제공 타입에는 자체 생성자가 있습니다. 
+예를 들어, `Map()` 생성자를 사용하여 맵을 만들 수 있습니다.
 
-Some other types also have special roles in the Dart language:
+일부 다른 타입도 Dart 언어에서 특별한 역할을 합니다.
 
-* `Object`: The superclass of all Dart classes except `Null`.
-* `Enum`: The superclass of all enums.
-* `Future` and `Stream`: Used in [asynchrony support][].
-* `Iterable`: Used in [for-in loops][iteration] and
-  in synchronous [generator functions][].
-* `Never`: Indicates that an expression can never
-  successfully finish evaluating.
-  Most often used for functions that always throw an exception.
-* `dynamic`: Indicates that you want to disable static checking.
-  Usually you should use `Object` or `Object?` instead.
-* `void`: Indicates that a value is never used.
-  Often used as a return type.
+* `Object`: `Null`을 제외한 모든 Dart 클래스의 슈퍼클래스입니다.
+* `Enum`: 모든 열거형의 슈퍼클래스입니다.
+* `Future`와 `Stream`: [비동기 지원][asynchrony support]에서 사용됩니다.
+* `Iterable`: [for-in 루프][iteration] 및 동기 [제너레이터 함수][generator functions]에서 사용됩니다.
+* `Never`: 표현식이 평가를 완료할 수 없음을 나타냅니다. (never successfully finish evaluating) 항상 예외를 throw하는 함수에 가장 많이 사용됩니다.
+* `dynamic`: 정적 검사를 비활성화하려는 것을 나타냅니다. 일반적으로 대신 `Object` 또는 `Object?`를 사용해야 합니다.
+* `void`: 값이 사용되지 않음을 나타냅니다. 종종 반환 타입으로 사용됩니다.
 
-The `Object`, `Object?`, `Null`, and `Never` classes
-have special roles in the class hierarchy.
-Learn about these roles in [Understanding null safety][].
+`Object`, `Object?`, `Null` 및 `Never` 클래스는 클래스 계층에서 특별한 역할을 합니다. 
+[null 세이프티 이해][Understanding null safety]에서 이러한 역할에 대해 알아보세요.
 
 {% comment %}
 If we decide to cover `dynamic` more,
@@ -60,36 +57,28 @@ here's a nice example that illustrates what dynamic does:
   String d = c;  // Problem!
 {% endcomment %}
 
+## Numbers {:#numbers}
 
-## Numbers
-
-Dart numbers come in two flavors:
+Dart 숫자에는 두 가지 플레이버가 있습니다.
 
 [`int`][]
 
-:   Integer values no larger than 64 bits,
-    [depending on the platform][dart-numbers].
-    On native platforms, values can be from
-    -2<sup>63</sup> to 2<sup>63</sup> - 1.
-    On the web, integer values are represented as JavaScript numbers
-    (64-bit floating-point values with no fractional part)
-    and can be from -2<sup>53</sup> to 2<sup>53</sup> - 1.
+:   64비트보다 크지 않은 정수 값, [플랫폼에 따라 다릅니다][dart-numbers]. 
+    네이티브 플랫폼에서, 값은 -2<sup>63</sup>에서 2<sup>63</sup> - 1까지 가능합니다. 
+    웹에서, 정수 값은 JavaScript 숫자(소수점 부분이 없는 64비트 부동 소수점 값)로 표현되며, 
+    -2<sup>53</sup>에서 2<sup>53</sup> - 1까지 가능합니다.
 
 [`double`][]
 
-:   64-bit (double-precision) floating-point numbers, as specified by
-    the IEEE 754 standard.
+:   IEEE 754 표준에서 지정한 64비트(double-precision) 부동 소수점 숫자입니다.
 
-Both `int` and `double` are subtypes of [`num`][].
-The num type includes basic operators such as +, -, /, and \*,
-and is also where you'll find `abs()`,` ceil()`,
-and `floor()`, among other methods.
-(Bitwise operators, such as \>\>, are defined in the `int` class.)
-If num and its subtypes don't have what you're looking for, the
-[dart:math][] library might.
+`int`와 `double`은 모두 [`num`][]의 하위 타입입니다. 
+num 타입에는 +, -, /, \*와 같은 기본 연산자가 포함되며, 
+`abs()`, `ceil()`, `floor()` 등의 메서드도 있습니다. 
+(비트 연산자, 예를 들어 \>\>는 `int` 클래스에 정의되어 있습니다.) 
+num과 하위 타입에서 원하는 것을 찾을 수 없다면, [dart:math][] 라이브러리가 있을 수 있습니다.
 
-Integers are numbers without a decimal point. Here are some examples of
-defining integer literals:
+Integers는 소수점이 없는 숫자입니다. 정수 리터럴을 정의하는 몇 가지 예는 다음과 같습니다.
 
 <?code-excerpt "misc/lib/language_tour/built_in_types.dart (integer-literals)"?>
 ```dart
@@ -97,8 +86,7 @@ var x = 1;
 var hex = 0xDEADBEEF;
 ```
 
-If a number includes a decimal, it is a double. Here are some examples
-of defining double literals:
+숫자에 소수점이 포함되어 있으면 double입니다. double 리터럴을 정의하는 몇 가지 예는 다음과 같습니다.
 
 <?code-excerpt "misc/lib/language_tour/built_in_types.dart (double-literals)"?>
 ```dart
@@ -106,23 +94,23 @@ var y = 1.1;
 var exponents = 1.42e5;
 ```
 
-You can also declare a variable as a num. If you do this, the variable
-can have both integer and double values.
+변수를 num으로 선언할 수도 있습니다. 
+이렇게 하면, 변수는 정수와 double 값을 모두 가질 수 있습니다.
 
 <?code-excerpt "misc/lib/language_tour/built_in_types.dart (declare-num)"?>
 ```dart
-num x = 1; // x can have both int and double values
+num x = 1; // x는 int와 double 값을 모두 가질 수 있습니다.
 x += 2.5;
 ```
 
-Integer literals are automatically converted to doubles when necessary:
+필요한 경우 정수 리터럴은 자동으로 double로 변환됩니다.
 
 <?code-excerpt "misc/lib/language_tour/built_in_types.dart (int-to-double)"?>
 ```dart
-double z = 1; // Equivalent to double z = 1.0.
+double z = 1; // double z = 1.0과 같습니다.
 ```
 
-Here's how you turn a string into a number, or vice versa:
+문자열을 숫자로 바꾸거나, 반대로 문자열을 숫자로 바꾸는 방법은 다음과 같습니다.
 
 <?code-excerpt "misc/test/language_tour/built_in_types_test.dart (number-conversion)"?>
 ```dart
@@ -143,10 +131,7 @@ String piAsString = 3.14159.toStringAsFixed(2);
 assert(piAsString == '3.14');
 ```
 
-The `int` type specifies the traditional bitwise shift (`<<`, `>>`, `>>>`),
-complement (`~`), AND (`&`), OR (`|`), and XOR (`^`) operators,
-which are useful for manipulating and masking flags in bit fields.
-For example:
+`int` 타입은 전통적인 비트 단위 시프트(`<<`, `>>`, `>>>`), 보수(`~`), AND(`&`), OR(`|`), XOR(`^`) 연산자를 지정하는데, 이는 비트 필드에서 플래그를 조작하고 마스크하는 데 유용합니다. 예를 들어:
 
 <?code-excerpt "misc/test/language_tour/built_in_types_test.dart (bit-shifting)"?>
 ```dart
@@ -155,13 +140,10 @@ assert((3 | 4) == 7); // 0011 | 0100 == 0111
 assert((3 & 4) == 0); // 0011 & 0100 == 0000
 ```
 
-For more examples, see the
-[bitwise and shift operator][] section.
+더 많은 예를 보려면, [비트별 및 시프트 연산자][bitwise and shift operator] 섹션을 참조하세요.
 
-Literal numbers are compile-time constants.
-Many arithmetic expressions are also compile-time constants,
-as long as their operands are
-compile-time constants that evaluate to numbers.
+리터럴 숫자는 컴파일 타임 상수입니다. 
+많은 산술 표현식도, 피연산자가 숫자로 평가되는 컴파일 타임 상수인 한, 컴파일 타임 상수입니다.
 
 <?code-excerpt "misc/lib/language_tour/built_in_types.dart (const-num)"?>
 ```dart
@@ -170,14 +152,12 @@ const secondsUntilRetry = 5;
 const msUntilRetry = secondsUntilRetry * msPerSecond;
 ```
 
-For more information, see [Numbers in Dart][dart-numbers].
+자세한 내용은 [Dart의 숫자][dart-numbers]를 참조하세요.
 
+## Strings {:#strings}
 
-## Strings
-
-A Dart string (`String` object) holds a sequence of UTF-16 code units.
-You can use either
-single or double quotes to create a string:
+Dart 문자열(`String` 객체)은 UTF-16 코드 단위의 시퀀스를 보유합니다. 
+작은따옴표나 큰따옴표를 사용하여 문자열을 만들 수 있습니다.
 
 <?code-excerpt "misc/lib/language_tour/built_in_types.dart (quoting)"?>
 ```dart
@@ -189,10 +169,9 @@ var s4 = "It's even easier to use the other delimiter.";
 
 <a id="string-interpolation"></a>
 
-You can put the value of an expression inside a string by using
-`${`*`expression`*`}`. If the expression is an identifier, you can skip
-the `{}`. To get the string corresponding to an object, Dart calls the
-object's `toString()` method.
+`${`*`expression`*`}`를 사용하여, 표현식의 값을 문자열 안에 넣을 수 있습니다. 
+표현식이 식별자인 경우, `{}`를 건너뛸 수 있습니다. 
+객체에 해당하는 문자열을 가져오기 위해, Dart는 객체의 `toString()` 메서드를 호출합니다.
 
 <?code-excerpt "misc/test/language_tour/built_in_types_test.dart (string-interpolation)"?>
 ```dart
@@ -208,13 +187,11 @@ assert('That deserves all caps. '
 ```
 
 :::note
-The `==` operator tests whether two objects are equivalent.
-Two strings are equivalent if they contain the
-same sequence of code units.
+`==` 연산자는 두 객체가 동일한지 테스트합니다. 
+두 문자열은 동일한 코드 단위 시퀀스를 포함하는 경우, 동일합니다.
 :::
 
-You can concatenate strings using adjacent string literals or the `+`
-operator:
+인접 문자열 리터럴이나, `+` 연산자를 사용하여, 문자열을 연결할 수 있습니다.
 
 <?code-excerpt "misc/test/language_tour/built_in_types_test.dart (adjacent-string-literals)"?>
 ```dart
@@ -229,8 +206,7 @@ var s2 = 'The + operator ' + 'works, as well.';
 assert(s2 == 'The + operator works, as well.');
 ```
 
-To create a multi-line string, use a triple quote with
-either single or double quotation marks:
+여러 줄로 된 문자열을 만들려면, 작은 따옴표나 큰 따옴표와 함께 삼중 따옴표를 사용합니다.
 
 <?code-excerpt "misc/lib/language_tour/built_in_types.dart (triple-quotes)"?>
 ```dart
@@ -243,28 +219,27 @@ var s2 = """This is also a
 multi-line string.""";
 ```
 
-You can create a "raw" string by prefixing it with `r`:
+`r` 접두사를 붙여 "raw" 문자열을 생성할 수 있습니다.
 
 <?code-excerpt "misc/lib/language_tour/built_in_types.dart (raw-strings)"?>
 ```dart
 var s = r'In a raw string, not even \n gets special treatment.';
 ```
 
-See [Runes and grapheme clusters](#runes-and-grapheme-clusters) for details on how
-to express Unicode characters in a string.
+문자열에서 유니코드 문자를 표현하는 방법에 대한 자세한 내용은, 
+[룬(Runes) 및 문자소 클러스터(grapheme clusters)](#runes-and-grapheme-clusters)를 참조하세요.
 
-Literal strings are compile-time constants,
-as long as any interpolated expression is a compile-time constant
-that evaluates to null or a numeric, string, or boolean value.
+리터럴 문자열은, 보간된 표현식이 null 또는 숫자, 문자열 또는 boolean 값으로 평가되는 컴파일 타임 상수인 한, 
+컴파일 타임 상수입니다.
 
 <?code-excerpt "misc/lib/language_tour/built_in_types.dart (string-literals)"?>
 ```dart
-// These work in a const string.
+// 이것들은 const 문자열에서 작동합니다.
 const aConstNum = 0;
 const aConstBool = true;
 const aConstString = 'a constant string';
 
-// These do NOT work in a const string.
+// 이것은 const 문자열에서는 작동하지 않습니다.
 var aNum = 0;
 var aBool = true;
 var aString = 'a string';
@@ -274,66 +249,54 @@ const validConstString = '$aConstNum $aConstBool $aConstString';
 // const invalidConstString = '$aNum $aBool $aString $aConstList';
 ```
 
-For more information on using strings, check out
-[Strings and regular expressions](/libraries/dart-core#strings-and-regular-expressions).
+문자열 사용에 대한 자세한 내용은, [문자열 및 정규 표현식](/libraries/dart-core#strings-and-regular-expressions)을 확인하세요.
 
+## Booleans {:#booleans}
 
-## Booleans
+boolean 값을 나타내기 위해, Dart에는 `bool`이라는 타입이 있습니다. 
+두 개의 객체만 bool 타입을 갖습니다. 
+boolean 리터럴 `true`와 `false`로, 둘 다 컴파일 타임 상수입니다.
 
-To represent boolean values, Dart has a type named `bool`. Only two
-objects have type bool: the boolean literals `true` and `false`,
-which are both compile-time constants.
-
-Dart's type safety means that you can't use code like
-<code>if (<em>nonbooleanValue</em>)</code> or
-<code>assert (<em>nonbooleanValue</em>)</code>.
-Instead, explicitly check for values, like this:
+Dart의 타입 안전성은 <code>if (<em>nonbooleanValue</em>)</code> 또는 <code>assert (<em>nonbooleanValue</em>)</code>와 같은 코드를 사용할 수 없다는 것을 의미합니다. 
+대신, 다음과 같이 값을 명시적으로 확인합니다.
 
 <?code-excerpt "misc/test/language_tour/built_in_types_test.dart (no-truthy)"?>
 ```dart
-// Check for an empty string.
+// 빈 문자열을 확인합니다.
 var fullName = '';
 assert(fullName.isEmpty);
 
-// Check for zero.
+// 0인지 확인합니다.
 var hitPoints = 0;
 assert(hitPoints == 0);
 
-// Check for null.
+// null인지 확인합니다.
 var unicorn = null;
 assert(unicorn == null);
 
-// Check for NaN.
+// NaN을 확인합니다.
 var iMeantToDoThis = 0 / 0;
 assert(iMeantToDoThis.isNaN);
 ```
 
-## Runes and grapheme clusters
+## 룬(Runes)과 문자소 클러스터(grapheme clusters) {:#runes-and-grapheme-clusters}
 
-In Dart, [runes][] expose the Unicode code points of a string.
-You can use the [characters package][]
-to view or manipulate user-perceived characters,
-also known as
-[Unicode (extended) grapheme clusters.][grapheme clusters]
+Dart에서, [룬(Runes)][runes]는 문자열의 유니코드 코드 포인트를 노출합니다. 
+[characters 패키지][characters package]를 사용하면 사용자가 인식하는 문자, 
+즉 [유니코드(확장) 문자소 클러스터][grapheme clusters]를 보거나 조작할 수 있습니다.
 
-Unicode defines a unique numeric value for each letter, digit,
-and symbol used in all of the world's writing systems.
-Because a Dart string is a sequence of UTF-16 code units,
-expressing Unicode code points within a string requires
-special syntax.
-The usual way to express a Unicode code point is
-`\uXXXX`, where XXXX is a 4-digit hexadecimal value.
-For example, the heart character (♥) is `\u2665`.
-To specify more or less than 4 hex digits,
-place the value in curly brackets.
-For example, the laughing emoji (😆) is `\u{1f606}`.
+유니코드는 전 세계 모든 문자 체계에서 사용되는 각 문자, 숫자 및 기호에 대해 고유한 숫자 값을 정의합니다. 
+Dart 문자열은 UTF-16 코드 단위의 시퀀스이므로, 
+문자열 내에서 유니코드 코드 포인트를 표현하려면 특수 구문이 필요합니다. 
+유니코드 코드 포인트를 표현하는 일반적인 방법은 `\uXXXX`이며, 여기서 XXXX는 4자리 16진수 값입니다. 
+예를 들어, 하트 문자(♥)는 `\u2665`입니다. 
+4자리보다 많거나 적은 16진수 숫자를 지정하려면, 값을 중괄호로 묶습니다. 
+예를 들어, 웃는 이모티콘(😆)은 `\u{1f606}`입니다.
 
-If you need to read or write individual Unicode characters,
-use the `characters` getter defined on String
-by the characters package.
-The returned [`Characters`][] object is the string as
-a sequence of grapheme clusters.
-Here's an example of using the characters API:
+개별 유니코드 문자를 읽거나 써야 하는 경우, 
+characters 패키지에서 String에 정의된 `characters` getter를 사용합니다. 
+반환된 [`Characters`][] 객체는 문자소 클러스터의 시퀀스인 문자열입니다. 
+다음은 characters API를 사용하는 예입니다.
 
 <?code-excerpt "misc/lib/language_tour/characters.dart"?>
 ```dart
@@ -347,7 +310,7 @@ void main() {
 }
 ```
 
-The output, depending on your environment, looks something like this:
+출력은 환경에 따라 다음과 같습니다.
 
 ```console
 $ dart run bin/main.dart
@@ -356,20 +319,16 @@ The end of the string: ???
 The last character: 🇩🇰
 ```
 
-For details on using the characters package to manipulate strings,
-see the [example][characters example] and [API reference][characters API]
-for the characters package.
+문자열을 조작하기 위해 문자 패키지를 사용하는 방법에 대한 자세한 내용은, 
+문자 패키지의 [예제][characters example] 및 [API 참조][characters API]를 참조하세요.
 
-## Symbols
+## Symbols {:#symbols}
 
-A [`Symbol`][] object
-represents an operator or identifier declared in a Dart program. You
-might never need to use symbols, but they're invaluable for APIs that
-refer to identifiers by name, because minification changes identifier
-names but not identifier symbols.
+[`Symbol`][] 객체는 Dart 프로그램에서 선언된 연산자 또는 식별자를 나타냅니다. 
+심볼을 사용할 필요가 없을 수도 있지만, 이름으로 식별자를 참조하는 API의 경우 매우 중요합니다. 
+최소화는 식별자 이름은 변경하지만, 식별자 심볼은 변경하지 않기 때문입니다.
 
-To get the symbol for an identifier, use a symbol literal, which is just
-`#` followed by the identifier:
+식별자의 심볼을 가져오려면, 심볼 리터럴을 사용합니다. 심볼 리터럴은 `#` 뒤에 식별자가 오는 것입니다.
 
 ```plaintext
 #radix
@@ -388,9 +347,7 @@ void main() {
 ```
 {% endcomment %}
 
-Symbol literals are compile-time constants.
-
-
+심볼 리터럴은 컴파일 타임 상수입니다.
 
 [Records]: /language/records
 [Lists]: /language/collections#lists
