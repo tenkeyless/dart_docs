@@ -1,6 +1,7 @@
 ---
 title: dart:io
-description: Learn about the major features in Dart's dart:io library.
+# description: Learn about the major features in Dart's dart:io library.
+description: Dart의 dart:io 라이브러리의 주요 기능에 대해 알아보세요.
 prevpage:
   url: /libraries/dart-convert
   title: dart:convert
@@ -11,70 +12,65 @@ nextpage:
 
 <?code-excerpt plaster="none"?>
 
-The [dart:io][] library provides APIs to deal with
-files, directories, processes, sockets, WebSockets, and HTTP
-clients and servers.
+[dart:io][] 라이브러리는 파일, 디렉토리, 프로세스, 소켓, 웹 소켓, HTTP 클라이언트와 서버를 처리하기 위한 API를 제공합니다.
 
 :::important
-Only non-web [Flutter apps,]({{site.flutter}}) command-line scripts, 
-and servers can import and use `dart:io`, not web apps.
+웹 앱이 아닌 [Flutter 앱]({{site.flutter}}) 명령줄 스크립트, 
+및 서버만 `dart:io`를 import하여 사용할 수 있으며, 웹 앱은 사용할 수 없습니다.
 :::
 
-In general, the dart:io library implements and promotes an asynchronous
-API. Synchronous methods can easily block an application, making it
-difficult to scale. Therefore, most operations return results via Future
-or Stream objects, a pattern common with modern server platforms such as
-Node.js.
+일반적으로, dart:io 라이브러리는 비동기 API를 구현하고 promotes 합니다. 
+동기 메서드는 애플리케이션을 쉽게 차단하여, 확장하기 어렵게 만들 수 있습니다. 
+따라서, 대부분의 작업은 Future 또는 Stream 객체를 통해 결과를 반환하는데, 
+이는 Node.js와 같은 최신 서버 플랫폼에서 일반적인 패턴입니다.
 
-The few synchronous methods in the dart:io library are clearly marked
-with a Sync suffix on the method name. Synchronous methods aren't covered here.
+dart:io 라이브러리의 몇 가지 동기 메서드는 메서드 이름에 Sync 접미사로 명확하게 표시됩니다. 
+동기 메서드는 여기에서 다루지 않습니다.
 
-To use the dart:io library you must import it:
+dart:io 라이브러리를 사용하려면 다음과 같이 import 해야 합니다.
 
 <?code-excerpt "misc/test/library_tour/io_test.dart (import)"?>
 ```dart
 import 'dart:io';
 ```
 
-## Files and directories
+## 파일 및 디렉토리 {:#files-and-directories}
 
-The I/O library enables command-line apps to read and write files and
-browse directories. You have two choices for reading the contents of a
-file: all at once, or streaming. Reading a file all at once requires
-enough memory to store all the contents of the file. If the file is very
-large or you want to process it while reading it, you should use a
-Stream, as described in
-[Streaming file contents](#streaming-file-contents).
+I/O 라이브러리를 사용하면 명령줄 앱에서 파일을 읽고 쓰고 디렉토리를 탐색할 수 있습니다. 
+파일의 내용을 읽는 데는 두 가지 선택이 있습니다. (1) 한 번에 모두 또는 (2) 스트리밍입니다. 
+한 번에 파일을 읽으려면, 파일의 모든 내용을 저장할 만큼 충분한 메모리가 필요합니다. 
+파일이 매우 크거나 읽는 동안 처리하려는 경우, 
+[파일 내용 스트리밍](#streaming-file-contents)에 설명된 대로, 
+Stream을 사용해야 합니다.
 
-### Reading a file as text
+### [Future] 파일을 텍스트로 읽기 {:#reading-a-file-as-text}
 
-When reading a text file encoded using UTF-8, you can read the entire
-file contents with `readAsString()`. When the individual lines are
-important, you can use `readAsLines()`. In both cases, a Future object
-is returned that provides the contents of the file as one or more
-strings.
+UTF-8을 사용하여 인코딩된 텍스트 파일을 읽을 때, 
+`readAsString()`로 전체 파일 내용을 읽을 수 있습니다. 
+개별 줄이 중요한 경우, `readAsLines()`를 사용할 수 있습니다. 
+두 경우 모두, 파일의 내용을 하나 이상의 문자열로 제공하는 Future 객체가 반환됩니다.
 
 <?code-excerpt "misc/test/library_tour/io_test.dart (read-as-string)" replace="/\btest_data\///g"?>
 ```dart
 void main() async {
   var config = File('config.txt');
 
-  // Put the whole file in a single string.
+  // 전체 파일을 하나의 문자열로 넣습니다.
   var stringContents = await config.readAsString();
   print('The file is ${stringContents.length} characters long.');
 
-  // Put each line of the file into its own string.
+  // 파일의 각 줄을 개별 문자열로 만듭니다.
   var lines = await config.readAsLines();
   print('The file is ${lines.length} lines long.');
 }
 ```
 
 
-### Reading a file as binary
+### [Future] 파일을 바이너리로 읽기 {:#reading-a-file-as-binary}
 
-The following code reads an entire file as bytes into a list of ints.
-The call to `readAsBytes()` returns a Future, which provides the result
-when it's available.
+다음 코드는 전체 파일을 바이트로 읽어서 int 리스트로 만듭니다. 
+`readAsBytes()`를 호출하면 Future가 반환되고, 
+Future는 available 할 때 결과를 제공합니다.
 
 <?code-excerpt "misc/test/library_tour/io_test.dart (read-as-bytes)" replace="/\btest_data\///g"?>
 ```dart
@@ -86,11 +82,11 @@ void main() async {
 }
 ```
 
-### Handling errors
+### [Future] 오류 처리 {:#handling-errors}
 
-To capture errors so they don't result in uncaught exceptions, you can
-register a `catchError` handler on the Future,
-or (in an `async` function) use try-catch:
+catch 되지 않는 예외가 발생하지 않도록 오류를 포착하려면, 
+Future에 `catchError` 핸들러를 등록하거나, 
+(`async` 함수에서) try-catch를 사용할 수 있습니다.
 
 <?code-excerpt "misc/test/library_tour/io_test.dart (try-catch)" replace="/does-not-exist/config/g"?>
 ```dart
@@ -105,12 +101,11 @@ void main() async {
 }
 ```
 
-### Streaming file contents
+### [Stream] 스트리밍 파일 컨텐츠 {:#streaming-file-contents}
 
-Use a Stream to read a file, a little at a time.
-You can use either the [Stream API](/libraries/dart-async#stream)
-or `await for`, part of Dart's
-[asynchrony support.](/language/async)
+Stream을 사용하여 파일을 조금씩 읽습니다. 
+[Stream API](/libraries/dart-async#stream) 또는, 
+Dart의 [비동기 지원](/language/async)의 일부인 `await for`를 사용할 수 있습니다.
 
 <?code-excerpt "misc/test/library_tour/io_test.dart (read-from-stream)" replace="/_?test_\w*\/?//g"?>
 ```dart
@@ -133,12 +128,11 @@ void main() async {
 }
 ```
 
-### Writing file contents
+### 파일 컨텐츠 쓰기 {:#writing-file-contents}
 
-You can use an [IOSink][] to
-write data to a file. Use the File `openWrite()` method to get an IOSink
-that you can write to. The default mode, `FileMode.write`, completely
-overwrites existing data in the file.
+[IOSink][]를 사용하여 파일에 데이터를 쓸 수 있습니다. 
+File `openWrite()` 메서드를 사용하여 쓸 수 있는 IOSink를 가져옵니다. 
+기본 모드인, `FileMode.write`는, 파일에 있는 기존 데이터를 완전히 덮어씁니다.
 
 <?code-excerpt "misc/test/library_tour/io_test.dart (write-file)" replace="/\btest_data\///g"?>
 ```dart
@@ -149,22 +143,22 @@ await sink.flush();
 await sink.close();
 ```
 
-To add to the end of the file, use the optional `mode` parameter to
-specify `FileMode.append`:
+파일 끝에 추가하려면, 선택적 `mode` 매개변수를 사용하여, 
+`FileMode.append`를 지정합니다.
 
 <?code-excerpt "misc/test/library_tour/io_test.dart (append)" replace="/_?test_\w*\/?//g"?>
 ```dart
 var sink = logFile.openWrite(mode: FileMode.append);
 ```
 
-To write binary data, use `add(List<int> data)`.
+바이너리 데이터를 작성하려면, `add(List<int> data)`를 사용합니다.
 
 
-### Listing files in a directory
+### 디렉토리에 있는 파일 나열하기 {:#listing-files-in-a-directory}
 
-Finding all files and subdirectories for a directory is an asynchronous
-operation. The `list()` method returns a Stream that emits an object
-when a file or directory is encountered.
+디렉토리의 모든 파일과 하위 디렉토리를 찾는 것은 비동기 연산입니다. 
+`list()` 메서드는 파일이나 디렉토리가 발견되면, 
+객체를 방출하는 Stream을 반환합니다.
 
 <?code-excerpt "misc/test/library_tour/io_test.dart (list-dir)" replace="/\btest_data\b/tmp/g"?>
 ```dart
@@ -186,36 +180,31 @@ void main() async {
 }
 ```
 
+### 기타 일반적인 기능 {:#other-common-functionality}
 
-### Other common functionality
+File 및 Directory 클래스에는 다음을 포함하되, 이에 국한되지 않는 다른 기능이 포함되어 있습니다.
 
-The File and Directory classes contain other functionality, including
-but not limited to:
+- 파일 또는 디렉토리 생성: File 및 Directory의 `create()`
+- 파일 또는 디렉토리 삭제: File 및 Directory의 `delete()`
+- 파일 길이 가져오기: File의 `length()`
+- 파일에 대한 랜덤 액세스 가져오기: File의 `open()`
 
-- Creating a file or directory: `create()` in File and Directory
-- Deleting a file or directory: `delete()` in File and Directory
-- Getting the length of a file: `length()` in File
-- Getting random access to a file: `open()` in File
+전체 메서드 리스트는 [File][] 및 [Directory][]의 API 문서를 참조하세요.
 
-Refer to the API docs for [File][] and [Directory][] for a full
-list of methods.
+## HTTP 클라이언트 및 서버 {:#http-clients-and-servers}
 
+dart:io 라이브러리는 명령줄 앱이 HTTP 리소스에 액세스하고, 
+HTTP 서버를 실행하는 데 사용할 수 있는 클래스를 제공합니다.
 
-## HTTP clients and servers
+### HTTP 서버 {:#http-server}
 
-The dart:io library provides classes that command-line apps can use for
-accessing HTTP resources, as well as running HTTP servers.
+[HttpServer][] 클래스는 웹 서버를 구축하기 위한 낮은 레벨 기능을 제공합니다. 
+요청 핸들러를 매치시키고, 헤더를 설정하고, 데이터를 스트리밍하는 등의 작업을 할 수 있습니다.
 
-### HTTP server
-
-The [HttpServer][] class
-provides the low-level functionality for building web servers. You can
-match request handlers, set headers, stream data, and more.
-
-The following sample web server returns simple text information.
-This server listens on port 8888 and address 127.0.0.1 (localhost),
-responding to requests for the path `/dart`. For any other path,
-the response is status code 404 (page not found).
+다음 샘플 웹 서버는 간단한 텍스트 정보를 반환합니다. 
+이 서버는 포트 8888과 주소 127.0.0.1(localhost)에서 수신 대기하며, 
+경로 `/dart`에 대한 요청에 응답합니다. 
+다른 경로에 대한 응답은, 상태 코드 404(페이지를 찾을 수 없음)입니다.
 
 <?code-excerpt "misc/lib/library_tour/io/http_server.dart (process-requests)" replace="/Future<\w+\W/void/g; /\b_//g"?>
 ```dart
@@ -243,26 +232,20 @@ void processRequest(HttpRequest request) {
 }
 ```
 
-### HTTP client
+### HTTP 클라이언트 {:#http-client}
 
-You should avoid directly using `dart:io` to make HTTP requests.
-The [HttpClient][] class in `dart:io` is platform-dependent
-and tied to a single implementation.
-Instead, use a higher-level library like
-[`package:http`]({{site.pub-pkg}}/http).
+`dart:io`를 직접 사용하여 HTTP 요청을 하는 것은 피해야 합니다. 
+`dart:io`의 [HttpClient][] 클래스는 플랫폼에 따라 다르며, 단일 구현에 연결되어 있습니다. 
+대신, [`package:http`]({{site.pub-pkg}}/http)와 같은 높은 레벨 라이브러리를 사용하세요.
 
-The [Fetch data from the internet][] tutorial
-explains how to make HTTP requests
-using `package:http`.
+[인터넷에서 데이터 가져오기][Fetch data from the internet] 튜토리얼은 `package:http`를 사용하여 HTTP 요청을 하는 방법을 설명합니다.
 
-## More information
+## 더 많은 정보 {:#more-information}
 
-This page showed how to use the major features of the [dart:io][] library.
-Besides the APIs discussed in this section, the dart:io library also
-provides APIs for [processes,][Process] [sockets,][Socket] and
-[web sockets.][WebSocket]
-For more information about server-side and command-line app development, see the
-[server-side Dart overview.](/server)
+이 페이지에서는 [dart:io][] 라이브러리의 주요 기능을 사용하는 방법을 보여주었습니다. 
+이 섹션에서 논의된 API 외에도, 
+dart:io 라이브러리는 [Process][], [Socket][] 및 [웹 소켓][WebSocket]에 대한 API도 제공합니다. 
+서버 측 및 명령줄 앱 개발에 대한 자세한 내용은, [서버 측 Dart 개요](/server)를 참조하세요.
 
 
 [dart:io]: {{site.dart-api}}/{{site.sdkInfo.channel}}/dart-io/dart-io-library.html

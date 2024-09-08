@@ -1,35 +1,34 @@
 ---
 title: dart:html
-description: Learn about the major features in Dart's dart:html library.
+# description: Learn about the major features in Dart's dart:html library.
+description: Dart의 dart:html 라이브러리의 주요 기능에 대해 알아보세요.
 prevpage:
   url: /libraries/dart-io
   title: dart:io
 ---
 
 :::warning
-`dart:html` is being replaced with [`package:web`][].
-Package maintainers should migrate to `package:web` as
-soon as possible to be compatible with Wasm.
-Read the [Migrate to package:web][] page for guidance.
+`dart:html`은 [`package:web`][]으로 대체됩니다. 
+패키지 관리자는 Wasm과 호환되도록, 가능한 한 빨리 `package:web`으로 마이그레이션해야 합니다. 
+지침은 [package:web으로 마이그레이션][Migrate to package:web] 페이지를 읽어보세요.
 :::
 
-Use the [dart:html][] library to program the browser, manipulate objects and
-elements in the DOM, and access HTML5 APIs. DOM stands for *Document Object
-Model*, which describes the hierarchy of an HTML page.
+[dart:html][] 라이브러리를 사용하여 브라우저를 프로그래밍하고, 
+DOM에서 객체와 요소를 조작하고, HTML5 API에 액세스합니다. 
+DOM은 HTML 페이지의 계층 구조를 설명하는 *Document Object Model*의 약자입니다.
 
-Other common uses of dart:html are manipulating styles (*CSS*), getting
-data using HTTP requests, and exchanging data using
-[WebSockets](#sending-and-receiving-real-time-data-with-websockets).
-HTML5 (and dart:html) has many
-additional APIs that this section doesn't cover. Only web apps can use
-dart:html, not command-line apps.
+dart:html의 다른 일반적인 사용 사례로는 스타일(*CSS*) 조작, 
+HTTP 요청을 사용하여 데이터 가져오기, 
+[WebSockets](#sending-and-receiving-real-time-data-with-websockets)를 사용하여 데이터 교환 등이 있습니다. 
+HTML5(및 dart:html)에는 이 섹션에서 다루지 않는 추가 API가 많이 있습니다. 
+웹 앱만 dart:html을 사용할 수 있으며, 명령줄 앱은 사용할 수 없습니다.
 
 :::note
-For larger applications or if you already have a Flutter application,
-consider using [Flutter for web.]({{site.flutter}}/web)
+대규모 애플리케이션의 경우 또는 이미 Flutter 애플리케이션이 있는 경우, 
+[웹용 Flutter]({{site.flutter}}/web)를 사용하는 것을 고려하세요.
 :::
 
-To use the HTML library in your web app, import dart:html:
+웹 앱에서 HTML 라이브러리를 사용하려면, dart:html을 import 합니다.
 
 <?code-excerpt "html/lib/html.dart (import)"?>
 ```dart
@@ -39,86 +38,74 @@ import 'dart:html';
 [`package:web`]: {{site.pub-pkg}}/web
 [Migrate to package:web]: /interop/js-interop/package-web
 
-## Manipulating the DOM
+## DOM 조작하기 {:#manipulating-the-dom}
 
-To use the DOM, you need to know about *windows*, *documents*,
-*elements*, and *nodes*.
+DOM을 사용하려면, *windows*, *documents*, *elements*, *nodes*에 대해 알아야 합니다.
 
-A [Window][] object represents
-the actual window of the web browser. Each Window has a Document object,
-which points to the document that's currently loaded. The Window object
-also has accessors to various APIs such as IndexedDB (for storing data),
-requestAnimationFrame (for animations), and more. In tabbed browsers,
-each tab has its own Window object.
+[Window][] 객체는 웹 브라우저의 실제 창을 나타냅니다. 
+각 Window에는 현재 로드된 문서를 가리키는 Document 객체가 있습니다. 
+Window 객체에는 또한 IndexedDB(데이터 저장용), requestAnimationFrame(애니메이션용) 등과 같은 다양한 API에 대한 접근자가 있습니다. 
+탭 브라우저에서, 각 탭에는 고유한 Window 객체가 있습니다.
 
-With the [Document][] object, you can create and manipulate [Element][] objects
-within the document. Note that the document itself is an element and can be
-manipulated.
+[Document][] 객체를 사용하면, 
+문서 내에서 [Element][] 객체를 만들고 조작할 수 있습니다. 
+문서 자체가 요소이며, 조작할 수 있다는 점에 유의하세요.
 
-The DOM models a tree of
-[Nodes.][Nodes] These nodes are often
-elements, but they can also be attributes, text, comments, and other DOM
-types. Except for the root node, which has no parent, each node in the
-DOM has one parent and might have many children.
+DOM은 [Nodes][]의 트리를 모델링합니다. 
+이러한 노드는 종종 요소이지만, 속성, 텍스트, 주석 및 기타 DOM 타입일 수도 있습니다. 
+부모가 없는 루트 노드를 제외하고, DOM의 각 노드에는 부모가 하나 있고 자식이 여러 개 있을 수 있습니다.
 
-### Finding elements
+### 요소 찾기 {:#finding-elements}
 
-To manipulate an element, you first need an object that represents it.
-You can get this object using a query.
+요소를 조작하려면, 먼저 해당 요소를 나타내는 객체가 필요합니다. 
+쿼리를 사용하여 이 객체를 가져올 수 있습니다.
 
-Find one or more elements using the top-level functions
-`querySelector()` and `querySelectorAll()`. 
-You can query by ID, class, tag, name, or any combination of these. 
-The [CSS Selector Specification guide](https://www.w3.org/TR/css3-selectors/) 
-defines the formats of the selectors such as using a \# prefix to specify IDs 
-and a period (.) for classes.
+최상위 함수 `querySelector()` 및 `querySelectorAll()`를 사용하여 하나 이상의 요소를 찾습니다. 
+ID, 클래스, 태그, 이름 또는 이러한 조합으로 쿼리할 수 있습니다. 
+[CSS 선택기 사양 가이드](https://www.w3.org/TR/css3-selectors/)는 
+ID를 지정하기 위한 \# 접두사와 클래스의 마침표(.)를 사용하는 것과 같이 선택기의 형식을 정의합니다.
 
-The `querySelector()` function returns the first element that matches
-the selector, while `querySelectorAll()`returns a collection of elements
-that match the selector.
+`querySelector()` 함수는 선택기와 일치하는 첫 번째 요소를 반환하는 반면, 
+`querySelectorAll()`은 선택기와 일치하는 요소의 컬렉션들을 반환합니다.
 
 <?code-excerpt "html/lib/html.dart (query-selector)"?>
 ```dart
-// Find an element by id (an-id).
+// id(an-id)로 요소를 찾습니다.
 Element idElement = querySelector('#an-id')!;
 
-// Find an element by class (a-class).
+// 클래스(a-class)로 요소를 찾습니다.
 Element classElement = querySelector('.a-class')!;
 
-// Find all elements by tag (<div>).
+// 태그(<div>)로 모든 요소를 ​​찾으세요.
 List<Element> divElements = querySelectorAll('div');
 
-// Find all text inputs.
+// 모든 텍스트 입력을 찾습니다.
 List<Element> textInputElements = querySelectorAll(
   'input[type="text"]',
 );
 
-// Find all elements with the CSS class 'class'
-// inside of a <p> that is inside an element with
-// the ID 'id'.
+// ID가 'id'인 요소 내부에 있는, 
+// <p> 내에서 CSS 클래스가 'class'인 모든 요소를 ​​찾습니다.
 List<Element> specialParagraphElements = querySelectorAll('#id p.class');
 ```
 
-### Manipulating elements
+### 요소 조작하기 {:#manipulating-elements}
 
-You can use properties to change the state of an element. Node and its
-subtype Element define the properties that all elements have. For
-example, all elements have `classes`, `hidden`, `id`, `style`, and
-`title` properties that you can use to set state. Subclasses of Element
-define additional properties, such as the `href` property of
-[AnchorElement.][AnchorElement]
+속성을 사용하여 요소의 상태를 변경할 수 있습니다. 
+Node와 하위 타입 Element는 모든 요소가 갖는 속성을 정의합니다. 
+예를 들어, 모든 요소에는 상태를 설정하는 데 사용할 수 있는 `classes`, `hidden`, `id`, `style` 및 `title` 속성이 있습니다. 
+Element의 하위 클래스는 ([AnchorElement][]의 `href` 속성과 같은) 추가적인 속성을 정의합니다.
 
-Consider this example of specifying an anchor element in HTML:
+HTML에서 앵커 요소를 지정하는 다음 예를 고려하세요.
 
 <?code-excerpt "html/test/html_test.dart (anchor-html)" replace="/.*'(.*?)'.*/$1/g"?>
 ```html
 <a id="example" href="/another/example">link text</a>
 ```
 
-This `<a>` tag specifies an element with an `href` attribute and a text
-node (accessible via a `text` property) that contains the string
-"link text". To change the URL that the link goes to, you can use
-AnchorElement's `href` property:
+이 `<a>` 태그는, 
+`href` 속성과 문자열 "link text"를 포함하는 텍스트 노드(`text` 속성을 통해 액세스 가능)가 있는 요소를 지정합니다. 
+링크가 이동하는 URL을 변경하려면, AnchorElement의 `href` 속성을 사용할 수 있습니다.
 
 <?code-excerpt "html/test/html_test.dart (href)" plaster="none"?>
 ```dart
@@ -126,14 +113,15 @@ var anchor = querySelector('#example') as AnchorElement;
 anchor.href = 'https://dart.dev';
 ```
 
-Often you need to set properties on multiple elements. For example, the
-following code sets the `hidden` property of all elements that have a
-class of "mac", "win", or "linux". Setting the `hidden` property to true
-has the same effect as adding `display: none` to the CSS.
+종종 여러 요소에 속성을 설정해야 합니다. 
+예를 들어, 다음 코드는 "mac", "win" 또는 "linux" 클래스를 가진, 
+모든 요소의 `hidden` 속성을 설정합니다. 
+`hidden` 속성을 true로 설정하는 것은, 
+CSS에 `display: none`을 추가하는 것과 같은 효과가 있습니다.
 
 <?code-excerpt "html/test/html_test.dart (os-html)" replace="/.*? = '''|''';$//g"?>
 ```html
-<!-- In HTML: -->
+<!-- HTML 에서: -->
 <p>
   <span class="linux">Words for Linux</span>
   <span class="macos">Words for Mac</span>
@@ -143,42 +131,41 @@ has the same effect as adding `display: none` to the CSS.
 
 <?code-excerpt "html/test/html_test.dart (os)"?>
 ```dart
-// In Dart:
+// Dart 에서:
 const osList = ['macos', 'windows', 'linux'];
 final userOs = determineUserOs();
 
-// For each possible OS...
+// 가능한 각 OS에 대해...
 for (final os in osList) {
-  // Matches user OS?
+  // 사용자 OS와 일치하나요?
   bool shouldShow = (os == userOs);
 
-  // Find all elements with class=os. For example, if
-  // os == 'windows', call querySelectorAll('.windows')
-  // to find all elements with the class "windows".
-  // Note that '.$os' uses string interpolation.
+  // class=os인 모든 요소를 ​​찾습니다. 
+  // 예를 들어, os == 'windows'인 경우, 
+  // querySelectorAll('.windows')를 호출하여, 
+  // 클래스가 "windows"인 모든 요소를 ​​찾습니다. 
+  // '.$os'는 문자열 보간을 사용합니다.
   for (final elem in querySelectorAll('.$os')) {
-    elem.hidden = !shouldShow; // Show or hide.
+    elem.hidden = !shouldShow; // 표시하거나 숨기세요.
   }
 }
 ```
 
-When the right property isn't available or convenient, you can use
-Element's `attributes` property. This property is a
-`Map<String, String>`, where the keys are attribute names. For a list of
-attribute names and their meanings, see the [MDN Attributes
-page.](https://developer.mozilla.org/docs/Web/HTML/Attributes) Here's an
-example of setting an attribute's value:
+적절한 속성을 사용할 수 없거나 편리하지 않은 경우, 
+Element의 `attributes` 속성을 사용할 수 있습니다. 
+이 속성은 키가 속성 이름인 `Map<String, String>`입니다. 
+속성 이름과 의미 리스트는 [MDN Attributes 페이지](https://developer.mozilla.org/docs/Web/HTML/Attributes)를 참조하세요. 
+다음은 속성 값을 설정하는 예입니다.
 
 <?code-excerpt "html/lib/html.dart (attributes)"?>
 ```dart
 elem.attributes['someAttribute'] = 'someValue';
 ```
 
-### Creating elements
+### 요소 생성 {:#creating-elements}
 
-You can add to existing HTML pages by creating new elements and
-attaching them to the DOM. Here's an example of creating a paragraph
-(\<p\>) element:
+새 요소를 만들고 DOM에 첨부하여, 기존 HTML 페이지에 추가할 수 있습니다. 
+다음은 문단(\<p\>) 요소를 만드는 예입니다.
 
 <?code-excerpt "html/lib/html.dart (creating-elements)"?>
 ```dart
@@ -186,8 +173,7 @@ var elem = ParagraphElement();
 elem.text = 'Creating is easy!';
 ```
 
-You can also create an element by parsing HTML text. Any child elements
-are also parsed and created.
+HTML 텍스트를 파싱하여 요소를 만들 수도 있습니다. 어떤 자식 요소든 파싱되어 만들어집니다.
 
 <?code-excerpt "html/lib/html.dart (creating-from-html)"?>
 ```dart
@@ -196,58 +182,55 @@ var elem2 = Element.html(
 );
 ```
 
-Note that `elem2` is a `ParagraphElement` in the preceding example.
+앞의 예에서, `elem2`는 `ParagraphElement`입니다.
 
-Attach the newly created element to the document by assigning a parent
-to the element. You can add an element to any existing element's
-children. In the following example, `body` is an element, and its child
-elements are accessible (as a `List<Element>`) from the `children` property.
+요소에 부모를 지정하여 새로 만든 요소를 ​​문서에 첨부합니다. 
+기존 요소의 자식에 요소를 추가할 수 있습니다. 
+다음 예에서, `body`는 요소이고, 
+그것의 자식 요소는 `children` 속성에서 (`List<Element>`로서) 액세스할 수 있습니다.
 
 <?code-excerpt "html/lib/html.dart (body-children-add)"?>
 ```dart
 document.body!.children.add(elem2);
 ```
 
-### Adding, replacing, and removing nodes
+### 노드 추가, 교체 및 제거 {:#adding-replacing-and-removing-nodes}
 
-Recall that elements are just a kind of node. You can find all the
-children of a node using the `nodes` property of Node, which returns a
-`List<Node>` (as opposed to `children`, which omits non-Element nodes).
-Once you have this list, you can use the usual List methods and
-operators to manipulate the children of the node.
+요소는 노드의 일종일 뿐이라는 점을 기억하세요. 
+노드의 `nodes` 속성을 사용하여, 노드의 모든 자식을 찾을 수 있습니다. 
+이 속성은 `List<Node>`를 반환합니다. (`children`은 Element가 아닌 노드를 생략합니다)
+이 리스트가 있으면, 일반적인 List 메서드와 연산자를 사용하여, 노드의 자식을 조작할 수 있습니다.
 
-To add a node as the last child of its parent, use the List `add()`
-method:
+노드를 부모의 마지막 자식으로 추가하려면, 리스트의 `add()` 메서드를 사용합니다.
 
 <?code-excerpt "html/lib/html.dart (nodes-add)"?>
 ```dart
 querySelector('#inputs')!.nodes.add(elem);
 ```
 
-To replace a node, use the Node `replaceWith()` method:
+노드를 바꾸려면, Node의 `replaceWith()` 메서드를 사용하세요.
 
 <?code-excerpt "html/lib/html.dart (replace-with)"?>
 ```dart
 querySelector('#status')!.replaceWith(elem);
 ```
 
-To remove a node, use the Node `remove()` method:
+노드를 제거하려면, Node의 `remove()` 메서드를 사용합니다.
 
 <?code-excerpt "html/lib/html.dart (remove)"?>
 ```dart
-// Find a node by ID, and remove it from the DOM if it is found.
+// ID로 노드를 찾고, 해당 노드가 있으면 DOM에서 제거합니다.
 querySelector('#expendable')?.remove();
 ```
 
-### Manipulating CSS styles
+### CSS 스타일 조작 {:#manipulating-css-styles}
 
-CSS, or *cascading style sheets*, defines the presentation styles of DOM
-elements. You can change the appearance of an element by attaching ID
-and class attributes to it.
+CSS 또는 *계단식 스타일 시트*는 DOM 요소의 표현 스타일을 정의합니다. 
+ID 및 클래스 속성을 첨부하여, 요소의 모양을 변경할 수 있습니다.
 
-Each element has a `classes` field, which is a list. Add and remove CSS
-classes simply by adding and removing strings from this collection. For
-example, the following sample adds the `warning` class to an element:
+각 요소에는 리스트인 `classes` 필드가 있습니다. 
+이 컬렉션에서 문자열을 추가하고 제거하는 것만으로, CSS 클래스를 추가하고 제거할 수 있습니다. 
+예를 들어, 다음 샘플은 요소에 `warning` 클래스를 추가합니다.
 
 <?code-excerpt "html/lib/html.dart (classes-add)"?>
 ```dart
@@ -255,8 +238,8 @@ var elem = querySelector('#message')!;
 elem.classes.add('warning');
 ```
 
-It's often very efficient to find an element by ID. You can dynamically
-set an element ID with the `id` property:
+ID로 요소를 찾는 것이 종종 매우 효율적입니다. 
+`id` 속성을 사용하여 요소 ID를 동적으로 설정할 수 있습니다.
 
 <?code-excerpt "html/lib/html.dart (set-id)"?>
 ```dart
@@ -265,8 +248,7 @@ message.id = 'message2';
 message.text = 'Please subscribe to the Dart mailing list.';
 ```
 
-You can reduce the redundant text in this example by using method
-cascades:
+이 예제에서 중복된 텍스트를 줄이려면, 메서드 cascades를 사용하면 됩니다.
 
 <?code-excerpt "html/lib/html.dart (elem-set-cascade)"?>
 ```dart
@@ -275,9 +257,8 @@ var message = DivElement()
   ..text = 'Please subscribe to the Dart mailing list.';
 ```
 
-While using IDs and classes to associate an element with a set of styles
-is best practice, sometimes you want to attach a specific style directly
-to the element:
+ID와 클래스를 사용하여 요소를 스타일 세트와 연결하는 것이 가장 좋은 방법이지만, 
+때로는 특정 스타일을 요소에 직접 연결하고 싶을 수도 있습니다.
 
 <?code-excerpt "html/lib/html.dart (set-style)"?>
 ```dart
@@ -286,33 +267,31 @@ message.style
   ..fontSize = '3em';
 ```
 
-### Handling events
+### 이벤트 처리 {:#handling-events}
 
-To respond to external events such as clicks, changes of focus, and
-selections, add an event listener. You can add an event listener to any
-element on the page. Event dispatch and propagation is a complicated
-subject; [research the
-details](https://www.w3.org/TR/DOM-Level-3-Events/#dom-event-architecture)
-if you're new to web programming.
+클릭, 초점 변경, 선택과 같은 외부 이벤트에 응답하려면, 이벤트 리스너를 추가합니다. 
+페이지의 모든 요소에 이벤트 리스너를 추가할 수 있습니다. 
+이벤트 전달 및 전파는 복잡한 주제입니다. 
+웹 프로그래밍을 처음 접한다면 [자세한 내용을 조사하세요](https://www.w3.org/TR/DOM-Level-3-Events/#dom-event-architecture).
 
-Add an event handler using
-<code><em>element</em>.on<em>Event</em>.listen(<em>function</em>)</code>,
-where <code><em>Event</em></code> is the event
-name and <code><em>function</em></code> is the event handler.
+<code><em>element</em>.on<em>Event</em>.listen(<em>function</em>)</code>를 사용하여, 
+이벤트 핸들러를 추가합니다. 
+여기서 <code><em>Event</em></code>는 이벤트 이름이고, 
+<code><em>function</em></code>은 이벤트 핸들러입니다.
 
-For example, here's how you can handle clicks on a button:
+예를 들어, 버튼 클릭을 처리하는 방법은 다음과 같습니다.
 
 <?code-excerpt "html/lib/html.dart (on-click)"?>
 ```dart
-// Find a button by ID and add an event handler.
+// ID로 버튼을 찾고 이벤트 핸들러를 추가합니다.
 querySelector('#submitInfo')!.onClick.listen((e) {
-  // When the button is clicked, it runs this code.
+  // 버튼을 클릭하면, 이 코드가 실행됩니다.
   submitData();
 });
 ```
 
-Events can propagate up and down through the DOM tree. To discover which
-element originally fired the event, use `e.target`:
+이벤트는 DOM 트리를 통해 위아래로 전파될 수 있습니다. 
+원래 이벤트를 발생시킨 요소를 찾으려면, `e.target`을 사용합니다.
 
 <?code-excerpt "html/lib/html.dart (target)"?>
 ```dart
@@ -322,9 +301,9 @@ document.body!.onClick.listen((e) {
 });
 ```
 
-To see all the events for which you can register an event listener, look
-for "onEventType" properties in the API docs for [Element][] and its
-subclasses. Some common events include:
+이벤트 리스너를 등록할 수 있는 모든 이벤트를 보려면, 
+[Element][] 및 하위 클래스의 API 문서에서 "onEventType" 속성을 찾으세요. 
+일반적인 이벤트는 다음과 같습니다.
 
 -   change
 -   blur
@@ -334,28 +313,27 @@ subclasses. Some common events include:
 -   mouseUp
 
 
-## Using HTTP resources with HttpRequest
+## HttpRequest로 HTTP 리소스 사용 {:#using-http-resources-with-httprequest}
 
-You should avoid directly using `dart:html` to make HTTP requests.
-The [`HttpRequest`][] class in `dart:html` is platform-dependent
-and tied to a single implementation.
-Instead, use a higher-level library like
-[`package:http`]({{site.pub-pkg}}/http).
+`dart:html`을 직접 사용하여 HTTP 요청을 하는 것은 피해야 합니다. 
+`dart:html`의 [`HttpRequest`][] 클래스는 플랫폼에 따라 다르며, 단일 구현에 연결되어 있습니다. 
+대신, [`package:http`]({{site.pub-pkg}}/http)와 같은 높은 레벨 라이브러리를 사용하세요.
 
-The [Fetch data from the internet][] tutorial
-explains how to make HTTP requests
-using `package:http`.
+[인터넷에서 데이터 가져오기][Fetch data from the internet] 튜토리얼은 `package:http`를 사용하여, 
+HTTP 요청을 하는 방법을 설명합니다.
 
-## Sending and receiving real-time data with WebSockets
+## WebSockets으로 실시간 데이터 송수신 {:#sending-and-receiving-real-time-data-with-websockets}
 
-A WebSocket allows your web app to exchange data with a server
-interactively—no polling necessary. A server creates the WebSocket and
-listens for requests on a URL that starts with **ws://**—for example,
-ws://127.0.0.1:1337/ws. The data transmitted over a WebSocket can be a
-string or a blob.  Often, the data is a JSON-formatted string.
+WebSocket을 사용하면 웹 앱이 서버와 상호작용으로 데이터를 교환할 수 있습니다. 
+폴링(polling)이 필요하지 않습니다. 
+서버는 WebSocket을 만들고, **ws://**로 시작하는 URL에서 요청을 수신합니다. 
+예를 들어 ws://127.0.0.1:1337/ws입니다. 
+WebSocket을 통해 전송되는 데이터는 문자열 또는 blob일 수 있습니다. 
+종종, 데이터는 JSON 형식의 문자열입니다.
 
-To use a WebSocket in your web app, first create a [WebSocket][] object, passing
-the WebSocket URL as an argument:
+웹 앱에서 WebSocket을 사용하려면, 
+먼저 [WebSocket][] 객체를 만들고, 
+WebSocket URL을 인수로 전달합니다.
 
 {% comment %}
 Code inspired by:
@@ -370,19 +348,18 @@ the websocket sample app.
 var ws = WebSocket('ws://echo.websocket.org');
 ```
 
-### Sending data
+### 데이터 전송 {:#sending-data}
 
-To send string data on the WebSocket, use the `send()` method:
+WebSocket에서 문자열 데이터를 보내려면, `send()` 메서드를 사용하세요.
 
 <?code-excerpt "html/test/html_test.dart (send)"?>
 ```dart
 ws.send('Hello from Dart!');
 ```
 
-### Receiving data
+### 데이터 수신 {:#receiving-data}
 
-To receive data on the WebSocket, register a listener for message
-events:
+WebSocket에서 데이터를 수신하려면, 메시지 이벤트에 대한 리스너를 등록하세요.
 
 <?code-excerpt "html/test/html_test.dart (onMessage)" plaster="none"?>
 ```dart
@@ -391,15 +368,14 @@ ws.onMessage.listen((MessageEvent e) {
 });
 ```
 
-The message event handler receives a [MessageEvent][] object.
-This object's `data` field has the data from the server.
+메시지 이벤트 핸들러는 [MessageEvent][] 객체를 수신합니다. 
+이 객체의 `data` 필드에는 서버의 데이터가 있습니다.
 
-### Handling WebSocket events
+### WebSocket 이벤트 처리 {:#handling-websocket-events}
 
-Your app can handle the following WebSocket events: open, close, error,
-and (as shown earlier) message. Here's an example of a method that
-creates a WebSocket object and registers handlers for open, close,
-error, and message events:
+앱은 다음 WebSocket 이벤트를 처리할 수 있습니다: open, close, error, (앞서 보여준 대로) message. 
+다음은 WebSocket 객체를 생성하고, 
+open, close, error, message 이벤트에 대한 핸들러를 등록하는 메서드의 예입니다:
 
 <?code-excerpt "html/test/html_test.dart (initWebSocket)" plaster="none"?>
 ```dart
@@ -438,16 +414,14 @@ void initWebSocket([int retrySeconds = 1]) {
 ```
 
 
-## More information
+## 더 많은 정보 {:#more-information}
 
-This section barely scratched the surface of using the dart:html
-library. For more information, see the documentation for
-[dart:html.][dart:html]
-Dart has additional libraries for more specialized web APIs, such as
-[web audio,][web audio] [IndexedDB,][IndexedDB] and [WebGL.][WebGL]
+이 섹션은 dart:html 라이브러리 사용의 표면을 간신히 긁어낸 것입니다. 
+자세한 내용은, [dart:html][]에 대한 문서를 참조하세요. 
+Dart에는 ([웹 오디오][web audio] [IndexedDB][] 및 [WebGL][]과 같은) 
+보다 특수화된 웹 API를 위한 추가 라이브러리가 있습니다.
 
-For more information about Dart web libraries, see the
-[web library overview.][web library overview]
+Dart 웹 라이브러리에 대한 자세한 내용은, [웹 라이브러리 개요][web library overview]를 참조하세요.
 
 [AnchorElement]: {{site.dart-api}}/{{site.sdkInfo.channel}}/dart-html/AnchorElement-class.html
 [dart:html]: {{site.dart-api}}/{{site.sdkInfo.channel}}/dart-html/dart-html-library.html

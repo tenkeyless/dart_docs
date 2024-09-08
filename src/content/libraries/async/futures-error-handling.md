@@ -1,62 +1,60 @@
 ---
-title: Futures and error handling
+# title: Futures and error handling
+title: Future와 오류 처리
+# description: >-
+#   Everything you wanted to know about handling errors and exceptions
+#   when writing asynchronous code. And then some.
 description: >-
-  Everything you wanted to know about handling errors and exceptions
-  when writing asynchronous code. And then some.
+  비동기 코드를 작성할 때 오류와 예외를 처리하는 방법에 대해 알고 싶은 모든 것. 그리고 그 이상.
 ---
 
-The Dart language has native
-[asynchrony support](/language/async),
-making asynchronous Dart code much easier to read and write.
-However, some code—especially older code—might still use
-[Future methods][Future class]
-such as `then()`, `catchError()`, and `whenComplete()`.
+Dart 언어는 네이티브 [비동기 지원](/language/async)을 갖추고 있어, 
+비동기 Dart 코드를 읽고 쓰기가 훨씬 쉽습니다. 
+그러나 일부 코드(특히 오래된 코드)는 여전히,
+(`then()`, `catchError()`, `whenComplete()`와 같은) 
+[Future 메서드][Future class]를 사용할 수 있습니다.
 
-This page can help you avoid some common pitfalls
-when using those Future methods.
+이 페이지는 이러한 Future 메서드를 사용할 때, 
+흔히 저지르는 실수를 피하는 데 도움이 될 수 있습니다.
 
 :::warning
-You don't need this page if your code uses
-the language's asynchrony support:
-`async`, `await`, and error handling using try-catch.
-For more information, see the
-[asynchronous programming tutorial](/libraries/async/async-await).
+코드가 언어의 비동기 지원인 `async`, `await` 및 try-catch를 사용한 오류 처리를 사용하는 경우, 
+이 페이지는 필요하지 않습니다. 
+자세한 내용은 [비동기 프로그래밍 튜토리얼](/libraries/async/async-await)을 참조하세요.
 :::
 
 
-## The Future API and callbacks
+## Future API 및 콜백 {:#the-future-api-and-callbacks}
 
-Functions that use the Future API register callbacks that handle
-the value (or the error) that completes a Future. For example:
+Future API를 사용하는 함수는, 
+Future를 완료하는 값(또는 오류)을 처리하는 콜백을 등록합니다. 
+예를 들어:
 
 <?code-excerpt "futures/lib/simple.dart (then-catch)"?>
 ```dart
 myFunc().then(processValue).catchError(handleError);
 ```
 
-The registered callbacks fire based on the following rules: `then()`'s
-callback fires if it is invoked on a Future that completes with a value;
-`catchError()`'s callback fires if it is invoked on a Future that completes
-with an error.
+등록된 콜백은 다음 규칙에 따라 실행됩니다. 
+- `then()`의 콜백은 값으로 완료되는 Future에서 호출되면 실행되고, 
+- `catchError()`의 콜백은 오류로 완료되는 Future에서 호출되면 실행됩니다.
 
-In the example above, if `myFunc()`'s Future completes with a value,
-`then()`'s callback fires. If no new error is produced within `then()`,
-`catchError()`'s callback does not fire. On the other hand, if `myFunc()`
-completes with an error, `then()`'s callback does not fire, and
-`catchError()`'s callback does.
+위의 예에서 `myFunc()`의 Future가 값으로 완료되는 경우, `then()`의 콜백이 실행됩니다. 
+- `then()` 내에서 새 오류가 생성되지 않으면, `catchError()`의 콜백이 실행되지 않습니다. 
+- 반면 `myFunc()`가 오류로 완료되는 경우, `then()`의 콜백이 실행되지 않고, 
+  `catchError()`의 콜백이 실행됩니다.
 
-## Examples of using then() with catchError()
+## catchError()와 함께 then()을 사용하는 예 {:#examples-of-using-then-with-catcherror}
 
-Chained `then()` and `catchError()` invocations are a common pattern when
-dealing with Futures, and can be thought of as the rough equivalent of
-try-catch blocks.
+체인된 `then()` 및 `catchError()` 호출은 Futures를 다룰 때 일반적인 패턴이며, 
+try-catch 블록의 대략적인 동등물로 간주될 수 있습니다.
 
-The next few sections give examples of this pattern.
+다음 몇 섹션에서는 이 패턴의 예를 보여줍니다.
 
-### catchError() as a comprehensive error handler
+### 포괄적인 오류 처리기로서의 catchError() {:#catcherror-as-a-comprehensive-error-handler}
 
-The following example deals with throwing an exception from within `then()`'s
-callback and demonstrates `catchError()`'s versatility as an error handler:
+다음 예제는 `then()` 콜백 내부에서 예외를 throw하는 것과, 
+오류 처리기로서 `catchError()`의 다재다능함을 보여줍니다.
 
 <?code-excerpt "futures/lib/simple.dart (comprehensive-errors)" replace="/ellipsis\(\);/.../g;"?>
 ```dart
@@ -67,52 +65,49 @@ myFunc().then((value) {
 }).catchError(handleError);
 ```
 
-If `myFunc()`'s Future completes with a value, `then()`'s callback fires. If
-code within `then()`'s callback throws (as it does in the example above),
-`then()`'s Future completes with an error. That error is handled by
-`catchError()`.
+`myFunc()`의 Future가 값으로 완료되면, `then()`의 콜백이 실행됩니다. 
+`then()`의 콜백 내의 코드가 throw(위의 예에서처럼)하면, `then()`의 Future가 오류로 완료됩니다. 
+해당 오류는 `catchError()`에서 처리합니다.
 
-If `myFunc()`'s Future completes with an error, `then()`'s Future completes
-with that error. The error is also handled by `catchError()`.
+`myFunc()`의 Future가 오류로 완료되면, `then()`의 Future가 해당 오류로 완료됩니다. 
+해당 오류는 `catchError()`에서도 처리합니다.
 
-Regardless of whether the error originated within `myFunc()` or within
-`then()`, `catchError()` successfully handles it.
+오류가 `myFunc()` 내부에서 발생했는지 `then()` 내부에서 발생했는지에 관계없이, 
+`catchError()`에서 성공적으로 처리합니다.
 
-### Error handling within then()
+### then() 내부의 오류 처리 {:#error-handling-within-then}
 
-For more granular error handling, you can register a second (`onError`)
-callback within `then()` to handle Futures completed with errors. Here is
-`then()`'s signature:
+더 세부적인 오류 처리를 위해, 
+`then()` 내에 두 번째 (`onError`) 콜백을 등록하여 오류가 있는 Futures를 처리할 수 있습니다. 
+`then()`의 시그니처는 다음과 같습니다.
 
 <?code-excerpt "futures/lib/simple.dart (future-then)"?>
 ```dart
 Future<R> then<R>(FutureOr<R> Function(T value) onValue, {Function? onError});
 ```
 
-Register the optional onError callback only if you want to differentiate
-between an error forwarded _to_ `then()`, and an error generated _within_
-`then()`:
+`then()`으로 _전달된_ 오류와 `then()` _내부_ 에서 생성된 오류를 구별하려는 경우에만, 
+선택적 onError 콜백을 등록합니다.
 
 <?code-excerpt "futures/lib/simple.dart (throws-then-catch)"?>
 ```dart
 asyncErrorFunction().then(successCallback, onError: (e) {
-  handleError(e); // Original error.
-  anotherAsyncErrorFunction(); // Oops, new error.
-}).catchError(handleError); // Error from within then() handled.
+  handleError(e); // 원래 에러.
+  anotherAsyncErrorFunction(); // 이런, 새로운 오류가 발생했습니다.
+}).catchError(handleError); // then() 내부에서 발생한 오류가 처리되었습니다.
 ```
 
-In the example above, `asyncErrorFunction()`'s Future's error is handled with the
-`onError` callback; `anotherAsyncErrorFunction()` causes `then()`'s Future to
-complete with an error; this error is handled by `catchError()`.
+위의 예에서, `asyncErrorFunction()`의 Future의 오류는 `onError` 콜백으로 처리됩니다. 
+`anotherAsyncErrorFunction()`은 `then()`의 Future가 오류와 함께 완료되도록 합니다. 
+이 오류는 `catchError()`로 처리됩니다.
 
-In general, implementing two different error handling strategies is not
-recommended: register a second callback only if there is a compelling reason
-to catch the error within `then()`.
+일반적으로, 두 가지 다른 오류 처리 전략을 구현하는 것은 권장되지 않습니다. 
+`then()` 내에서 오류를 포착해야 하는 강력한 이유가 있는 경우에만, 두 번째 콜백을 등록합니다.
 
-### Errors in the middle of a long chain
+### 긴 체인 중간의 오류 {:#errors-in-the-middle-of-a-long-chain}
 
-It is common to have a succession of `then()` calls, and catch errors
-generated from any part of the chain using `catchError()`:
+`then()` 호출을 연속으로 실행하고, 
+`catchError()`를 사용하여 체인의 어느 부분에서든 생성된 오류를 잡는 것이 일반적입니다.
 
 <?code-excerpt "futures/lib/long_chain.dart"?>
 ```dart
@@ -122,49 +117,47 @@ Future<String> three() => Future.value('from three');
 Future<String> four() => Future.value('from four');
 
 void main() {
-  one() // Future completes with "from one".
-      .then((_) => two()) // Future completes with two()'s error.
-      .then((_) => three()) // Future completes with two()'s error.
-      .then((_) => four()) // Future completes with two()'s error.
-      .then((value) => value.length) // Future completes with two()'s error.
+  one() // Future는 "from one"으로 완료됩니다.
+      .then((_) => two()) // Future는 two()의 오류로 완료됩니다.
+      .then((_) => three()) // Future는 two()의 오류로 완료됩니다.
+      .then((_) => four()) // Future는 two()의 오류로 완료됩니다.
+      .then((value) => value.length) // Future는 two()의 오류로 완료됩니다.
       .catchError((e) {
-    print('Got error: $e'); // Finally, callback fires.
-    return 42; // Future completes with 42.
+    print('Got error: $e'); // 마지막으로 콜백이 실행됩니다.
+    return 42; // Future는 42로 완료됩니다.
   }).then((value) {
     print('The value is $value');
   });
 }
 
-// Output of this program:
+// 이 프로그램의 출력:
 //   Got error: error from two
 //   The value is 42
 ```
 
-In the code above, `one()`'s Future completes with a value, but `two()`'s
-Future completes with an error. When `then()` is invoked on a Future that
-completes with an error, `then()`'s callback does not fire. Instead,
-`then()`'s Future completes with the error of its receiver. In our example,
-this means that after `two()` is called, the Future returned by every
-subsequent `then()`completes with `two()`'s error. That error is finally
-handled within `catchError()`.
+위의 코드에서, `one()`의 Future는 값으로 완료되지만, `two()`의 Future는 오류로 완료됩니다. 
+오류로 완료되는 Future에서 `then()`이 호출되면, `then()`의 콜백은 실행되지 않습니다. 
+대신, `then()`의 Future는 수신자의 오류로 완료됩니다. 
+이 예에서, 이는 `two()`가 호출된 후, 
+모든 후속 `then()`에서 반환된 Future가 `two()`의 오류로 완료됨을 의미합니다. 
+이 오류는 결국 `catchError()` 내에서 처리됩니다.
 
-### Handling specific errors
+### 특정 오류 처리 {:#handling-specific-errors}
 
-What if we want to catch a specific error? Or catch more than one error?
+특정 오류를 catch 하고 싶다면? 아니면 두 개 이상의 오류를 catch 하고 싶다면?
 
-`catchError()` takes an optional named argument, `test`, that
-allows us to query the kind of error thrown.
+`catchError()`는 `test`라는 선택적 명명된 인수를 사용하는데, 
+이를 통해 발생한 오류의 종류를 쿼리할 수 있습니다.
 
 <?code-excerpt "futures/lib/simple.dart (future-catch-error)"?>
 ```dart
 Future<T> catchError(Function onError, {bool Function(Object error)? test});
 ```
 
-Consider `handleAuthResponse(params)`, a function that authenticates a user
-based on the params provided, and redirects the user to an appropriate URL.
-Given the complex workflow, `handleAuthResponse()` could generate various
-errors and exceptions, and you should handle them differently. Here's
-how you can use `test` to do that:
+제공된 매개변수에 따라 사용자를 인증하고, 사용자를 적절한 URL로 리디렉션하는 함수인 `handleAuthResponse(params)`를 고려해 보세요. 
+복잡한 워크플로를 감안할 때, `handleAuthResponse()`는 다양한 오류와 예외를 생성할 수 있으며, 
+이를 다르게 처리해야 합니다. 
+`test`를 사용하여 이를 수행하는 방법은 다음과 같습니다.
 
 <?code-excerpt "futures/lib/simple.dart (auth-response)" replace="/ellipsis\(\)/.../g;"?>
 ```dart
@@ -177,12 +170,12 @@ void main() {
 }
 ```
 
-## Async try-catch-finally using whenComplete()
+## whenComplete()를 사용한 비동기 try-catch-finally {:#async-try-catch-finally-using-whencomplete}
 
-If `then().catchError()` mirrors a try-catch, `whenComplete()` is the
-equivalent of 'finally'. The callback registered within `whenComplete()` is
-called when `whenComplete()`'s receiver completes, whether it does so with a
-value or with an error:
+`then().catchError()`가 try-catch를 mirror 하는 경우, 
+`whenComplete()`는 'finally'와 동일합니다. 
+`whenComplete()` 내에 등록된 콜백은 `whenComplete()`의 수신자가 완료될 때 호출되며, 
+값과 함께 완료하든 오류와 함께 완료하든 상관없습니다.
 
 <?code-excerpt "futures/lib/simple.dart (connect-server)"?>
 ```dart
@@ -194,95 +187,95 @@ server
     .whenComplete(server.close);
 ```
 
-We want to call `server.close` regardless of whether `server.post()` produces
-a valid response, or an error. We ensure this happens by placing it inside
-`whenComplete()`.
+우리는 `server.post()`가 유효한 응답을 생성하든 오류를 생성하든 상관없이 `server.close`를 호출하고 싶습니다. 
+우리는 이것을 `whenComplete()` 내부에 배치하여, 이것이 발생하도록 합니다.
 
-### Completing the Future returned by whenComplete()
+### whenComplete()에서 반환된 Future 완료 {:#completing-the-future-returned-by-whencomplete}
 
-If no error is emitted from within `whenComplete()`, its Future completes
-the same way as the Future that `whenComplete()` is invoked on. This is
-easiest to understand through examples.
+`whenComplete()` 내부에서 오류가 발생하지 않으면(no error is emitted), 
+해당 Future는 `whenComplete()`가 호출된 Future와 같은 방식으로 완료됩니다. 
+이는 예를 통해 이해하는 것이 가장 쉽습니다.
 
-In the code below, `then()`'s Future completes with an error, so
-`whenComplete()`'s Future also completes with that error.
+아래 코드에서, `then()`의 Future는 오류로 완료되므로, 
+`whenComplete()`의 Future도 해당 오류로 완료됩니다.
 
 <?code-excerpt "futures/lib/when_complete.dart (with-error)" replace="/withErrorMain/main/g; "?>
 ```dart
 void main() {
   asyncErrorFunction()
-      // Future completes with an error:
+      // Future는 오류로 완료됩니다:
       .then((_) => print("Won't reach here"))
-      // Future completes with the same error:
+      // Future는 동일한 오류로 완료됩니다.
       .whenComplete(() => print('Reaches here'))
-      // Future completes with the same error:
+      // Future는 동일한 오류로 완료됩니다.
       .then((_) => print("Won't reach here"))
-      // Error is handled here:
+      // 오류는 여기에서 처리됩니다:
       .catchError(handleError);
 }
 ```
 
-In the code below, `then()`'s Future completes with an error, which is now
-handled by `catchError()`.  Because `catchError()`'s Future completes with
-`someObject`, `whenComplete()`'s Future completes with that same object.
+아래 코드에서, `then()`의 Future는 오류로 완료되고, 
+이제 `catchError()`에서 처리합니다. 
+`catchError()`의 Future는 `someObject`로 완료되고, 
+`whenComplete()`의 Future는 같은 객체로 완료되기 때문입니다.
 
 <?code-excerpt "futures/lib/when_complete.dart (with-object)" replace="/ellipsis\(\)/.../g; /withObjectMain/main/g; "?>
 ```dart
 void main() {
   asyncErrorFunction()
-      // Future completes with an error:
+      // Future는 오류로 완료됩니다:
       .then((_) => ...)
       .catchError((e) {
-    handleError(e);
-    printErrorMessage();
-    return someObject; // Future completes with someObject
-  }).whenComplete(() => print('Done!')); // Future completes with someObject
+          handleError(e);
+          printErrorMessage();
+          return someObject; // Future는 someObject로 완료됩니다.
+  }).whenComplete(() => print('Done!')); // Future는 someObject로 완료됩니다.
 }
 ```
 
-### Errors originating within whenComplete()
+### whenComplete() 내에서 발생하는 오류 {:#errors-originating-within-whencomplete}
 
-If `whenComplete()`'s callback throws an error, then `whenComplete()`'s Future
-completes with that error:
+`whenComplete()`의 콜백이 오류를 발생시키면, 
+`whenComplete()`의 Future가 해당 오류로 완료됩니다.
 
 <?code-excerpt "futures/lib/when_complete.dart (when-complete-error)" replace="/whenCompleteError/main/g; "?>
 ```dart
 void main() {
   asyncErrorFunction()
-      // Future completes with a value:
+      // Future는 값으로 완료됩니다.
       .catchError(handleError)
-      // Future completes with an error:
+      // Future는 오류로 완료됩니다:
       .whenComplete(() => throw Exception('New error'))
-      // Error is handled:
+      // 오류는 다음과 같이 처리됩니다:
       .catchError(handleError);
 }
 ```
 
 
-## Potential problem: failing to register error handlers early
+## 잠재적인 문제: 오류 핸들러를 조기에 등록하는데 실패함 {:#potential-problem-failing-to-register-error-handlers-early}
 
-It is crucial that error handlers are installed before a Future completes:
-this avoids scenarios where a Future completes with an error, the error
-handler is not yet attached, and the error accidentally propagates. Consider
-this code:
+Future가 완료되기 전에 오류 핸들러를 설치하는 것이 중요합니다. 
+이렇게 하면 Future가 오류와 함께 완료되고, 
+오류 핸들러가 아직 연결되지 않았으며, 
+오류가 실수로 전파되는 시나리오를 피할 수 있습니다. 
+다음 코드를 고려하세요.
 
 <?code-excerpt "futures/lib/early_error_handlers.dart (bad)" replace="/ellipsis\(\)/.../g; /mainBad/main/g;"?>
 ```dart
 void main() {
   Future<Object> future = asyncErrorFunction();
 
-  // BAD: Too late to handle asyncErrorFunction() exception.
+  // BAD: asyncErrorFunction() 예외를 처리하기에는 너무 늦었습니다.
   Future.delayed(const Duration(milliseconds: 500), () {
     future.then(...).catchError(...);
   });
 }
 ```
 
-In the code above, `catchError()` is not registered until half a second after
-`asyncErrorFunction()` is called, and the error goes unhandled.
+위의 코드에서, `catchError()`는 `asyncErrorFunction()`가 호출된 후 반 초가 지나야 등록되고, 
+오류는 처리되지 않습니다.
 
-The problem goes away if `asyncErrorFunction()` is called within the
-`Future.delayed()` callback:
+`asyncErrorFunction()`가 `Future.delayed()` 콜백 내에서 호출되면, 문제가 사라집니다.
 
 <?code-excerpt "futures/lib/early_error_handlers.dart (good)" replace="/ellipsis\(\)/.../g; /mainGood/main/g;"?>
 ```dart
@@ -290,38 +283,38 @@ void main() {
   Future.delayed(const Duration(milliseconds: 500), () {
     asyncErrorFunction()
         .then(...)
-        .catchError(...); // We get here.
+        .catchError(...); // 우리는 여기에 도착합니다.
   });
 }
 ```
 
-## Potential problem: accidentally mixing synchronous and asynchronous errors
+## 잠재적인 문제: 동기 및 비동기 오류를 실수로 혼합 {:#potential-problem-accidentally-mixing-synchronous-and-asynchronous-errors}
 
-Functions that return Futures should almost always emit their errors in the
-future. Since we do not want the caller of such functions to have to
-implement multiple error-handling scenarios, we want to prevent any synchronous
-errors from leaking out. Consider this code:
+Futures를 반환하는 함수는 거의 항상 future에서 오류를 방출해야 합니다. 
+이러한 함수의 호출자가 여러 오류 처리 시나리오를 구현해야 하는 것을 원하지 않으므로, 
+동기 오류가 누출되는 것을 방지하고자 합니다. 
+다음 코드를 고려하세요.
 
 <?code-excerpt "futures/bin/mixing_errors_problematic.dart (parse)"?>
 ```dart
 Future<int> parseAndRead(Map<String, dynamic> data) {
-  final filename = obtainFilename(data); // Could throw.
+  final filename = obtainFilename(data); // throw 할 수 있습니다.
   final file = File(filename);
   return file.readAsString().then((contents) {
-    return parseFileData(contents); // Could throw.
+    return parseFileData(contents); // throw 할 수 있습니다.
   });
 }
 ```
 
-Two functions in that code could potentially throw synchronously:
-`obtainFilename()` and `parseFileData()`. Because `parseFileData()` executes
-inside a `then()` callback, its error does not leak out of the function.
-Instead, `then()`'s Future completes with `parseFileData()`'s error, the error
-eventually completes `parseAndRead()`'s Future, and the error can be
-successfully handled by `catchError()`.
+해당 코드의 두 함수는 잠재적으로 동기적으로 throw할 수 있습니다. : `obtainFilename()` 및 `parseFileData()`. 
 
-But `obtainFilename()` is not called within a `then()` callback; if _it_
-throws, a synchronous error propagates:
+`parseFileData()`는 `then()` 콜백 내부에서 실행되므로, 오류가 함수 밖으로 누출되지 않습니다. 
+대신, `then()`의 Future가 `parseFileData()`의 오류로 완료되고, 
+오류는 결국 `parseAndRead()`의 Future를 완료하고, 
+오류는 `catchError()`에서 성공적으로 처리할 수 있습니다.
+
+하지만, `obtainFilename()`은 `then()` 콜백 내에서 호출되지 않습니다. 
+_throw하는 경우_, 동기 오류가 전파됩니다.
 
 <?code-excerpt "futures/bin/mixing_errors_problematic.dart (main)"?>
 ```dart
@@ -333,42 +326,39 @@ void main() {
   });
 }
 
-// Program Output:
+// 프로그램 출력:
 //   Unhandled exception:
 //   <error from obtainFilename>
 //   ...
 ```
 
-Because using `catchError()` does not capture the error, a client of
-`parseAndRead()` would implement a separate error-handling strategy for this
-error.
+`catchError()`를 사용해도 오류를 캡처하지 않으므로, 
+`parseAndRead()`의 클라이언트는 이 오류에 대한 별도의 오류 처리 전략을 구현해야 합니다.
 
-### Solution: Using Future.sync() to wrap your code
+### 솔루션: Future.sync()를 사용하여 코드를 래핑합니다. {:#solution-using-future-sync-to-wrap-your-code}
 
-A common pattern for ensuring that no synchronous error is accidentally
-thrown from a function is to wrap the function body inside a new `Future.sync()`
-callback:
+함수에서 실수로 동기 오류가 발생하지 않도록 하기 위한 일반적인 패턴은, 
+함수 본문을 새 `Future.sync()` 콜백 내부로 래핑하는 것입니다.
 
 <?code-excerpt "futures/bin/mixing_errors_solution.dart (parse)"?>
 ```dart
 Future<int> parseAndRead(Map<String, dynamic> data) {
   return Future.sync(() {
-    final filename = obtainFilename(data); // Could throw.
+    final filename = obtainFilename(data); // throw 할 수 있습니다.
     final file = File(filename);
     return file.readAsString().then((contents) {
-      return parseFileData(contents); // Could throw.
+      return parseFileData(contents); // throw 할 수 있습니다.
     });
   });
 }
 ```
 
-If the callback returns a non-Future value, `Future.sync()`'s Future completes
-with that value. If the callback throws (as it does in the example
-above), the Future completes with an error. If the callback itself returns a
-Future, the value or the error of that Future completes `Future.sync()`'s
-Future.
+콜백이 Future가 아닌 값을 반환하면, `Future.sync()`의 Future는 해당 값으로 완료됩니다. 
+콜백이 (위의 예에서처럼) throw하면, Future는 오류로 완료됩니다. 
+콜백 자체가 Future를 반환하면, 
+해당 Future의 값 또는 오류가 `Future.sync()`의 Future를 완료합니다.
 
-With code wrapped within `Future.sync()`, `catchError()` can handle all errors:
+`Future.sync()`로 래핑된 코드로, `catchError()`는 모든 오류를 처리할 수 있습니다.
 
 <?code-excerpt "futures/bin/mixing_errors_solution.dart (main)"?>
 ```dart
@@ -380,33 +370,30 @@ void main() {
   });
 }
 
-// Program Output:
+// 프로그램 출력:
 //   Inside catchError
 //   <error from obtainFilename>
 ```
 
-`Future.sync()` makes your code resilient against uncaught exceptions. If your
-function has a lot of code packed into it, chances are that you could be doing
-something dangerous without realizing it:
+`Future.sync()`는 코드를 catch 되지 않은 예외에 대해 탄력적으로 만듭니다. 
+함수에 많은 코드가 들어 있는 경우, 깨닫지 못한 채 위험한 일을 하고 있을 가능성이 있습니다.
 
 <?code-excerpt "futures/bin/mixing_errors_problematic.dart (fragile)" replace="/ellipsis\(\);/.../g;"?>
 ```dart
 Future fragileFunc() {
   return Future.sync(() {
-    final x = someFunc(); // Unexpectedly throws in some rare cases.
-    var y = 10 / x; // x should not equal 0.
+    final x = someFunc(); // 예상치 못하게 몇몇 희귀한 경우에 throws 합니다.
+    var y = 10 / x; // x는 0이어서는 안 됩니다.
     ...
   });
 }
 ```
 
-`Future.sync()` not only allows you to handle errors you know might occur, but
-also prevents errors from *accidentally* leaking out of your function.
+`Future.sync()`를 사용하면 발생할 수 있는 오류를 처리할 수 있을 뿐만 아니라, 
+함수에서 *실수로* 오류가 누출되는 것을 방지할 수도 있습니다.
 
+## 더 많은 정보 {:#more-information}
 
-## More information
-
-See the [Future API reference][Future class]
-for more information on Futures.
+Future에 대한 자세한 내용은 [Future API 참조][Future class]를 참조하세요.
 
 [Future class]: {{site.dart-api}}/{{site.sdkInfo.channel}}/dart-async/Future-class.html

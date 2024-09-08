@@ -1,81 +1,74 @@
 ---
-title: "Asynchronous programming: futures, async, await"
-description: Learn about and practice writing asynchronous code in DartPad!
+# title: "Asynchronous programming: futures, async, await"
+title: "비동기 프로그래밍: futures, async, await"
+# description: Learn about and practice writing asynchronous code in DartPad!
+description: DartPad에서 비동기 코드를 작성하는 방법을 배우고 연습해 보세요!
 js: [{url: '/assets/js/inject_dartpad.js', defer: true}]
 ---
 <?code-excerpt replace="/ *\/\/\s+ignore_for_file:[^\n]+\n//g; /(^|\n) *\/\/\s+ignore:[^\n]+\n/$1/g; /(\n[^\n]+) *\/\/\s+ignore:[^\n]+\n/$1\n/g"?>
 <?code-excerpt plaster="none"?>
 
-This tutorial teaches you how to write asynchronous code using
-futures and the `async` and `await` keywords. 
-Using embedded DartPad editors, 
-you can test your knowledge by running example code
-and completing exercises.
+이 튜토리얼에서는 futures와 `async` 및 `await` 키워드를 사용하여, 
+비동기 코드를 작성하는 방법을 알려줍니다. 
+내장된 DartPad 편집기를 사용하여 예제 코드를 실행하고, 
+연습 문제를 완료하여 지식을 테스트할 수 있습니다.
 
-To get the most out of this tutorial, you should have the following:
+이 튜토리얼을 최대한 활용하려면 다음이 필요합니다.
 
-* Knowledge of [basic Dart syntax](/language).
-* Some experience writing asynchronous code in another language.
-* The [`discarded_futures`][] and [`unawaited_futures`][] lints enabled.
+* [기본 Dart 구문](/language)에 대한 지식.
+* 다른 언어로 비동기 코드를 작성하는 데 대한 약간의 경험.
+* [`discarded_futures`][] 및 [`unawaited_futures`][] lint가 활성화.
 
 [`discarded_futures`]: /tools/linter-rules/discarded_futures
 [`unawaited_futures`]: /tools/linter-rules/unawaited_futures
 
-This tutorial covers the following material:
+이 튜토리얼은 다음 자료를 다룹니다.
 
-* How and when to use the `async` and `await` keywords.
-* How using `async` and `await` affects execution order.
-* How to handle errors from an asynchronous call
-  using `try-catch` expressions in `async` functions.
+* `async` 및 `await` 키워드를 사용하는 방법과 시기.
+* `async` 및 `await`를 사용하면 실행 순서에 어떤 영향을 미치는지.
+* `async` 함수에서 `try-catch` 표현식을 사용하여 비동기 호출의 오류를 처리하는 방법.
 
-Estimated time to complete this tutorial: 40-60 minutes.
+이 튜토리얼을 완료하는 데 걸리는 예상 시간: 40-60분.
 
 :::note
-This page uses embedded DartPads to display examples and exercises.
+이 페이지에서는 내장된 DartPad를 사용하여 예제와 연습문제를 표시합니다.
 {% render 'dartpads-embedded-troubleshooting.md' %}
 :::
 
-The exercises in this tutorial have partially completed code snippets.
-You can use DartPad to test your knowledge by completing the code and
-clicking the **Run** button.
-**Don't edit the test code in the `main` function or below**.
+이 튜토리얼의 연습은 부분적으로 완성된 코드 조각을 포함합니다. 
+DartPad를 사용하여 코드를 완성하고,
+**Run** 버튼을 클릭하여 지식을 테스트할 수 있습니다. 
+**`main` 함수나 그 아래에 있는 테스트 코드를 편집하지 마세요**.
 
-If you need help, expand the **Hint** or **Solution** dropdown
-after each exercise.
+도움이 필요하면, 각 연습 후에 **Hint** 또는 **Solution** 드롭다운을 확장하세요.
 
-## Why asynchronous code matters
+## 비동기 코드가 중요한 이유 {:#why-asynchronous-code-matters}
 
-Asynchronous operations let your program complete work
-while waiting for another operation to finish. 
-Here are some common asynchronous operations:
+비동기 연산을 통해, 프로그램은 다른 연산이 완료되는 것을 기다리는 동안, 작업을 완료할 수 있습니다. 
+다음은 일반적인 비동기 연산입니다.
 
-* Fetching data over a network.
-* Writing to a database.
-* Reading data from a file.
+* 네트워크를 통해 데이터 가져오기.
+* 데이터베이스에 쓰기.
+* 파일에서 데이터 읽기.
 
-Such asynchronous computations usually provide their result as a `Future`
-or, if the result has multiple parts, as a `Stream`.
-These computations introduce asynchrony into a program.
-To accommodate that initial asynchrony, 
-other plain Dart functions also need to become asynchronous.
+이러한 비동기 계산은 일반적으로 결과를 `Future`로 제공하거나, 
+결과에 여러 부분이 있는 경우 `Stream`으로 제공합니다. 
+이러한 계산은 프로그램에 비동기성을 도입합니다. 
+이러한 초기 비동기성을 수용하기 위해, 다른 일반 Dart 함수도 비동기화해야 합니다.
 
-To interact with these asynchronous results,
-you can use the `async` and `await` keywords.
-Most asynchronous functions are just async Dart functions
-that depend, possibly deep down, 
-on an inherently asynchronous computation.
+이러한 비동기 결과와 상호 작용하려면, 
+`async` 및 `await` 키워드를 사용할 수 있습니다. 
+대부분의 비동기 함수는, 본질적으로 비동기적인 계산에 의존하는, async Dart 함수일 뿐입니다.
 
-### Example: Incorrectly using an asynchronous function
+### 예: 비동기 함수를 잘못 사용하는 경우 {:#example-incorrectly-using-an-asynchronous-function}
 
-The following example shows the wrong way
-to use an asynchronous function (`fetchUserOrder()`). 
-Later you'll fix the example using `async` and `await`.
-Before running this example, try to spot the issue -- 
-what do you think the output will be?
+다음 예는 비동기 함수(`fetchUserOrder()`)를 사용하는 잘못된 방법을 보여줍니다. 
+나중에 `async`와 `await`를 사용하여 예를 수정합니다. 
+이 예를 실행하기 전에, 문제를 찾아보세요. 출력이 어떻게 될 것 같나요?
 
 <?code-excerpt "async_await/bin/get_order_sync_bad.dart" remove="Fetching"?>
 ```dartpad
-// This example shows how *not* to write asynchronous Dart code.
+// 이 예제는 이렇게 비동기 Dart 코드를 작성하지 *않아야 한다는* 방법을 보여줍니다.
 
 String createOrderMessage() {
   var order = fetchUserOrder();
@@ -83,7 +76,7 @@ String createOrderMessage() {
 }
 
 Future<String> fetchUserOrder() =>
-    // Imagine that this function is more complex and slow.
+    // 이 함수가 더 복잡하고 느리다고 상상해 봅시다.
     Future.delayed(
       const Duration(seconds: 2),
       () => 'Large Latte',
@@ -94,89 +87,74 @@ void main() {
 }
 ```
 
-Here's why the example fails to print the value
-that `fetchUserOrder()` eventually produces:
+다음은 이 예제가 `fetchUserOrder()`가 결국 생성하는 값을 출력하지 못하는 이유입니다.
 
-* `fetchUserOrder()` is an asynchronous function that, after a delay,
-  provides a string that describes the user's order: a "Large Latte".
-* To get the user's order, `createOrderMessage()` should call `fetchUserOrder()`
-  and wait for it to finish. Because `createOrderMessage()` does *not* wait
-  for `fetchUserOrder()` to finish, `createOrderMessage()` fails to
-  get the string value that `fetchUserOrder()` eventually provides.
-* Instead, `createOrderMessage()` gets a representation of pending work to be
-  done: an uncompleted future. 
-  You'll learn more about futures in the next section.
-* Because `createOrderMessage()` fails to get the value describing the user's
-  order, the example fails to print "Large Latte" to the console, and instead
-  prints "Your order is: Instance of '_Future\<String\>'".
+* `fetchUserOrder()`는, 딜레이 후, 
+  사용자 주문을 설명하는 문자열인, "Large Latte"를 제공하는 비동기 함수입니다.
+* 사용자 주문을 얻으려면, `createOrderMessage()`가 `fetchUserOrder()`를 호출하고, 
+  완료될 때까지 기다려야 합니다. 
+  `createOrderMessage()`는 `fetchUserOrder()`가 완료될 때까지 기다리지 *않기* 때문에, 
+  `createOrderMessage()`는 `fetchUserOrder()`가 결국 제공하는 문자열 값을 가져오지 못합니다.
+* 대신, `createOrderMessage()`는 보류 중인 작업의 표현을 가져옵니다. (완료되지 않은 future)
+  다음 섹션에서 future에 대해 자세히 알아봅니다.
+* `createOrderMessage()`가 사용자 주문을 설명하는 값을 가져오지 못하기 때문에, 
+  이 예제는 콘솔에 "Large Latte"를 출력하지 못하고, 
+  대신 "Your order is: Instance of '_Future\<String\>'"를 출력합니다.
 
-In the next sections you'll learn about futures and about working with futures
-(using `async` and `await`)
-so that you'll be able to write the code necessary to make `fetchUserOrder()`
-print the desired value ("Large Latte") to the console.
+다음 섹션에서는 future와 future를 사용하는 방법(`async` 및 `await` 사용)에 대해 알아봅니다. 
+그러면 `fetchUserOrder()`가 원하는 값("Large Latte")을 콘솔에 출력하는 데, 
+필요한 코드를 작성할 수 있습니다.
 
-:::secondary Key terms
-* **synchronous operation**: A synchronous operation blocks other operations
-  from executing until it completes.
-* **synchronous function**: A synchronous function only performs synchronous
-  operations.
-* **asynchronous operation**: Once initiated, an asynchronous operation allows
-  other operations to execute before it completes.
-* **asynchronous function**: An asynchronous function performs at least one
-  asynchronous operation and can also perform _synchronous_ operations.
+:::secondary 주요 용어
+* **동기 연산**: 동기 연산은 완료될 때까지, 다른 연산이 실행되지 않도록 차단합니다.
+* **동기 함수**: 동기 함수는 동기 연산만 수행합니다.
+* **비동기 연산**: 비동기 연산이 시작되면, 다른 연산이 완료되기 전에 실행될 수 있습니다.
+* **비동기 함수**: 비동기 함수는 최소한 하나의 비동기 연산을 수행하고, _동기_ 연산도 수행할 수 있습니다.
 :::
 
 
-## What is a future?
+## future란 무엇인가요? {:#what-is-a-future}
 
-A future (lower case "f") is an instance
-of the [Future][] (capitalized "F") class. 
-A future represents the result of an asynchronous operation, 
-and can have two states: uncompleted or completed.
+future(소문자 "f")는 [Future][](대문자 "F") 클래스의 인스턴스입니다. 
+future는 비동기 연산의 결과를 나타내며, 
+미완료(uncompleted) 또는 완료(completed)의 두 가지 상태를 가질 수 있습니다.
 
 :::note
-_Uncompleted_ is a Dart term referring to the state of a future
-before it has produced a value.
+_미완료 (Uncompleted)_ 는 값을 생성하기 전의, future의 상태를 나타내는 Dart 용어입니다.
 :::
 
-### Uncompleted
+### 미완료 (Uncompleted) {:#uncompleted}
 
-When you call an asynchronous function, it returns an uncompleted future.
-That future is waiting for the function's asynchronous operation
-to finish or to throw an error.
+비동기 함수를 호출하면, 완료되지 않은 future가 반환됩니다. 
+해당 future는 함수의 비동기 작업이 완료되거나, 오류가 발생할 때까지 기다리고 있습니다.
 
-### Completed
+### 완료 (Completed) {:#completed}
 
-If the asynchronous operation succeeds, 
-the future completes with a value. 
-Otherwise, it completes with an error.
+비동기 작업이 성공하면, future는 값으로 완료됩니다. 
+그렇지 않으면, 오류로 완료됩니다.
 
-#### Completing with a value
+#### 값으로 완료 {:#completing-with-a-value}
 
-A future of type `Future<T>` completes with a value of type `T`.
-For example, a future with type `Future<String>` produces a string value.
-If a future doesn't produce a usable value, 
-then the future's type is `Future<void>`.
+`Future<T>` 타입의 future는 `T` 타입의 값으로 완성됩니다. 
+예를 들어, `Future<String>` 타입의 future는 문자열 값을 생성합니다. 
+future가 사용 가능한 값을 생성하지 않으면, 
+future의 타입은 `Future<void>`입니다.
 
-#### Completing with an error
+#### 오류로 완료 {:#completing-with-an-error}
 
-If the asynchronous operation performed by the function fails for any reason,
-the future completes with an error.
+함수가 수행하는 비동기 연산이 어떤 이유로든 실패하면, 
+future는 오류로 완료됩니다.
 
-### Example: Introducing futures
+### 예: futures 소개 {:#example-introducing-futures}
 
-In the following example, `fetchUserOrder()` returns a future
-that completes after printing to the console. 
-Because it doesn't return a usable value,
-`fetchUserOrder()` has the type `Future<void>`. 
-Before you run the example,
-try to predict which will print first: 
-"Large Latte" or "Fetching user order...".
+다음 예에서, `fetchUserOrder()`는 콘솔에 출력한 후 완료되는 future를 반환합니다. 
+사용 가능한 값을 반환하지 않기 때문에, `fetchUserOrder()`는 `Future<void>` 타입을 갖습니다. 
+예를 실행하기 전에, "Large Latte" 또는 "Fetching user order..." 중 어느 것이 먼저 출력될지 예측해 보세요.
 
 <?code-excerpt "async_await/bin/futures_intro.dart (no-error)"?>
 ```dartpad
 Future<void> fetchUserOrder() {
-  // Imagine that this function is fetching user info from another service or database.
+  // 이 함수가 다른 서비스나 데이터베이스에서 사용자 정보를 가져오는 것을 가정해 보겠습니다.
   return Future.delayed(const Duration(seconds: 2), () => print('Large Latte'));
 }
 
@@ -186,21 +164,20 @@ void main() {
 }
 ```
 
-In the preceding example, 
-even though `fetchUserOrder()` executes before the `print()` call on line 8, 
-the console shows the output from line 8("Fetching user order...") 
-before the output from `fetchUserOrder()` ("Large Latte").
-This is because `fetchUserOrder()` delays before it prints "Large Latte".
+앞의 예에서, `fetchUserOrder()`가 8번째 줄에서 `print()` 호출 전에 실행되더라도, 
+콘솔은 `fetchUserOrder()`의 출력("Large Latte")보다, 
+8번째 줄의 출력("Fetching user order...")을 먼저 표시합니다. 
+이는 `fetchUserOrder()`가 "Large Latte"를 인쇄하기 전에 지연(delay)되기 때문입니다.
 
-### Example: Completing with an error
+### 예: 오류로 완료 {:#example-completing-with-an-error}
 
-Run the following example to see how a future completes with an error.
-A bit later you'll learn how to handle the error.
+다음 예제를 실행하여 future가 오류로 완료되는 방식을 확인합니다. 
+잠시 후에 오류를 처리하는 방법을 배우게 됩니다.
 
 <?code-excerpt "async_await/bin/futures_intro.dart (error)" replace="/Error//g"?>
 ```dartpad
 Future<void> fetchUserOrder() {
-  // Imagine that this function is fetching user info but encounters a bug.
+  // 이 함수가 사용자 정보를 가져오는 중 버그가 발견되었다고 가정해 보겠습니다.
   return Future.delayed(
     const Duration(seconds: 2),
     () => throw Exception('Logout failed: user ID is invalid'),
@@ -213,75 +190,67 @@ void main() {
 }
 ```
 
-In this example, `fetchUserOrder()` completes
-with an error indicating that the user ID is invalid.
+이 예에서, `fetchUserOrder()`는 사용자 ID가 잘못되었다는 오류로 완료됩니다.
 
-You've learned about futures and how they complete, 
-but how do you use the results of asynchronous functions? 
-In the next section you'll learn how to get results
-with the `async` and `await` keywords.
+futures와 그것이 완료되는 방식에 대해 알아보았지만, 
+비동기 함수의 결과는 어떻게 사용할까요? 
+다음 섹션에서는 `async` 및 `await` 키워드로 결과를 얻는 방법을 알아봅니다.
 
-:::secondary Quick review
-* A [Future\<T\>][Future] instance produces a value of type `T`.
-* If a future doesn't produce a usable value, 
-  then the future's type is `Future<void>`.
-* A future can be in one of two states: uncompleted or completed.
-* When you call a function that returns a future, 
-  the function queues up work to be done and returns an uncompleted future.
-* When a future's operation finishes, 
-  the future completes with a value or with an error.
+:::secondary 간단한 검토
+* [Future\<T\>][Future] 인스턴스는 `T` 타입의 값을 생성합니다.
+* future가 사용 가능한 값을 생성하지 않으면, future의 타입은 `Future<void>`입니다.
+* future는 미완료(uncompleted) 또는 완료(completed)의 두 가지 상태 중 하나일 수 있습니다.
+* future를 반환하는 함수를 호출하면, 함수는 수행할 작업을 대기열(queues)에 넣고 미완료 future를 반환합니다.
+* future의 연산이 완료되면, future는 값 또는 오류로 완료됩니다.
 
-**Key terms:**
+**핵심 용어:**
 
-* **Future**: the Dart [Future][] class.
-* **future**: an instance of the Dart `Future` class.
+* **Future**: Dart [Future][] 클래스.
+* **future**: Dart `Future` 클래스의 인스턴스.
 :::
 
-## Working with futures: async and await
+## futures로 작업하기: async 및 await {:#working-with-futures-async-and-await}
 
-The `async` and `await` keywords provide a declarative way
-to define asynchronous functions and use their results. 
-Remember these two basic guidelines when using `async` and `await`:
+`async` 및 `await` 키워드는 비동기 함수를 정의하고, 
+그 결과를 사용하는 선언적 방법을 제공합니다. 
+`async` 및 `await`를 사용할 때, 다음 두 가지 기본 지침을 기억하세요.
 
-* __To define an async function, add `async` before the function body:__
-* __The `await` keyword works only in `async` functions.__
+* __비동기 함수를 정의하려면, 함수 본문 앞에 `async`를 추가합니다.__
+* __`await` 키워드는 `async` 함수에서만 작동합니다.__
 
-Here's an example  that converts `main()` 
-from a synchronous to asynchronous function.
+다음은 `main()`을 동기 함수에서 비동기 함수로 변환하는 예입니다.
 
-First, add the `async` keyword before the function body:
+먼저, 함수 본문 앞에 `async` 키워드를 추가합니다.
 
 <?code-excerpt "async_await/bin/get_order_sync_bad.dart (main-sig)" replace="/main\(\)/$& async/g; /async/[!$&!]/g; /$/ ··· }/g"?>
 ```dart
 void main() [!async!] { ··· }
 ```
 
-If the function has a declared return type, 
-then update the type to be `Future<T>`, 
-where `T` is the type of the value that the function returns.
-If the function doesn't explicitly return a value,
-then the return type is `Future<void>`:
+함수에 선언된 반환 타입이 있는 경우, 타입을 `Future<T>`로 업데이트합니다. 
+여기서, `T`는 함수가 반환하는 값의 타입입니다. 
+함수가 명시적으로 값을 반환하지 않는 경우, 반환 타입은 `Future<void>`입니다.
 
 <?code-excerpt "async_await/bin/get_order.dart (main-sig)" replace="/Future<\w+\W/[!$&!]/g;  /$/ ··· }/g"?>
 ```dart
 [!Future<void>!] main() async { ··· }
 ```
 
-Now that you have an `async` function, 
-you can use the `await` keyword to wait for a future to complete:
+이제 `async` 함수가 있으므로, 
+`await` 키워드를 사용하여 future가 완료될 때까지 기다릴 수 있습니다.
 
 <?code-excerpt "async_await/bin/get_order.dart (print-order)" replace="/await/[!$&!]/g"?>
 ```dart
 print([!await!] createOrderMessage());
 ```
 
-As the following two examples show, the `async` and `await` keywords 
-result in asynchronous code that looks a lot like synchronous code.
-The only differences are highlighted in the asynchronous example, 
-which—if your window is wide enough—is 
-to the right of the synchronous example.
+다음 두 가지 예에서 알 수 있듯이, 
+`async`와 `await` 키워드는, 
+동기 코드와 매우 유사한 비동기 코드를 생성합니다. 
+유일한 차이점은 비동기 예제에서 강조 표시되어 있으며, 
+(창이 충분히 넓다면) 동기 예제의 오른쪽에 있습니다.
 
-#### Example: synchronous functions
+#### 예: 동기 함수 {:#example-synchronous-functions}
 
 <?code-excerpt "async_await/bin/get_order_sync_bad.dart (no-warning)" replace="/(\s+\/\/ )(Imagine.*? is )(.*)/$1$2$1$3/g"?>
 ```dart
@@ -291,8 +260,7 @@ String createOrderMessage() {
 }
 
 Future<String> fetchUserOrder() =>
-    // Imagine that this function is
-    // more complex and slow.
+    // 이 함수가 더 복잡하고 느리다고 상상해봅시다.
     Future.delayed(
       const Duration(seconds: 2),
       () => 'Large Latte',
@@ -309,10 +277,9 @@ Fetching user order...
 Your order is: Instance of 'Future<String>'
 ```
 
-As shown in following two examples,
-it operates like synchronous code.
+다음 두 가지 예에서 보듯이, 동기식 코드처럼 작동합니다.
 
-#### Example: asynchronous functions
+#### 예: 비동기 함수 {:#example-asynchronous-functions}
 
 <?code-excerpt "async_await/bin/get_order.dart" replace="/(\s+\/\/ )(Imagine.*? is )(.*)/$1$2$1$3/g; /async|await/[!$&!]/g; /(Future<\w+\W)( [^f])/[!$1!]$2/g; /4/2/g"?>
 ```dart
@@ -322,8 +289,7 @@ it operates like synchronous code.
 }
 
 Future<String> fetchUserOrder() =>
-    // Imagine that this function is
-    // more complex and slow.
+    // 이 함수가 더 복잡하고 느리다고 상상해봅시다.
     Future.delayed(
       const Duration(seconds: 2),
       () => 'Large Latte',
@@ -340,35 +306,32 @@ Fetching user order...
 Your order is: Large Latte
 ```
 
-The asynchronous example is different in three ways:
+비동기 예제는 세 가지 면에서 다릅니다.
 
-* The return type for `createOrderMessage()` changes 
-  from `String` to `Future<String>`.
-* The **`async`** keyword appears before the function bodies for
-  `createOrderMessage()` and `main()`.
-* The **`await`** keyword appears before calling the asynchronous functions
-  `fetchUserOrder()` and `createOrderMessage()`.
+* `createOrderMessage()`의 반환 타입이, 
+  `String`에서 `Future<String>`로 변경됩니다.
+* `createOrderMessage()`와 `main()`의 함수 본문 앞에, 
+  **`async`** 키워드가 나타납니다.
+* `fetchUserOrder()`와 `createOrderMessage()` 비동기 함수를 호출하기 전에, 
+  **`await`** 키워드가 나타납니다.
 
-:::secondary Key terms
-* **async**: You can use the `async` keyword before a function's body to mark it as
-  asynchronous.
-* **async function**:  An `async` function is a function labeled with the `async`
-  keyword.
-* **await**: You can use the `await` keyword to get the completed result of an
-  asynchronous expression. The `await` keyword only works within an `async` function.
+:::secondary 주요 용어
+* **async**: 함수 본문 앞에 `async` 키워드를 사용하여, 비동기로 표시할 수 있습니다.
+* **async 함수**: `async` 함수는 `async` 키워드로 레이블이 지정된 함수입니다.
+* **await**: `await` 키워드를 사용하여 비동기 표현식의 완료된 결과를 가져올 수 있습니다.
+  `await` 키워드는 `async` 함수 내에서만 작동합니다.
 :::
 
-### Execution flow with async and await
+### async 및 await가 있을 때의 실행 흐름 {:#execution-flow-with-async-and-await}
 
-An `async` function runs synchronously until the first `await` keyword. 
-This means that within an `async` function body, 
-all synchronous code before the first `await` keyword executes immediately.
+`async` 함수는 첫 번째 `await` 키워드까지 동기적으로 실행됩니다. 
+즉, `async` 함수 본문 내에서, 
+첫 번째 `await` 키워드 이전의 모든 동기 코드가 즉시 실행됩니다.
 
-### Example: Execution within async functions
+### 예: async 함수 내에서 실행 {:#example-execution-within-async-functions}
 
-Run the following example to see how execution proceeds
-within an `async` function body. 
-What do you think the output will be?
+다음 예제를 실행하여, `async` 함수 본문 내에서 실행이 어떻게 진행되는지 확인하세요. 
+출력이 어떻게 될 것 같나요?
 
 <?code-excerpt "async_await/bin/async_example.dart" remove="/\/\/ print/"?>
 ```dartpad
@@ -379,7 +342,7 @@ Future<void> printOrderMessage() async {
 }
 
 Future<String> fetchUserOrder() {
-  // Imagine that this function is more complex and slow.
+  // 이 함수가 더 복잡하고 느리다고 상상해봅시다.
   return Future.delayed(const Duration(seconds: 4), () => 'Large Latte');
 }
 
@@ -388,7 +351,8 @@ void main() async {
   await printOrderMessage();
 }
 
-// You can ignore this function - it's here to visualize delay time in this example.
+// 이 함수는 무시해도 됩니다. 
+// 이 예에서는 지연 시간을 시각화하기 위해, 이것을 넣었습니다.
 void countSeconds(int s) {
   for (var i = 1; i <= s; i++) {
     Future.delayed(Duration(seconds: i), () => print(i));
@@ -396,7 +360,7 @@ void countSeconds(int s) {
 }
 ```
 
-After running the code in the preceding example, try reversing lines 2 and 3:
+이전 예제의 코드를 실행한 후, 2번째 줄과 3번째 줄을 뒤집은 후, 실행해보세요.
 
 <?code-excerpt "async_await/bin/async_example.dart (swap-stmts)" replace="/\/\/ (print)/$1/g"?>
 ```dart
@@ -404,69 +368,64 @@ var order = await fetchUserOrder();
 print('Awaiting user order...');
 ```
 
-Notice that timing of the output shifts, now that `print('Awaiting user order')`
-appears after the first `await` keyword in `printOrderMessage()`.
+이제 `printOrderMessage()`의 첫 번째 `await` 키워드 뒤에, 
+`print('Awaiting user order')`가 나타나므로, 
+출력 타이밍이 바뀌는 것을 주목하세요.
 
-### Exercise: Practice using async and await
+### 연습: async 및 await 사용 연습 {:#exercise-practice-using-async-and-await}
 
-The following exercise is a failing unit test
-that contains partially completed code snippets. 
-Your task is to complete the exercise by writing code to make the tests pass.
-You don't need to implement `main()`.
+다음 연습은 부분적으로 완성된 코드 조각을 포함하는 실패한 유닛 테스트입니다. 
+여러분의 과제는 테스트를 통과시키는 코드를 작성하여, 연습을 완료하는 것입니다. 
+`main()`을 구현할 필요는 없습니다.
 
-To simulate asynchronous operations, call the following functions, 
-which are provided for you:
+비동기 연산을 시뮬레이션하려면, 제공된 다음 함수를 호출합니다.
 
-| Function           | Type signature                   | Description                                    |
+| 함수           | 타입 시그니쳐                   | 설명                                    |
 |--------------------|----------------------------------|------------------------------------------------|
-| fetchRole()        | `Future<String> fetchRole()`     | Gets a short description of the user's role.   |
-| fetchLoginAmount() | `Future<int> fetchLoginAmount()` | Gets the number of times a user has logged in. |
+| fetchRole()        | `Future<String> fetchRole()`     | 사용자 역할에 대한 간략한 설명을 가져옵니다.  |
+| fetchLoginAmount() | `Future<int> fetchLoginAmount()` | 사용자가 로그인한 횟수를 가져옵니다. |
 
 {:.table .table-striped}
 
-#### Part 1: `reportUserRole()`
+#### 파트 1: `reportUserRole()` {:#part-1-reportuserrole}
 
-Add code to the `reportUserRole()` function so that it does the following:
+`reportUserRole()` 함수에 코드를 추가하여, 다음을 수행하도록 합니다.
 
-* Returns a future that completes with the following
-  string: `"User role: <user role>"`
-  * Note: You must use the actual value returned by `fetchRole()`; 
-    copying and pasting the example return value won't make the test pass.
-  * Example return value: `"User role: tester"`
-* Gets the user role by calling the provided function `fetchRole()`.
+* 다음 문자열로 완료되는 future를 반환합니다. : `"User role: <user role>"`
+  * 참고: `fetchRole()`에서 반환된 실제 값을 사용해야 합니다. 
+    예제 반환 값을 복사하여 붙여넣어도 테스트가 통과되지 않습니다.
+  * 예제 반환 값: `"User role: tester"`
+* 제공된 함수 `fetchRole()`를 호출하여, 사용자 역할을 가져옵니다.
 
-#### Part 2: `reportLogins()`
+#### 파트 2: `reportLogins()` {:#part-2-reportlogins}
 
-Implement an `async` function `reportLogins()` so that it does the following:
+`reportLogins()`라는 `async` 함수를 구현하여, 다음을 수행합니다.
 
-* Returns the string `"Total number of logins: <# of logins>"`.
-  * Note: You must use the actual value returned by `fetchLoginAmount()`; 
-    copying and pasting the example return value won't make the test pass.
-  * Example return value from `reportLogins()`: `"Total number of logins: 57"`
-* Gets the number of logins by calling the provided function `fetchLoginAmount()`.
+* 문자열 `"Total number of logins: <# of logins>"`를 반환합니다.
+  * 참고: `fetchLoginAmount()`에서 반환된 실제 값을 사용해야 합니다.
+    예제 반환 값을 복사하여 붙여넣어도 테스트가 통과되지 않습니다.
+  * `reportLogins()`에서 반환된 예제 값: `"Total number of logins: 57"`
+* 제공된 함수 `fetchLoginAmount()`를 호출하여 로그인 수를 가져옵니다.
 
 ```dartpad theme="dark"
-// Part 1
-// Call the provided async function fetchRole()
-// to return the user role.
+// 파트 1
+// 제공된 async 함수 fetchRole()을 호출하여, 사용자 역할을 반환합니다.
 Future<String> reportUserRole() async {
-  // TODO: Implement the reportUserRole function here.
+  // TODO: 여기에 reportUserRole 함수를 구현합니다.
 }
 
-// Part 2
-// TODO: Implement the reportLogins function here.
-// Call the provided async function fetchLoginAmount()
-// to return the number of times that the user has logged in.
+// 파트 2
+// TODO: 여기에 reportLogins 함수를 구현합니다.
+// 제공된 async 함수 fetchLoginAmount()를 호출하여, 사용자가 로그인한 횟수를 반환합니다.
 reportLogins() {}
 
-// The following functions those provided to you to simulate
-// asynchronous operations that could take a while.
+// 다음 함수는 시간이 걸릴 수 있는 비동기 작업을 시뮬레이션하기 위해 제공됩니다.
 
 Future<String> fetchRole() => Future.delayed(_halfSecond, () => _role);
 Future<int> fetchLoginAmount() => Future.delayed(_halfSecond, () => _logins);
 
-// The following code is used to test and provide feedback on your solution.
-// There is no need to read or modify it.
+// 다음 코드는 당신의 솔루션을 테스트하고 피드백을 제공하는 데 사용됩니다.
+// 읽거나 수정할 필요가 없습니다.
 
 void main() async {
   print('Testing...');
@@ -540,7 +499,7 @@ const _role = 'administrator';
 const _logins = 42;
 const _halfSecond = Duration(milliseconds: 500);
 
-// Test helpers.
+// 테스트 헬퍼.
 String _makeReadable({
   required String testResult,
   required Map<String, String> readableErrors,
@@ -554,7 +513,7 @@ String _makeReadable({
   }
 }
 
-// Assertions used in tests.
+// 테스트에 사용되는 Assertions 입니다.
 Future<String> _asyncEquals({
   required String expected,
   required dynamic actual,
@@ -576,18 +535,18 @@ Future<String> _asyncEquals({
 ```
 
 <details>
-  <summary title="Expand for a hint on the async-await exercise.">Hint</summary>
+  <summary title="Expand for a hint on the async-await exercise.">힌트</summary>
 
-  Did you remember to add the `async` keyword to the `reportUserRole` function?
-  
-  Did you remember to use the `await` keyword before invoking `fetchRole()`?
-  
-  Remember: `reportUserRole` needs to return a `Future`.
+  `reportUserRole` 함수에 `async` 키워드를 추가하는 걸 기억하셨나요?
+
+  `fetchRole()`를 호출하기 전에 `await` 키워드를 사용하는 걸 기억하셨나요?
+
+  기억하세요: `reportUserRole`은 `Future`를 반환해야 합니다.
 
 </details>
 
 <details>
-  <summary title="Expand for the solution of the async-await exercise.">Solution</summary>
+  <summary title="Expand for the solution of the async-await exercise.">솔루션</summary>
 
   ```dart
   Future<String> reportUserRole() async {
@@ -603,9 +562,9 @@ Future<String> _asyncEquals({
 
 </details>
 
-## Handling errors
+## 오류 처리 {:#handling-errors}
 
-To handle errors in an `async` function, use try-catch:
+`async` 함수에서 오류를 처리하려면, try-catch를 사용하세요.
 
 <?code-excerpt "async_await/bin/try_catch.dart (try-catch)" remove="print(order)"?>
 ```dart
@@ -617,15 +576,13 @@ try {
 }
 ```
 
-Within an `async` function, you can write 
-[try-catch clauses](/language/error-handling#catch)
-the same way you would in synchronous code.
+`async` 함수 내에서, 
+동기 코드에서와 같은 방식으로 [try-catch 클로저](/language/error-handling#catch)를 작성할 수 있습니다.
 
-### Example: async and await with try-catch
+### 예: async 및 await으로 try-catch {:#example-async-and-await-with-try-catch}
 
-Run the following example to see how to handle an error
-from an asynchronous function. 
-What do you think the output will be?
+다음 예제를 실행하여 비동기 함수의 오류를 처리하는 방법을 확인하세요. 
+출력이 어떻게 될 것 같나요?
 
 <?code-excerpt "async_await/bin/try_catch.dart"?>
 ```dartpad
@@ -640,7 +597,7 @@ Future<void> printOrderMessage() async {
 }
 
 Future<String> fetchUserOrder() {
-  // Imagine that this function is more complex.
+  // 이 함수가 더 복잡하다고 상상해 보세요.
   var str = Future.delayed(
       const Duration(seconds: 4),
       () => throw 'Cannot locate user order');
@@ -652,39 +609,32 @@ void main() async {
 }
 ```
 
-### Exercise: Practice handling errors
+### 연습: 오류 처리 연습 {:#exercise-practice-handling-errors}
 
-The following exercise provides practice handling errors with asynchronous code,
-using the approach described in the previous section. To simulate asynchronous
-operations, your code will call the following function, which is provided for you:
+다음 연습은 이전 섹션에서 설명한 접근 방식을 사용하여, 
+비동기 코드로 오류를 처리하는 연습을 제공합니다. 
+비동기 연산을 시뮬레이션하기 위해, 코드는 제공된 다음 함수를 호출합니다.
 
-| Function           | Type signature                      | Description                                                      |
+| 함수           | 타입 시그니쳐                      | 설명                                                      |
 |--------------------|-------------------------------------|------------------------------------------------------------------|
-| fetchNewUsername() | `Future<String> fetchNewUsername()` | Returns the new username that you can use to replace an old one. |
+| fetchNewUsername() | `Future<String> fetchNewUsername()` | 이전 username을 대체할 수 있는 새 username을 반환합니다. |
 
 {:.table .table-striped}
 
-Use `async` and `await` to implement an asynchronous `changeUsername()` function
-that does the following:
+`async`와 `await`를 사용하여, 다음을 수행하는 비동기 `changeUsername()` 함수를 구현합니다.
 
-* Calls the provided asynchronous function `fetchNewUsername()` 
-  and returns its result.
-  * Example return value from `changeUsername()`: `"jane_smith_92"`
-* Catches any error that occurs and returns the string value of the error.
-  * You can use the
-    [toString()]({{site.dart-api}}/{{site.sdkInfo.channel}}/dart-core/ArgumentError/toString.html)
-    method to stringify both
-    [Exceptions]({{site.dart-api}}/{{site.sdkInfo.channel}}/dart-core/Exception-class.html) 
-    and
-    [Errors.]({{site.dart-api}}/{{site.sdkInfo.channel}}/dart-core/Error-class.html)
+* 제공된 비동기 함수 `fetchNewUsername()`를 호출하고 결과를 반환합니다.
+  * `changeUsername()`의 반환 값 예: `"jane_smith_92"`
+* 발생하는 어떠한 오류를 catch 하고, 오류의 문자열 값을 반환합니다.
+  * [toString()]({{site.dart-api}}/{{site.sdkInfo.channel}}/dart-core/ArgumentError/toString.html) 메서드를 사용하여, [Exceptions]({{site.dart-api}}/{{site.sdkInfo.channel}}/dart-core/Exception-class.html)와 [Errors]({{site.dart-api}}/{{site.sdkInfo.channel}}/dart-core/Error-class.html)를 모두 문자열화할 수 있습니다.
 
 ```dartpad theme="dark"
-// TODO: Implement changeUsername here.
+// TODO: 여기에 changeUsername을 구현합니다.
 changeUsername() {}
 
-// The following function is provided to you to simulate
-// an asynchronous operation that could take a while and
-// potentially throw an exception.
+// 다음 함수는 시간이 오래 걸리고, 
+// 잠재적으로 예외가 발생할 수 있는, 
+// 비동기 연산을 시뮬레이션하기 위해 제공됩니다.
 
 Future<String> fetchNewUsername() =>
     Future.delayed(const Duration(milliseconds: 500), () => throw UserError());
@@ -694,8 +644,8 @@ class UserError implements Exception {
   String toString() => 'New username is invalid';
 }
 
-// The following code is used to test and provide feedback on your solution.
-// There is no need to read or modify it.
+// 다음 코드는 당신의 솔루션을 테스트하고 피드백을 제공하는 데 사용됩니다.
+// 읽거나 수정할 필요가 없습니다.
 
 void main() async {
   final List<String> messages = [];
@@ -733,7 +683,7 @@ void main() async {
   }
 }
 
-// Test helpers.
+// 테스트 헬퍼.
 String _makeReadable({
   required String testResult,
   required Map<String, String> readableErrors,
@@ -776,18 +726,18 @@ const _noCatch = 'NO_CATCH';
 ```
 
 <details>
-  <summary title="Expand for a hint on the error-handling exercise.">Hint</summary>
+  <summary title="Expand for a hint on the error-handling exercise.">힌트</summary>
 
-  Implement `changeUsername` to return the string from `fetchNewUsername` or,
-  if that fails, the string value of any error that occurs.
-  
-  Remember: You can use a [try-catch statement](/language/error-handling#catch)
-  to catch and handle errors.
+  `changeUsername`을 구현하여, `fetchNewUsername`에서 문자열을 반환하거나, 
+  실패하면, 발생하는 모든 오류의 문자열 값을 반환합니다.
+
+  기억하세요: [try-catch 문](/language/error-handling#catch)을 사용하여, 
+  오류를 catch 하고, 처리할 수 있습니다.
 
 </details>
 
 <details>
-  <summary title="Expand for the solution of the error-handling exercise.">Solution</summary>
+  <summary title="Expand for the solution of the error-handling exercise.">솔루션</summary>
 
   ```dart
   Future<String> changeUsername() async {
@@ -801,70 +751,67 @@ const _noCatch = 'NO_CATCH';
 
 </details>
 
-## Exercise: Putting it all together
+## 연습: 모두 합치기 {:#exercise-putting-it-all-together}
 
-It's time to practice what you've learned in one final exercise.
-To simulate asynchronous operations, this exercise provides the asynchronous
-functions `fetchUsername()` and `logoutUser()`:
+이제 배운 것을 마지막 연습으로 연습할 시간입니다. 
+비동기 연산을 시뮬레이션하기 위해, 
+이 연습은 비동기 함수 `fetchUsername()`과 `logoutUser()`를 제공합니다.
 
-| Function        | Type signature                   | Description                                                                   |
+| 함수        | 타입 시그니쳐                   | 설명                                                                   |
 |-----------------|----------------------------------|-------------------------------------------------------------------------------|
-| fetchUsername() | `Future<String> fetchUsername()` | Returns the name associated with the current user.                            |
-| logoutUser()    | `Future<String> logoutUser()`    | Performs logout of current user and returns the username that was logged out. |
+| fetchUsername() | `Future<String> fetchUsername()` | 현재 사용자와 연관된 이름을 반환합니다.                            |
+| logoutUser()    | `Future<String> logoutUser()`    | 현재 사용자에서 로그아웃을 수행하고 로그아웃된 username을 반환합니다. |
 
 {:.table .table-striped}
 
-Write the following:
+다음을 작성하세요.
 
-####  Part 1: `addHello()`
+####  파트 1: `addHello()` {:#part-1-addhello}
 
-* Write a function `addHello()` that takes a single `String` argument.
-* `addHello()` returns its `String` argument preceded by `'Hello '`.<br>
-  Example: `addHello('Jon')` returns `'Hello Jon'`.
+* 단일 `String` 인수를 취하는, 함수 `addHello()`를 작성합니다.
+* `addHello()`는 `'Hello '`로 시작하는 `String` 인수를 반환합니다.<br>
+  예: `addHello('Jon')`는 `'Hello Jon'`을 반환합니다.
 
-####  Part 2: `greetUser()`
+####  파트 2: `greetUser()` {:#part-2-greetuser}
 
-* Write a function `greetUser()` that takes no arguments.
-* To get the username, `greetUser()` calls the provided asynchronous
-  function `fetchUsername()`.
-* `greetUser()` creates a greeting for the user by calling `addHello()`,
-  passing it the username, and returning the result.<br>
-  Example: If `fetchUsername()` returns `'Jenny'`, then
-  `greetUser()` returns `'Hello Jenny'`.
+* 인수를 받지 않는, 함수 `greetUser()`를 작성합니다.
+* 사용자 이름을 가져오기 위해, `greetUser()`는 제공된 비동기 함수 `fetchUsername()`를 호출합니다.
+* `greetUser()`는 `addHello()`를 호출하고, 사용자 이름을 전달하고, 
+  결과를 반환하여 사용자에 대한 인사말을 만듭니다.<br>
+  예: `fetchUsername()`이 `'Jenny'`를 반환하면, 
+  `greetUser()`는 `'Hello Jenny'`를 반환합니다.
 
-####  Part 3: `sayGoodbye()`
+####  파트 3: `sayGoodbye()` {:#part-3-saygoodbye}
 
-* Write a function `sayGoodbye()` that does the following:
-  * Takes no arguments.
-  * Catches any errors.
-  * Calls the provided asynchronous function `logoutUser()`.
-* If `logoutUser()` fails, `sayGoodbye()` returns any string you like.
-* If `logoutUser()` succeeds, `sayGoodbye()` returns the string
-  `'<result> Thanks, see you next time'`, where `<result>` is
-  the string value returned by calling `logoutUser()`.
+* 다음을 수행하는 함수 `sayGoodbye()`를 작성하세요.
+  * 인수를 받지 않습니다.
+  * 오류를 catch 합니다.
+  * 제공된 비동기 함수 `logoutUser()`를 호출합니다.
+* `logoutUser()`가 실패하면, `sayGoodbye()`는 당신이 원하는 아무 문자열을 반환합니다.
+* `logoutUser()`가 성공하면, 
+  `sayGoodbye()`는 문자열 `'<result> Thanks, see you next time'`을 반환합니다. 
+  여기서 `<result>`는 `logoutUser()`를 호출하여 반환된 문자열 값입니다.
 
 ```dartpad theme="dark"
-// Part 1
+// 파트 1
 addHello(String user) {}
 
-// Part 2
-// Call the provided async function fetchUsername()
-// to return the username.
+// 파트 2
+// 제공된 async 함수 fetchUsername()을 호출하여, username을 반환합니다.
 greetUser() {}
 
-// Part 3
-// Call the provided async function logoutUser()
-// to log out the user.
+// 파트 3
+// 제공된 async 함수 logoutUser()를 호출하여, 사용자를 로그아웃합니다.
 sayGoodbye() {}
 
-// The following functions are provided to you to use in your solutions.
+// 다음 기능은 당신의 솔루션에서 사용할 수 있도록 제공됩니다.
 
 Future<String> fetchUsername() => Future.delayed(_halfSecond, () => 'Jean');
 
 Future<String> logoutUser() => Future.delayed(_halfSecond, _failOnce);
 
-// The following code is used to test and provide feedback on your solution.
-// There is no need to read or modify it.
+// 다음 코드는 당신의 솔루션을 테스트하고 피드백을 제공하는 데 사용됩니다.
+// 읽거나 수정할 필요가 없습니다.
 
 void main() async {
   const didNotImplement =
@@ -955,7 +902,7 @@ void main() async {
   }
 }
 
-// Test helpers.
+// 테스트 헬퍼
 String _makeReadable({
   required String testResult,
   required Map<String, String> readableErrors,
@@ -1025,18 +972,18 @@ bool _logoutSucceeds = false;
 ```
 
 <details>
-  <summary title="Expand for a hint on the 'Putting it all together' exercise.">Hint</summary>
+  <summary title="Expand for a hint on the 'Putting it all together' exercise.">힌트</summary>
 
-  The `greetUser` and `sayGoodbye` functions should be asynchronous,
-  while `addHello` should be a normal, synchronous function.
+  `greetUser` 및 `sayGoodbye` 함수는 비동기적이어야 하지만, 
+  `addHello`는 일반적인 동기적 함수여야 합니다.
 
-  Remember: You can use a [try-catch statement](/language/error-handling#catch)
-  to catch and handle errors.
+  기억하세요: [try-catch 문](/language/error-handling#catch)을 사용하여, 
+  오류를 catch 하고 처리할 수 있습니다.
 
 </details>
 
 <details>
-  <summary title="Expand for the solution of the 'Putting it all together' exercise.">Solution</summary>
+  <summary title="Expand for the solution of the 'Putting it all together' exercise.">솔루션</summary>
 
   ```dart
   String addHello(String user) => 'Hello $user';
@@ -1058,10 +1005,10 @@ bool _logoutSucceeds = false;
 
 </details>
 
-## Which lints work for futures?
+## 어떤 린트가 futures에 적합할까요? {:#which-lints-work-for-futures}
 
-To catch common mistakes that arise while working with async and futures,
-[enable](/tools/analysis#individual-rules) the following lints:
+async 및 futures 작업 중 발생하는 일반적인 실수를 파악하려면, 
+다음 린트를 [활성화](/tools/analysis#individual-rules)하세요.
 
 * [`discarded_futures`][]
 * [`unawaited_futures`][]
@@ -1069,23 +1016,23 @@ To catch common mistakes that arise while working with async and futures,
 [`discarded_futures`]: /tools/linter-rules/discarded_futures
 [`unawaited_futures`]: /tools/linter-rules/unawaited_futures
 
-## What's next?
+## 다음은 무엇인가요? {:#whats-next}
 
-Congratulations, you've finished the tutorial! If you'd like to learn more, here
-are some suggestions for where to go next:
+축하합니다. 튜토리얼을 마쳤습니다! 
+더 자세히 알아보고 싶다면, 다음에 가야 할 곳에 대한 몇 가지 제안이 있습니다.
 
-- Play with [DartPad]({{site.dartpad}}).
-- Try another [tutorial](/tutorials).
-- Learn more about futures and asynchronous code in Dart:
-  - [Streams tutorial](/libraries/async/using-streams):
-    Learn how to work with a sequence of asynchronous events.
-  - [Concurrency in Dart](/language/concurrency):
-    Understand and learn how to implement concurrency in Dart.
-  - [Asynchrony support](/language/async):
-    Dive in to Dart's language and library support for asynchronous coding.
-  - [Dart videos from Google][Dart videos]:
-    Watch one or more of the videos about asynchronous coding.
-- Get the [Dart SDK](/get-dart)!
+- [DartPad]({{site.dartpad}})로 놀아보세요.
+- 다른 [튜토리얼](/tutorials)을 시도해보세요.
+- Dart에서 futures와 비동기 코드에 대해 자세히 알아보세요.
+  - [Streams 튜토리얼](/libraries/async/using-streams):
+    비동기 이벤트 시퀀스를 사용하는 방법을 알아보세요.
+  - [Dart의 동시성](/language/concurrency):
+    Dart에서 동시성을 구현하는 방법을 이해하고 알아보세요.
+  - [비동기 지원](/language/async):
+    비동기 코딩을 위한 Dart의 언어 및 라이브러리 지원을 살펴보세요.
+  - [Google의 Dart 비디오][Dart 비디오]:
+    비동기 코딩에 대한 비디오를 하나 이상 시청하세요.
+- [Dart SDK](/get-dart)를 받으세요!
 
 [Dart videos]: {{site.yt.playlist}}PLjxrf2q8roU0Net_g1NT5_vOO3s_FR02J
 [Future]: {{site.dart-api}}/{{site.sdkInfo.channel}}/dart-async/Future-class.html

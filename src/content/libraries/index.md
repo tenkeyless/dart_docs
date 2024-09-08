@@ -1,7 +1,10 @@
 ---
-title: Dart's core libraries
-description: Learn about Dart's core libraries and APIs.
-short-title: Core libraries
+# title: Dart's core libraries
+title: Dart의 코어 라이브러리
+# description: Learn about Dart's core libraries and APIs.
+description: Dart의 코어 라이브러리와 API에 대해 알아보세요.
+# short-title: Core libraries
+short-title: Core 라이브러리
 nextpage:
   url: /libraries/dart-core
   title: dart:core
@@ -13,116 +16,101 @@ nextpage:
   }
 </style>
 
-Dart has a rich set of core libraries that provide essentials for many everyday
-programming tasks such as 
-working on collections of objects (`dart:collection`), 
-making calculations (`dart:math`), 
-and encoding/decoding data (`dart:convert`). 
-Additional APIs are available in
-[commonly used packages](/resources/useful-packages).
+Dart에는 객체 컬렉션 작업(`dart:collection`), 계산(`dart:math`), 데이터 인코딩/디코딩(`dart:convert`)과 같은, 많은 일상적인 프로그래밍 작업에 필수적인 코어 라이브러리가 풍부하게 포함되어 있습니다. 
+추가 API는 [일반적으로 사용되는 패키지](/resources/useful-packages)에서 사용할 수 있습니다.
 
-## Library tour
+## 라이브러리 투어 {:#library-tour}
 
-The following guides cover how to use major features of Dart's core libraries.
-They provide just an overview, and are by no means comprehensive.
-Whenever you need more details about a library or its members,
-consult the [Dart API reference.][Dart API]
+다음 가이드에서는 Dart 코어 라이브러리의 주요 기능을 사용하는 방법을 다룹니다. 
+이 가이드는 개요만 제공하며, 포괄적이지는 않습니다. 
+라이브러리나 멤버에 대한 자세한 정보가 필요할 때마다, [Dart API 참조][Dart API]를 참조하세요.
 
 [dart:core](/libraries/dart-core)
-: Built-in types, collections, and other core functionality.
-  This library is automatically imported into every Dart program.
+: 빌트인 타입, 컬렉션 및 기타 코어 기능.
+  이 라이브러리는 모든 Dart 프로그램에 자동으로 import 됩니다.
 
 [dart:async](/libraries/dart-async)
-: Support for asynchronous programming, with classes such as Future and Stream.
+: Future 및 Stream과 같은 클래스를 사용하여, 비동기 프로그래밍을 지원합니다.
 
 [dart:math](/libraries/dart-math)
-: Mathematical constants and functions, plus a random number generator.
+: 수학 상수 및 함수와 난수 생성기.
 
 [dart:convert](/libraries/dart-convert)
-: Encoders and decoders for converting between different data representations,
-  including JSON and UTF-8.
+: JSON 및 UTF-8을 포함하여, 다양한 데이터 표현 간을 변환하기 위한 인코더 및 디코더.
 
 [dart:io](/libraries/dart-io)
-: I/O for programs that can use the Dart VM,
-  including Flutter apps, servers, and command-line scripts.
+: Flutter 앱, 서버, 명령줄 스크립트를 포함하여, Dart VM을 사용할 수 있는 프로그램에 대한 I/O.
 
 [dart:html](/libraries/dart-html)
-: DOM and other APIs for browser-based apps.
-  We now recommend using `package:web` over `dart:html`.
+: 브라우저 기반 앱을 위한 DOM 및 기타 API.
+  이제 `dart:html` 대신 `package:web`을 사용하는 것이 좋습니다.
 
+언급했듯이 이 페이지는 개요일 뿐입니다. 
+몇 가지 dart:* 라이브러리만 다루고, 타사 라이브러리는 다루지 않습니다.
 
-As mentioned, these pages are just an overview;
-they cover only a few dart:* libraries
-and no third-party libraries.
+다양한 플랫폼에서 Dart가 지원하는 모든 라이브러리에 대한 개요는, 
+아래의 [멀티 플랫폼 라이브러리](#multi-platform-libraries), 
+[네이티브 플랫폼 라이브러리](#native-platform-libraries), 
+[웹 플랫폼 라이브러리](#web-platform-libraries) 리스트를 확인하세요.
 
-For an overview of all libraries that Dart supports on different platforms,
-check out the [Multi-platform libraries](#multi-platform-libraries),
-[Native platform libraries](#native-platform-libraries), and
-[Web platform libraries](#web-platform-libraries) lists below.
+라이브러리 정보를 찾을 수 있는 다른 장소는, 
+[pub.dev 사이트]({{site.pub}})와 [Dart 웹 개발자 라이브러리 가이드][webdev libraries]입니다. 
+모든 dart:* 라이브러리에 대한 API 문서는, [Dart API 참조][Dart API]에서 찾을 수 있으며, 
+Flutter를 사용하는 경우, [Flutter API 참조][api-flutter]에서 찾을 수 있습니다.
 
-Other places to find library information are the
-[pub.dev site]({{site.pub}}) and the
-[Dart web developer library guide][webdev libraries].
-You can find API documentation for all dart:* libraries in the
-[Dart API reference][Dart API] or, if you're using Flutter,
-the [Flutter API reference][api-flutter].
-
-To learn more about the Dart language,
-check out the [language documentation and samples](/language).
+Dart 언어에 대해 자세히 알아보려면, [언어 문서 및 샘플](/language)을 확인하세요.
 
 [Dart API]: {{site.dart-api}}/{{site.sdkInfo.channel}}
 [webdev libraries]: /web/libraries
 [api-flutter]: {{site.flutter-api}}
 
-## Multi-platform libraries
+## 멀티 플랫폼 라이브러리 {:#multi-platform-libraries}
 
-The following table lists the Dart core libraries that work on all
-[Dart platforms](/overview#platform).
+다음 표는 모든 [Dart 플랫폼](/overview#platform)에서 작동하는 Dart 코어 라이브러리를 나열합니다.
 
-| Library                                       | Notes                         |
+| 라이브러리                                       | 메모                         |
 |-----------------------------------------------|-------------------------------|
-| [`dart:core`][dart-core]<br>Built-in types, collections, and other core functionality for every Dart program. | |
-| [`dart:async`][dart-async], [`package:async`][package-async]<br>Support for asynchronous programming, with classes such as `Future` and `Stream`.<br>`package:async` provides additional utilities around the `Future` and `Stream` types. | |
-| [`dart:collection`][dart-collection], [`package:collection`][package-collection]<br>Classes and utilities that supplement the collection support in `dart:core`.<br>`package:collection` provides further collection implementations and functions for working on and with collections. | |
-| [`dart:convert`][dart-convert], [`package:convert`][package-convert]<br>Encoders and decoders for converting between different data representations, including JSON and UTF-8.<br>`package:convert` provides additional encoders and decoders. ||
-| [`dart:developer`][dart-developer]<br>Interaction with developer tools such as the debugger and inspector. | [Native JIT][jit] and the [development JavaScript compiler][] only |
-| [`dart:math`][dart-math]<br>Mathematical constants and functions, plus a random number generator. | |
-| [`dart:typed_data`][dart-typed_data], [`package:typed_data`][package-typed_data]<br>Lists that efficiently handle fixed sized data (for example, unsigned 8-byte integers) and SIMD numeric types.<br>`package:typed_data` provides further classes and functions working on typed data. | |
+| [`dart:core`][dart-core]<br>모든 Dart 프로그램에 빌트인 타입, 컬렉션 및 기타 코어 기능입니다. | |
+| [`dart:async`][dart-async], [`package:async`][package-async]<br>`Future` 및 `Stream`과 같은 클래스를 사용하여, 비동기 프로그래밍을 지원합니다.<br>`package:async`는 `Future` 및 `Stream` 타입에 대한 추가 유틸리티를 제공합니다. | |
+| [`dart:collection`][dart-collection], [`package:collection`][package-collection]<br>`dart:core`의 컬렉션 지원을 보완하는 클래스와 유틸리티입니다.<br>`package:collection`은 컬렉션을 다루기 위한 추가 컬렉션 구현과 함수를 제공합니다. | |
+| [`dart:convert`][dart-convert], [`package:convert`][package-convert]<br>JSON 및 UTF-8을 포함하여, 서로 다른 데이터 표현 간 변환을 위한 인코더 및 디코더입니다.<br>`package:convert`는 추가 인코더 및 디코더를 제공합니다. ||
+| [`dart:developer`][dart-developer]<br>디버거 및 검사기 같은 개발자 도구와의 상호작용.  | [네이티브 JIT][jit] 및 [개발용 JavaScript 컴파일러][development JavaScript compiler]만 해당됩니다. |
+| [`dart:math`][dart-math]<br>수학 상수와 함수, 그리고 난수 생성기. | |
+| [`dart:typed_data`][dart-typed_data], [`package:typed_data`][package-typed_data]<br>고정된 크기의 데이터(예: 부호 없는 8바이트 정수)와 SIMD 숫자 타입을 효율적으로 처리하는 리스트입니다.<br>`package:typed_data`는 타입화된 데이터를 처리하는 추가 클래스와 함수를 제공합니다. | |
 
 {:.table .table-striped}
 
-## Native platform libraries
+## 네이티브 플랫폼 라이브러리 {:#native-platform-libraries}
 
-The following table lists the Dart core libraries that work on the
-[Dart native platform](/overview#native-platform) (AOT- and JIT-compiled code).
+다음 표는 [Dart 네이티브 플랫폼](/overview#native-platform)에서 작동하는, 
+Dart 코어 라이브러리를 나열합니다.(AOT 및 JIT로 컴파일된 코드)
 
-| Library                                       | Notes                         |
+| 라이브러리                                       | 메모                         |
 |-----------------------------------------------|-------------------------------|
-| [`dart:ffi`][dart-ffi], [`package:ffi`][package-ffi]<br>A foreign function interface that lets Dart code use native C APIs.<br>`package:ffi` contains utilities incl. support for converting Dart strings and C strings. | |
-| [`dart:io`][dart-io], [`package:io`][package-io]<br>File, socket, HTTP, and other I/O support for non-web applications.<br>`package:io` provides functionality including support for ANSI colors, file copying, and standard exit codes. | |
-| [`dart:isolate`][dart-isolate]<br> Concurrent programming using isolates: independent workers similar to threads. | |
-| [`dart:mirrors`][dart-mirrors]<br> Basic reflection with support for introspection and dynamic invocation. | Experimental<br>[Native JIT][jit] only (_not_&nbsp;Flutter) |
+| [`dart:ffi`][dart-ffi], [`package:ffi`][package-ffi]<br>Dart 코드에서 네이티브 C API를 사용할 수 있게 해주는 외부 함수 인터페이스입니다.<br>`package:ffi`에는 Dart 문자열과 C 문자열을 변환하는 기능을 포함한 유틸리티가 포함되어 있습니다. | |
+| [`dart:io`][dart-io], [`package:io`][package-io]<br>웹 애플리케이션이 아닌 경우, 파일, 소켓, HTTP 및 기타 I/O를 지원합니다.<br>`package:io`는 ANSI 색상, 파일 복사 및 표준 종료 코드 지원을 포함한 기능을 제공합니다. | |
+| [`dart:isolate`][dart-isolate]<br>isolates를 사용한 동시 프로그래밍: 스레드와 유사한 독립적인 워커입니다. | |
+| [`dart:mirrors`][dart-mirrors]<br>내성(introspection)과 동적 호출(dynamic invocation)을 지원하는 기본적인 반사(reflection)입니다. | 실험적<br>[네이티브 JIT][jit]만 해당(Flutter는 _아님_) |
 
 {:.table .table-striped}
 
-## Web platform libraries
+## 웹 플랫폼 라이브러리 {:#web-platform-libraries}
 
-The following table lists the Dart core libraries that work on the
-[Dart web platform](/overview#web-platform) (code compiled to JavaScript).
-The latest, recommended tools are **bolded**, and legacy tools are *italicized*
-(visit [Javascript interoperability][] for more information).
+다음 표는 [Dart 웹 플랫폼](/overview#web-platform)에서 작동하는 Dart 코어 라이브러리를 나열합니다.(Javascript로 컴파일된 코드) 
+최신 권장 도구는 **굵게** 표시되고, 레거시 도구는 *기울임체*로 표시됩니다.
+(자세한 내용은 [Javascript 상호 운용성][Javascript interoperability]을 방문하세요)
 
-| Library                                       | Notes                         |
+| 라이브러리                                       | 메모                         |
 |-----------------------------------------------|-------------------------------|
-| [**`package:web`**][pkg-web] <br>Lightweight browser API bindings built around JS interop | Replaces all `dart:*` web libraries. Read the [migration guide][html-web]. |
-| [**`dart:js_interop`**][js-interop] <br>Interop with JavaScript and browser APIs. | Replaces `package:js`. |
-| [**`dart:js_interop_unsafe`**][js-interop-unsafe] <br>Utility methods to manipulate JavaScript objects dynamically. | Replaces `dart:js_util`. |
-| [*`dart:html`*][dart-html] *(legacy)* <br>HTML elements and other resources for web-based applications. | Use `package:web` instead. |
-| [*`dart:indexed_db`*][dart-indexed_db] *(legacy)* <br>Client-side key-value store with support for indexes.  | Use `package:web` instead. |
-| [*`dart:js`*][dart-js], [*`dart:js_util`*][dart-js_util], [*`package:js`*][package-js] *(legacy)* <br>Low-level primitives and higher-level annotations for JS interop. | Use `dart:js_interop` or `dart:js_interop_unsafe` instead. |
-| [*`dart:svg`*][dart-svg] *(legacy)* <br>Scalable Vector Graphics.  | Use `package:web` instead. |
-| [*`dart:web_audio`*][dart-web_audio] *(legacy)* <br>High-fidelity audio programming in the browser. | Use `package:web` instead. |
-| [*`dart:web_gl`*][dart-web_gl] *(legacy)* <br>3D programming in the browser. | Use `package:web` instead. |
+| [**`package:web`**][pkg-web] <br>JS 상호 운용성(interop)을 중심으로 빌드된 가벼운 브라우저 API 바인딩 | 모든 `dart:*` 웹 라이브러리를 대체합니다. [마이그레이션 가이드][html-web]을 읽어보세요. |
+| [**`dart:js_interop`**][js-interop] <br>JavaScript 및 브라우저 API와의 상호 운용성 | `package:js`를 대체합니다. |
+| [**`dart:js_interop_unsafe`**][js-interop-unsafe] <br>JavaScript 객체를 동적으로 조작하는 유틸리티 메서드. | `dart:js_util`를 대체합니다. |
+| [*`dart:html`*][dart-html] *(legacy)* <br>웹 기반 애플리케이션을 위한 HTML 요소 및 기타 리소스.  | 대신 `package:web`을 사용하세요. |
+| [*`dart:indexed_db`*][dart-indexed_db] *(legacy)* <br>인덱스를 지원하는 클라이언트 측 키-값 저장소입니다. | 대신 `package:web`을 사용하세요. |
+| [*`dart:js`*][dart-js], [*`dart:js_util`*][dart-js_util], [*`package:js`*][package-js] *(legacy)* <br>JS 상호 운용성을 위한 낮은 레벨 primitives과 높은 레벨 어노테이션. | 대신 `dart:js_interop` 또는 `dart:js_interop_unsafe`를 사용하세요. |
+| [*`dart:svg`*][dart-svg] *(legacy)* <br>확장 가능한 벡터 그래픽.  | 대신 `package:web`을 사용하세요. |
+| [*`dart:web_audio`*][dart-web_audio] *(legacy)* <br>브라우저에서 고품질 오디오 프로그래밍을 즐겨보세요. | 대신 `package:web`을 사용하세요. |
+| [*`dart:web_gl`*][dart-web_gl] *(legacy)* <br>브라우저에서의 3D 프로그래밍. | 대신 `package:web`을 사용하세요. |
 
 {:.table .table-striped}
 
