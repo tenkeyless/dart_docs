@@ -1,24 +1,24 @@
 ---
-title: Publishing packages
-description: Learn how to publish a Dart package to pub.dev.
+# title: Publishing packages
+title: 패키지 게시
+# description: Learn how to publish a Dart package to pub.dev.
+description: pub.dev에 Dart 패키지를 게시하는 방법을 알아보세요.
 ---
 
-[The pub package manager][pub] isn't just for using other people's packages.
-It also allows you to share your packages with the world. If you have a useful
-project and you want others to be able to use it, use the `dart pub publish`
-command.
+[pub 패키지 관리자][pub]는 다른 사람의 패키지를 사용하기 위한 것만이 아닙니다. 
+또한 패키지를 전 세계와 공유할 수 있습니다. 
+유용한 프로젝트가 있고 다른 사람들이 사용할 수 있게 하려면, `dart pub publish` 명령을 사용하세요.
 
 :::note
-To publish to a location other than pub.dev,
-or to prevent publication anywhere, use the `publish_to` field,
-as defined in the [pubspec][].
+pub.dev가 아닌 다른 위치에 게시하거나 어디에도 게시하지 않으려면, 
+[pubspec][]에 정의된 대로, `publish_to` 필드를 사용하세요.
 :::
 
-Watch the following video for an overview of building and publishing packages.
+다음 영상을 통해 패키지를 빌드하고 게시하는 방법에 대한 개요를 살펴보세요.
 
-{% ytEmbed "8V_TLiWszK0", "How to build a package in Dart" %}
+{% ytEmbed "8V_TLiWszK0", "Dart에서 패키지를 빌드하는 방법" %}
 
-## Remember: Publishing is forever
+## 기억하세요: 출판은 영원합니다 {:#remember-publishing-is-forever}
 
 Keep in mind that a published package lasts forever.
 As soon as you publish your package, users can depend on it.
@@ -32,7 +32,7 @@ but old ones remain available for users that can't upgrade yet.
 For published packages that have lost relevance or lack maintainance,
 [mark them as discontinued](#discontinue).
 
-## Prepare your package for publication
+## 게시할 패키지를 준비하세요. {:#prepare-your-package-for-publication}
 
 When publishing a package, follow the conventions found in the
 [pubspec format][pubspec] and [package layout][pkg-layout] structure.
@@ -66,7 +66,7 @@ Beyond these conventions, you must follow these requirements:
   upload permissions. Your Google Account can be associated with
   a Gmail address or any other email address.
 
-### Populate your pub.dev web page
+### Populate your pub.dev web page {:#populate-your-pub-dev-web-page}
 
 Pub uses the contents of a few files to create a page for your
 package at `pub.dev/packages/<your_package>`.
@@ -134,12 +134,12 @@ This helps ensure that your organization retains access to
 the publisher when you are not available.
 :::
 
-## Publish your package
+## 패키지 게시 {:#publish-your-package}
 
 Use the [`dart pub publish`][] command to publish your package
 for the first time or to update it to a new version.
 
-### What files are published?
+### What files are published? {:#what-files-are-published}
 
 The published package includes **all files** under the package root directory,
 with the following exceptions:
@@ -172,7 +172,7 @@ To learn more about useful scenarios for this,
 consult this [StackOverflow answer][pubignore-when].
 :::
 
-### Test publishing your package
+### Test publishing your package {:#test-publishing-your-package}
 
 To test how `dart pub publish` will work, you can perform a dry run:
 
@@ -206,7 +206,7 @@ Publishing transmogrify 1.0.0
 Package has 0 warnings.
 ```
 
-### Publish to pub.dev
+### Publish to pub.dev {:#publish-to-pub-dev}
 
 To publish your package when it's ready, remove the `--dry-run` argument:
 
@@ -243,7 +243,7 @@ dependencies:
   transmogrify: ^1.0.0
 ```
 
-### Detect supported platforms
+### Detect supported platforms {:#detect-supported-platforms}
 
 The [pub.dev site]({{site.pub}}) detects which platforms a package supports,
 displaying these platforms on the package page.
@@ -254,7 +254,7 @@ To change the generated list of supported platforms,
 
 [specify supported platforms]: /tools/pub/pubspec#platforms
 
-### Automate publishing
+### Automate publishing {:#automate-publishing}
 
 Once you have published the first version of a package,
 you can configure automated publishing
@@ -295,7 +295,7 @@ the package page displays links to both the prerelease and the stable release.
 The prerelease doesn't affect the analysis score, show up in search results,
 or replace the package `README.md` and documentation.
 
-### Publish preview versions
+### Publish preview versions {:#publish-preview-versions}
 
 Previews can be useful when _all_ of the following are true:
 
@@ -337,9 +337,9 @@ ignore the following warning from `dart pub publish`:
    version 3.0.0-0, consider publishing the package as a pre-release
    instead."_
 
-## Manage publishing permissions
+## 게시 권한 관리 {:#manage-publishing-permissions}
 
-### Locate the package publisher
+### Locate the package publisher {:#locate-the-package-publisher}
 
 If a package has a verified publisher,
 the pub.dev page for that package displays the publisher domain.
@@ -389,7 +389,7 @@ To transfer a package to a verified publisher:
 
 1. Enter the name of the publisher, and click **Transfer to Publisher**.
 
-## Manage your package
+## 패키지 관리 {:#manage-your-package}
 
 ### Retract a package version {:#retract}
 
@@ -428,7 +428,7 @@ Package retraction was introduced in Dart 2.15.
 In pre-2.15 SDKs, the pub version solver ignores the retracted status.
 :::
 
-#### How to use a retracted version of a package
+#### How to use a retracted version of a package {:#how-to-use-a-retracted-version-of-a-package}
 
 If a package depends on a package version that later is retracted,
 it can still use that version as long as that version is in
@@ -437,19 +437,19 @@ To depend on a specific version that's already retracted,
 the dependent package must pin the version in the
 `dependency_overrides` section of the `pubspec.yaml` file.
 
-#### How to migrate away from a retracted package version
+#### How to migrate away from a retracted package version {:#how-to-migrate-away-from-a-retracted-package-version}
 
 When a package depends on a retracted package version,
 you have choices in how you migrate away from this version depending
 on other available versions.
 
-#### Upgrade to a newer version
+#### Upgrade to a newer version {:#upgrade-to-a-newer-version}
 
 In most cases a newer version has been published to
 replace the retracted version.
 In this case run `dart pub upgrade <package>`.
 
-#### Downgrade to the newest non-retracted version
+#### Downgrade to the newest non-retracted version {:#downgrade-to-the-newest-non-retracted-version}
 
 If no newer version is available, consider downgrading
 to the newest non-retracted version.
@@ -476,13 +476,13 @@ Though you could delete the `pubspec.lock` file and run `dart pub get`,
 this is not recommended.
 It might result in version changes for other dependencies.
 
-#### Upgrade or downgrade to a version outside the specified version constraint
+#### Upgrade or downgrade to a version outside the specified version constraint {:#upgrade-or-downgrade-to-a-version-outside-the-specified-version-constraint}
 
 If there is no alternative version available that satisfies the
 current version constraint, edit the version constraint
 in the `pubspec.yaml` file and run `dart pub upgrade`.
 
-#### How to retract or restore a package version
+#### How to retract or restore a package version {:#how-to-retract-or-restore-a-package-version}
 
 To retract or restore a package version,
 first sign in to pub.dev using a Google Account
