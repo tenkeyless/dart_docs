@@ -1,33 +1,36 @@
 ---
-title: "Effective Dart: Documentation"
-description: Clear, helpful comments and documentation.
+# title: "Effective Dart: Documentation"
+title: "효과적인 Dart: 문서"
+# description: Clear, helpful comments and documentation.
+description: 명확하고, 유용한 의견과 문서.
 nextpage:
   url: /effective-dart/usage
-  title: Usage
+  # title: Usage
+  title: 사용
 prevpage:
   url: /effective-dart/style
-  title: Style
+  # title: Style
+  title: 스타일
 ---
 
 <?code-excerpt path-base="misc/lib/effective_dart"?>
 
-It's easy to think your code is obvious today without realizing how much you
-rely on context already in your head. People new to your code, and
-even your forgetful future self won't have that context. A concise, accurate
-comment only takes a few seconds to write but can save one of those people
-hours of time.
+오늘날 당신의 코드가, 이미 머릿속에 있는 맥락에 얼마나 의존하는지 깨닫지 못한 채, 명확하다고 생각하기 쉽습니다. 
+당신의 코드를 처음 보는 사람들과, 심지어 건망증이 있는 미래의 당신조차도, 그 맥락을 알지 못할 것입니다. 
+간결하고 정확한 주석은 작성하는 데 몇 초 밖에 걸리지 않지만, 
+그 사람들 중 한 명은 몇 시간의 시간을 절약할 수 있습니다.
 
-We all know code should be self-documenting and not all comments are helpful.
-But the reality is that most of us don't write as many comments as we should.
-It's like exercise: you technically *can* do too much, but it's a lot more
-likely that you're doing too little. Try to step it up.
+우리 모두는 코드가 자체적으로 문서화되어야 하며 모든 주석이 도움이 되는 것은 아니라는 것을 알고 있습니다. 
+하지만, 현실은 우리 대부분이 해야 할 만큼 많은 주석을 쓰지 않는다는 것입니다. 
+운동과 같습니다. 
+기술적으로 너무 많은 것을 *할 수* 있지만, 너무 적게 할 가능성이 훨씬 더 큽니다. 단계를 높여보세요.
 
-## Comments
+## 주석 {:#comments}
 
 The following tips apply to comments that you don't want included in the
 generated documentation.
 
-### DO format comments like sentences
+### DO format comments like sentences {:#do-format-comments-like-sentences}
 
 <?code-excerpt "docs_good.dart (comments-like-sentences)"?>
 ```dart tag=good
@@ -39,7 +42,7 @@ Capitalize the first word unless it's a case-sensitive identifier. End it with a
 period (or "!" or "?", I suppose). This is true for all comments: doc comments,
 inline stuff, even TODOs. Even if it's a sentence fragment.
 
-### DON'T use block comments for documentation
+### DON'T use block comments for documentation {:#dont-use-block-comments-for-documentation}
 
 <?code-excerpt "docs_good.dart (block-comments)"?>
 ```dart tag=good
@@ -60,7 +63,7 @@ void greet(String name) {
 You can use a block comment (`/* ... */`) to temporarily comment out a section
 of code, but all other comments should use `//`.
 
-## Doc comments
+## 문서 주석 {:#doc-comments}
 
 Doc comments are especially handy because [`dart doc`][] parses them 
 and generates [beautiful doc pages][docs] from them. 
@@ -70,7 +73,7 @@ and uses the special `///` syntax that `dart doc` looks for.
 [`dart doc`]: /tools/dart-doc
 [docs]: {{site.dart-api}}/{{site.sdkInfo.channel}}
 
-### DO use `///` doc comments to document members and types
+### DO use `///` doc comments to document members and types {:#do-use-doc-comments-to-document-members-and-types}
 
 {% render 'linter-rule-mention.md', rules:'slash_for_doc_comments' %}
 
@@ -99,14 +102,14 @@ when a doc comment contains a bulleted list that uses `*` to mark list items.
 If you stumble onto code that still uses the JavaDoc style, consider cleaning it
 up.
 
-### PREFER writing doc comments for public APIs
+### PREFER writing doc comments for public APIs {:#prefer-writing-doc-comments-for-public-apis}
 
 {% render 'linter-rule-mention.md', rules:'package_api_docs, public_member_api_docs' %}
 
 You don't have to document every single library, top-level variable, type, and
 member, but you should document most of them.
 
-### CONSIDER writing a library-level doc comment
+### CONSIDER writing a library-level doc comment {:#consider-writing-a-library-level-doc-comment}
 
 Unlike languages like Java where the class is the only unit of program
 organization, in Dart, a library is itself an entity that users work with
@@ -131,13 +134,13 @@ at the start of the file.
 library;
 ```
 
-### CONSIDER writing doc comments for private APIs
+### CONSIDER writing doc comments for private APIs {:#consider-writing-doc-comments-for-private-apis}
 
 Doc comments aren't just for external consumers of your library's public API.
 They can also be helpful for understanding private members that are called from
 other parts of the library.
 
-### DO start doc comments with a single-sentence summary
+### DO start doc comments with a single-sentence summary {:#do-start-doc-comments-with-a-single-sentence-summary}
 
 Start your doc comment with a brief, user-centric description ending with a
 period. A sentence fragment is often sufficient. Provide just enough context for
@@ -163,7 +166,7 @@ void delete(String path) {
 }
 ```
 
-### DO separate the first sentence of a doc comment into its own paragraph
+### DO separate the first sentence of a doc comment into its own paragraph {:#do-separate-the-first-sentence-of-a-doc-comment-into-its-own-paragraph}
 
 Add a blank line after the first sentence to split it out into its own
 paragraph. If more than a single sentence of explanation is useful, put the
@@ -194,7 +197,7 @@ void delete(String path) {
 }
 ```
 
-### AVOID redundancy with the surrounding context
+### AVOID redundancy with the surrounding context {:#avoid-redundancy-with-the-surrounding-context}
 
 The reader of a class's doc comment can clearly see the name of the class, what
 interfaces it implements, etc. When reading docs for a member, the signature is
@@ -231,7 +234,7 @@ It's better to say nothing
 than waste a reader's time telling them something they already know.
 
 
-### PREFER starting function or method comments with third-person verbs
+### PREFER starting function or method comments with third-person verbs {:#prefer-starting-function-or-method-comments-with-third-person-verbs}
 
 The doc comment should focus on what the code *does*.
 
@@ -246,7 +249,7 @@ void start() {
 }
 ```
 
-### PREFER starting a non-boolean variable or property comment with a noun phrase
+### PREFER starting a non-boolean variable or property comment with a noun phrase {:#prefer-starting-a-non-boolean-variable-or-property-comment-with-a-noun-phrase}
 
 The doc comment should stress what the property *is*. This is true even for
 getters which may do calculation or other work. What the caller cares about is
@@ -261,7 +264,7 @@ int weekday;
 int get checkedCount => ...
 ```
 
-### PREFER starting a boolean variable or property comment with "Whether" followed by a noun or gerund phrase
+### PREFER starting a boolean variable or property comment with "Whether" followed by a noun or gerund phrase {:#prefer-starting-a-boolean-variable-or-property-comment-with-whether-followed-by-a-noun-or-gerund-phrase}
 
 The doc comment should clarify the states this variable represents. 
 This is true even for getters which may do calculation or other work. 
@@ -285,7 +288,7 @@ cases, usage of "or not" with "whether" is superfluous and can be omitted,
 especially when used in this context.
 :::
 
-### DON'T write documentation for both the getter and setter of a property
+### DON'T write documentation for both the getter and setter of a property {:#dont-write-documentation-for-both-the-getter-and-setter-of-a-property}
 
 If a property has both a getter and a setter, then create a doc comment for
 only one of them. `dart doc` treats the getter and setter like a single field,
@@ -310,7 +313,7 @@ int get waterDepth => ...
 set waterDepth(int meters) => ...
 ```
 
-### PREFER starting library or type comments with noun phrases
+### PREFER starting library or type comments with noun phrases {:#prefer-starting-library-or-type-comments-with-noun-phrases}
 
 Doc comments for classes are often the most important documentation in your
 program. They describe the type's invariants, establish the terminology it uses,
@@ -325,7 +328,7 @@ extra effort here can make all of the other members simpler to document.
 class Chunk { ... }
 ```
 
-### CONSIDER including code samples in doc comments
+### CONSIDER including code samples in doc comments {:#consider-including-code-samples-in-doc-comments}
 
 <?code-excerpt "docs_good.dart (code-sample)"?>
 ````dart tag=good
@@ -340,7 +343,7 @@ num min(num a, num b) => ...
 Humans are great at generalizing from examples, so even a single code sample
 makes an API easier to learn.
 
-### DO use square brackets in doc comments to refer to in-scope identifiers
+### DO use square brackets in doc comments to refer to in-scope identifiers {:#do-use-square-brackets-in-doc-comments-to-refer-to-in-scope-identifiers}
 
 {% render 'linter-rule-mention.md', rules:'comment_references' %}
 
@@ -371,7 +374,7 @@ constructor, use `.new` after the class name:
 /// To create a point, call [Point.new] or use [Point.polar] to ...
 ```
 
-### DO use prose to explain parameters, return values, and exceptions
+### DO use prose to explain parameters, return values, and exceptions {:#do-use-prose-to-explain-parameters-return-values-and-exceptions}
 
 Other languages use verbose tags and sections to describe what the parameters
 and returns of a method are.
@@ -400,7 +403,7 @@ and highlight parameters using square brackets.
 Flag addFlag(String name, String abbr) => ...
 ```
 
-### DO put doc comments before metadata annotations
+### DO put doc comments before metadata annotations {:#do-put-doc-comments-before-metadata-annotations}
 
 <?code-excerpt "docs_good.dart (doc-before-meta)"?>
 ```dart tag=good
@@ -417,7 +420,7 @@ class ToggleComponent {}
 ```
 
 
-## Markdown
+## Markdown {:#markdown}
 
 You are allowed to use most [markdown][] formatting in your doc comments and
 `dart doc` will process it accordingly using the [markdown package.][]
@@ -483,18 +486,18 @@ a flavor of what's supported:
 /// #### If you need this many levels of headers, you're doing it wrong
 ````
 
-### AVOID using markdown excessively
+### AVOID using markdown excessively {:#avoid-using-markdown-excessively}
 
 When in doubt, format less. Formatting exists to illuminate your content, not
 replace it. Words are what matter.
 
-### AVOID using HTML for formatting
+### AVOID using HTML for formatting {:#avoid-using-html-for-formatting}
 
 It *may* be useful to use it in rare cases for things like tables, but in almost
 all cases, if it's too complex to express in Markdown, you're better off not
 expressing it.
 
-### PREFER backtick fences for code blocks
+### PREFER backtick fences for code blocks {:#prefer-backtick-fences-for-code-blocks}
 
 Markdown has two ways to indicate a block of code: indenting the code four
 spaces on each line, or surrounding it in a pair of triple-backtick "fence"
@@ -521,7 +524,7 @@ language, and is consistent with using backticks for inline code.
 ///     print(example.isItGreat); // "Yes."
 ```
 
-## Writing
+## 작성 {:#writing}
 
 We think of ourselves as programmers, but most of the characters in a source
 file are intended primarily for humans to read. English is the language we code
@@ -532,17 +535,17 @@ This section lists a few guidelines for our docs. You can learn more about
 best practices for technical writing, in general, from articles such as
 [Technical writing style](https://en.wikiversity.org/wiki/Technical_writing_style).
 
-### PREFER brevity
+### PREFER brevity {:#prefer-brevity}
 
 Be clear and precise, but also terse.
 
-### AVOID abbreviations and acronyms unless they are obvious
+### AVOID abbreviations and acronyms unless they are obvious {:#avoid-abbreviations-and-acronyms-unless-they-are-obvious}
 
 Many people don't know what "i.e.", "e.g." and "et al." mean. That acronym
 that you're sure everyone in your field knows may not be as widely known as you
 think.
 
-### PREFER using "this" instead of "the" to refer to a member's instance
+### PREFER using "this" instead of "the" to refer to a member's instance {:#prefer-using-this-instead-of-the-to-refer-to-a-members-instance}
 
 When documenting a member for a class, you often need to refer back to the
 object the member is being called on. Using "the" can be ambiguous.

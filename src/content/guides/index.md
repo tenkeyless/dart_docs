@@ -20,7 +20,7 @@ Dart 문서에 오신 것을 환영합니다!
 |       |      |
 |:-----:|:----|
 | Dart 버전 | 3.5.0 |
-| 최종 업데이트 | 2024-09-04 |
+| 최종 업데이트 | 2024-09-08 |
 | 웹사이트 주소 | [dart-docs-kr.web.app](https://dart-docs-kr.web.app/) |
 | GitHub 주소 | <https://github.com/tenkeyless/dart_docs/tree/develop> |
 
@@ -30,7 +30,11 @@ Dart 문서에 오신 것을 환영합니다!
 - 애플 실리콘의 Docker를 통해서 구동할 수도 있습니다.
 - 주기적으로, [dart-lang site-www Github](https://github.com/dart-lang/site-www)에서 문서를 fork 및 업데이트하여, 최신으로 유지할 예정입니다.
 - 몇몇 내용은 번역되지 않은 부분이 있을 수 있습니다. 이후, 추가로 번역이 진행될 예정입니다.
-
+  - 효과적인 Dart
+    - [스타일](/effective-dart/style)
+    - [문서](/effective-dart/documentation)
+    - [사용](/effective-dart/usage)
+    - [디자인](/effective-dart/design)
 ---
 
 이 사이트에서 가장 많이 방문한 페이지는 다음과 같습니다.
