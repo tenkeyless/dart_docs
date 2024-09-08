@@ -39,6 +39,8 @@ Dart 문서에 오신 것을 환영합니다!
     - [패키지 생성](/guides/libraries/create-packages)
     - [패키지 게시](/tools/pub/publishing)
     - [패키지 페이지 작성](/tools/pub/writing-package-pages)
+    - 패키지 참조
+      - [버전 관리](/tools/pub/versioning)
 ---
 
 이 사이트에서 가장 많이 방문한 페이지는 다음과 같습니다.
