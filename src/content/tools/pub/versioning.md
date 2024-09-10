@@ -26,7 +26,7 @@ pub을 _사용_ 하려면 [다른 문서][pub]를 참조하세요.
 그들은 앱을 망가뜨리고 싶어하지 않으며, 여러분도 마찬가지입니다. 
 우리는 _버전 관리_ 를 통해 이 문제를 해결합니다.
 
-## A name and a number {:#a-name-and-a-number}
+## 이름과 번호 {:#a-name-and-a-number}
 
 When you depend on some piece of outside code,
 you don't just say "My app uses `widgets`." You say, "My app uses
@@ -45,7 +45,7 @@ version number set in the package filename.
 They might include `-0` or `-beta`.
 These notations don't affect dependency resolution.
 
-## Resolving shared dependencies {:#resolving-shared-dependencies}
+## 공유 종속성 해결 {:#resolving-shared-dependencies}
 
 Depending on specific versions works fine when your dependency
 _graph_ is really just a dependency _tree_. If your app depends on a bunch of
@@ -140,7 +140,7 @@ You could pick version `2.3.7` for `collection`.
 A single concrete version would satisfy constraints for
 both the `widgets` and `templates` packages.
 
-## Semantic versions {:#semantic-versions}
+## 시맨틱 버전 {:#semantic-versions}
 
 When you add a dependency to your package, you'll sometimes want to specify a
 range of versions to allow. How do you know what range to pick? You need to be
@@ -190,7 +190,7 @@ For simplicity's sake, avoid using `+` after the version reaches `1.0.0`.
 We've got almost all of the pieces we need to deal with versioning and API
 evolution now. Let's see how they play together and what pub does.
 
-## Constraint solving {:#constraint-solving}
+## 제약 조건 해결 {:#constraint-solving}
 
 When you define your package, you list its
 [immediate dependencies][immediate-dep].
@@ -230,7 +230,7 @@ The highest version number that fits in all of those ranges is `1.8.2`, so pub
 picks that. That means your app _and every package your app uses_ will all use
 `collection 1.8.2`.
 
-## Constraint context {:#constraint-context}
+## 제약조건 컨텍스트 {:#constraint-context}
 
 The fact that selecting a package version takes into account _every_ package
 that depends on it has an important consequence: _the specific version that
@@ -274,7 +274,7 @@ the _other_ constraint that `otherapp` places on it.
 This is why each app gets its own `package_config.json` file: The concrete version selected for each package depends on
 the entire dependency graph of the containing app.
 
-## Constraint solving for exported dependencies {:#constraint-solving-for-exported-dependencies}
+## 내보낸(exported) 종속성에 대한 제약 조건 해결 {:#constraint-solving-for-exported-dependencies}
 
 Package authors must define package constraints with care.
 Consider the following scenario:
@@ -362,7 +362,7 @@ the exact same versions of every dependency when they build your app. You'll
 also use this when you deploy your app so you can ensure that your production
 servers are using the exact same packages that you're developing with.
 
-## When things go wrong {:#when-things-go-wrong}
+## 일이 잘못될 때 {:#when-things-go-wrong}
 
 Of course, all of this presumes that your dependency graph is perfect and
 flawless. Even with version ranges and pub's constraint solving and
@@ -438,7 +438,7 @@ your app, and when this happens pub reports an error and tells you what's
 going on. It definitely won't leave you in some weird state where you
 think things can work but won't.
 
-## Summary {:#summary}
+## 요약 {:#summary}
 
 In summary:
 

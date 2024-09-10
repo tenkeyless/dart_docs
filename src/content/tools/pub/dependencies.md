@@ -1,45 +1,43 @@
 ---
-title: Package dependencies
-description: Add other packages to your app. Specify package locations, version constraints, and more.
+# title: Package dependencies
+title: 패키지 종속성
+# description: Add other packages to your app. Specify package locations, version constraints, and more.
+description: 앱에 다른 패키지를 추가합니다. 패키지 위치, 버전 제약 조건 등을 지정합니다.
 ---
 
-Dependencies are one of the core concepts of the [pub package manager][].
-A _dependency_ is another package that your package needs to work.
-Dependencies are specified in your [pubspec](/tools/pub/pubspec).
-You list only _immediate dependencies_: the
-software that your package uses directly. Pub handles
-[transitive dependencies](/tools/pub/glossary#transitive-dependency) for you.
+종속성은 [pub 패키지 관리자][pub package manager]의 핵심 개념 중 하나입니다. 
+_종속성_ 은 패키지가 작동해야 하는 또다른 패키지입니다. 
+종속성은 [pubspec](/tools/pub/pubspec)에 지정됩니다. 
+패키지에서 직접 사용하는 소프트웨어인 _즉각적인 종속성_ 만 나열합니다. 
+Pub은 [전이적 종속성](/tools/pub/glossary#transitive-dependency)을 처리합니다.
 
-This page has detailed information on how to specify dependencies.
-At the end is a list of
-[best practices for package dependencies](#best-practices).
+이 페이지에는 종속성을 지정하는 방법에 대한 자세한 정보가 있습니다. 
+마지막에는 [패키지 종속성에 대한 모범 사례](#best-practices) 리스트가 있습니다.
 
-## Overview
+## 개요 {:#overview}
 
-For each dependency, you specify the _name_ of the package you depend on
-and the _range of versions_ of that package that you allow.
-You can also specify the [_source_][].
-The source tells pub how to locate the package.
+각 종속성에 대해, 종속된 패키지의 _이름_ 과 허용하는 해당 패키지의 _버전 범위_ 를 지정합니다. 
+[_소스_][_source_]도 지정할 수 있습니다. 
+소스는 pub에 패키지를 찾는 방법을 알려줍니다.
 
 [_source_]: /tools/pub/glossary#source
 
-As an example, you specify a dependency in the following format:
+예를 들어, 다음 형식으로 종속성을 지정합니다.
 
 ```yaml
 dependencies:
   transmogrify: ^1.0.0
 ```
 
-This YAML code creates a dependency on the `transmogrify` package
-using the default package repository ([pub.dev]({{site.pub}})) and
-allowing any version from `1.0.0` to `2.0.0` (but not including `2.0.0`).
-To learn about this syntax, check out
-[version constraints](#version-constraints).
+이 YAML 코드는 기본 패키지 저장소([pub.dev]({{site.pub}}))를 사용하여, 
+`transmogrify` 패키지에 대한 종속성을 생성하고, 
+`1.0.0`에서 `2.0.0`까지의 모든 버전을 허용합니다. (`2.0.0`은 포함하지 않음) 
+이 구문에 대해 알아보려면, [버전 제약 조건](#version-constraints)을 확인하세요.
 
-To specify a source other than pub.dev,
-use `sdk`, `hosted`, `git`, or `path`.
-For example, the following YAML code uses `path`
-to tell pub to get `transmogrify` from a local directory:
+pub.dev가 아닌 다른 소스를 지정하려면, 
+`sdk`, `hosted`, `git` 또는 `path`를 사용합니다. 
+예를 들어, 다음 YAML 코드는 `path`를 사용하여, 
+pub에 로컬 디렉토리에서 `transmogrify`를 가져오라고 지시합니다.
 
 ```yaml
 dependencies:
@@ -47,36 +45,34 @@ dependencies:
     path: /Users/me/transmogrify
 ```
 
-The next section describes the format for each dependency source.
+다음 섹션에서는 각 종속성 소스에 대한 형식을 설명합니다.
 
-## Dependency sources
+## 종속성 소스 {:#dependency-sources}
 
-Pub can use the following sources to locate packages:
+Pub은 다음 소스를 사용하여 패키지를 찾을 수 있습니다.
 
 * [SDK](#sdk)
-* [Hosted packages](#hosted-packages)
-* [Git packages](#git-packages)
-* [Path packages](#path-packages)
+* [호스팅된 패키지](#hosted-packages)
+* [Git 패키지](#git-packages)
+* [경로 패키지](#path-packages)
 
-### Hosted packages
+### 호스팅된 패키지 {:#hosted-packages}
 
-A _hosted_ package is one that can be downloaded from the pub.dev site
-(or another HTTP server that speaks the same API). Here's an example
-of declaring a dependency on a hosted package:
+_호스팅된_ 패키지는 pub.dev 사이트(또는 동일한 API를 사용하는 다른 HTTP 서버)에서 다운로드할 수 있는 패키지입니다. 
+다음은 호스팅 패키지에 대한 종속성을 선언하는 예입니다.
 
 ```yaml
 dependencies:
   transmogrify: ^1.4.0
 ```
 
-This example specifies that your package depends on a hosted package named
-`transmogrify` and works with any version from 1.4.0 to 2.0.0
-(but not 2.0.0 itself).
+이 예에서는 패키지가 `transmogrify`라는 호스팅 패키지에 종속되고, 
+1.4.0에서 2.0.0까지의 모든 버전(2.0.0 자체는 아님)과 작동한다는 것을 지정합니다.
 
-If you want to use your [own package repository][],
-you can use `hosted` to specify its URL.
-The following YAML code creates a dependency on the `transmogrify` package
-using the `hosted` source:
+[자체 패키지 저장소][own package repository]를 사용하려면, 
+`hosted`를 사용하여 URL을 지정할 수 있습니다. 
+다음 YAML 코드는 `hosted` 소스를 사용하여, 
+`transmogrify` 패키지에 대한 종속성을 만듭니다.
 
 [own package repository]: /tools/pub/custom-package-repositories
 
@@ -90,22 +86,21 @@ dependencies:
     version: ^1.4.0
 ```
 
-The version constraint is optional but recommended.
-If no version constraint is given, `any` is assumed.
+버전 제약은 선택 사항이지만 권장됩니다. 
+버전 제약이 주어지지 않으면 `any`가 가정됩니다.
 
 :::version-note
-If your package has a [SDK constraints][SDK version] earlier than 2.19,
-you must use the lower and upper bound format for SDK versions.
-The SDK constraint validator in those versions doesn't support
-the caret syntax.
+패키지에 [SDK 제약 조건][SDK version]이 2.19 이전인 경우, 
+SDK 버전에 대한 하위 및 상위 경계 형식을 사용해야 합니다. 
+해당 버전의 SDK 제약 조건 검증기는 캐럿 구문(caret syntax)을 지원하지 않습니다.
 
 ```yaml
 environment:
   sdk: [!'>=2.14.0 < 3.0.0'!]
 ```
 
-If your package has a [SDK version][] earlier than 2.15,
-you must use a more verbose `hosted` format.
+패키지의 [SDK 버전][SDK version]이 2.15 이전인 경우, 
+더 자세한 `hosted` 형식을 사용해야 합니다.
 
 ```yaml
 environment:
@@ -122,13 +117,11 @@ dependencies:
 
 [SDK version]: /guides/language/evolution#language-versioning
 
-### Git packages
+### Git 패키지 {:#git-packages}
 
-Sometimes you live on the bleeding edge and need to use packages that
-haven't been formally released yet. Maybe your package itself is still in
-development and is using other packages that are being developed at the
-same time. To make that easier, you can depend directly on a package
-stored in a [Git][] repository.
+때로는 최첨단 기술을 사용하고 아직 공식적으로 출시되지 않은 패키지를 사용해야 할 수도 있습니다. 
+아마도 패키지 자체가 아직 개발 중이고, 동시에 개발 중인 다른 패키지를 사용하고 있을 수도 있습니다. 
+이를 더 쉽게 하기 위해, [Git][] 저장소에 저장된 패키지에 직접 의존할 수 있습니다.
 
 [git]: https://git-scm.com/
 
@@ -138,12 +131,11 @@ dependencies:
     git: https://github.com/munificent/kittens.git
 ```
 
-The `git` here says this package is found using Git, and the URL after that is
-the Git URL that can be used to clone the package.
+여기서 `git`은 이 패키지가 Git을 사용하여 발견되었음을 나타내며, 
+그 뒤의 URL은 패키지를 복제하는 데 사용할 수 있는 Git URL입니다.
 
-Even if the package repo is private, if you can
-[connect to the repo using SSH,][GitHub SSH]
-then you can depend on the package by using the repo's SSH URL:
+패키지 저장소가 비공개이더라도 [SSH를 사용하여 저장소에 연결][GitHub SSH]할 수 있다면, 
+저장소의 SSH URL을 사용하여 패키지에 의존할 수 있습니다.
 
 ```yaml
 dependencies:
@@ -151,8 +143,7 @@ dependencies:
     git: git@github.com:munificent/kittens.git
 ```
 
-If you want to depend on a specific commit, branch, or tag,
-add a `ref` key to the description:
+특정 커밋, 브랜치 또는 태그에 의존하려면, 설명에 `ref` 키를 추가하세요.
 
 ```yaml
 dependencies:
@@ -162,13 +153,12 @@ dependencies:
       ref: some-branch
 ```
 
-The ref can be anything that Git allows to [identify a commit.][commit]
+ref는 Git에서 [커밋을 식별하는 데][commit] 허용하는 모든 것이 될 수 있습니다.
 
 [commit]: https://www.kernel.org/pub/software/scm/git/docs/user-manual.html#naming-commits
 
-Pub assumes that the package is in the root of the Git repository. To specify a
-different location in the repo, specify a `path` relative to the repository
-root:
+Pub은 패키지가 Git 저장소의 루트에 있다고 가정합니다. 
+저장소에서 다른 위치를 지정하려면, 저장소 루트에 상대적인 `path`를 지정합니다.
 
 ```yaml
 dependencies:
@@ -178,20 +168,18 @@ dependencies:
       path: path/to/kittens
 ```
 
-The path is relative to the Git repo's root.
+path는 Git 저장소의 루트에 상대적입니다.
 
-Git dependencies are not allowed as dependencies
-for packages uploaded to [pub.dev][pubsite].
+Git 종속성은 [pub.dev][pubsite]에 업로드된 패키지의 종속성으로 허용되지 않습니다.
 
-### Path packages
+### 경로 {:#path-packages}
 
-Sometimes you find yourself working on multiple related packages at the same
-time. Maybe you are creating a framework while building an app that uses it.
-In those cases, during development you really want to depend on the _live_
-version of that package on your local file system. That way changes in one
-package are instantly picked up by the one that depends on it.
+때로는 여러 관련 패키지를 동시에 작업하는 경우가 있습니다. 
+아마도 앱을 빌드하는 동안, 프레임워크를 만들고 있을 것입니다. 
+그런 경우, 개발 중에 로컬 파일 시스템에서 해당 패키지의 _라이브_ 버전에 의존하고 싶을 것입니다. 
+그렇게 하면, 한 패키지의 변경 사항이 해당 패키지에 의존하는 패키지에서 즉시 적용됩니다.
 
-To handle that, pub supports _path dependencies_.
+이를 처리하기 위해 pub는 _경로 종속성(path dependencies)_ 을 지원합니다.
 
 ```yaml
 dependencies:
@@ -199,35 +187,32 @@ dependencies:
     path: /Users/me/transmogrify
 ```
 
-This says the root directory for `transmogrify` is `/Users/me/transmogrify`.
-For this dependency, pub generates a symlink directly to the `lib` directory
-of the referenced package directory. Any changes you make to the dependent
-package are seen immediately. You don't need to run pub every time you
-change the dependent package.
+이것은 `transmogrify`의 루트 디렉토리가 `/Users/me/transmogrify`임을 나타냅니다. 
+이 종속성의 경우, pub는 참조된 패키지 디렉토리의 `lib` 디렉토리에 직접 심볼릭 링크를 생성합니다. 
+종속 패키지에 대한 모든 변경 사항은 즉시 표시됩니다. 
+종속 패키지를 변경할 때마다 pub를 실행할 필요는 없습니다.
 
-Relative paths are allowed and are considered relative to the directory
-containing your pubspec.
+상대 경로가 허용되며, pubspec이 포함된 디렉토리에 대한 상대 경로로 간주됩니다.
 
-Path dependencies are useful for local development, but do not work when
-sharing code with the outside world—not everyone can get to
-your file system. Because of this, you cannot upload a package to the
-[pub.dev site][pubsite] if it has any path dependencies in its pubspec.
+경로 종속성은 로컬 개발에 유용하지만, 외부 세계와 코드를 공유할 때는 작동하지 않습니다. 
+모든 사람이 파일 시스템에 접근할 수 있는 것은 아닙니다. 
+이 때문에 pubspec에 경로 종속성이 있는 경우, 
+[pub.dev 사이트][pubsite]에 패키지를 업로드할 수 없습니다.
 
-Instead, the typical workflow is:
+대신, 일반적인 워크플로는 다음과 같습니다.
 
-1. Edit your pubspec locally to use a path dependency.
-2. Work on the main package and the package it depends on.
-3. Once they're both working, publish the dependent package.
-4. Change your pubspec to point to the now hosted version of its dependent.
-5. Publish your main package too, if you want.
+1. 로컬에서 pubspec을 편집하여 경로 종속성을 사용합니다.
+2. 기본 패키지와 종속된 패키지에서 작업합니다.
+3. 둘 다 작동하면, 종속 패키지를 게시합니다.
+4. pubspec을 변경하여, 종속 패키지의 현재 호스팅된 버전을 가리키도록 합니다.
+5. 원한다면 메인 패키지도 게시합니다.
 
-### SDK
+### SDK {:#sdk}
 
-The SDK source is used for any SDKs that are shipped along with packages,
-which may themselves be dependencies.
-Currently, Flutter is the only SDK that is supported.
+SDK 소스는 패키지와 함께 제공되는 모든 SDK에 사용되며, 패키지 자체가 종속성일 수 있습니다. 
+현재 Flutter가 지원되는 유일한 SDK입니다.
 
-The syntax looks like this:
+구문은 다음과 같습니다.
 
 ```yaml
 dependencies:
@@ -235,38 +220,35 @@ dependencies:
     sdk: flutter
 ```
 
-The identifier after `sdk:` indicates which SDK the package comes from.
-If it's `flutter`, the dependency is satisfiable as long as:
+`sdk:` 뒤의 식별자는 패키지가 어느 SDK에서 왔는지 나타냅니다. 
+`flutter`인 경우, 종속성은 다음과 같은 경우 충족 가능합니다.
 
-* Pub is running in the context of the `flutter` executable
-* The Flutter SDK contains a package with the given name
+* Pub이 `flutter` executable의 컨텍스트에서 실행 중
+* Flutter SDK에 지정된 이름의 패키지가 포함되어 있음
 
-If it's an unknown identifier, the dependency is always considered unsatisfied.
+알 수 없는 식별자인 경우, 종속성은 항상 충족되지 않은 것으로 간주됩니다.
 
-## Version constraints
+## 버전 제약 {:#version-constraints}
 
-Let's say that your Package A depends upon Package B.
-How can you communicate to other developers which version of Package B
-remains compatible with a given version of Package A?
+패키지 A가 패키지 B에 종속되어 있다고 가정해 보겠습니다. 
+패키지 A의 주어진 버전과 호환되는 패키지 B의 버전을 다른 개발자에게 어떻게 전달할 수 있을까요?
 
-To let developers know version compatibility, specify version constraints.
-You want to allow the widest range of versions possible
-to give your package users flexibility.
-The range should exclude versions that don't work or haven't been tested.
+개발자에게 버전 호환성을 알리려면 버전 제약 조건을 지정하세요. 
+패키지 사용자에게 유연성을 제공하기 위해 가능한 한 광범위한 버전을 허용해야 합니다. 
+이 범위에는 작동하지 않거나 테스트되지 않은 버전이 제외되어야 합니다.
 
-The Dart community uses semantic versioning<sup id="fnref:semver"><a
-href="#fn:semver">1</a></sup>.
+Dart 커뮤니티는 시맨틱 버전 관리<sup id="fnref:semver"><a href="#fn:semver">1</a></sup>를 사용합니다.
 
-You can express version constraints using either _traditional syntax_
-or _caret syntax_ starting with Dart 2.19.
-Both syntaxes specify a range of compatible versions.
+Dart 2.19부터 _기존 구문(traditional syntax)_ 또는 _캐럿 구문(caret syntax)_ 을 사용하여, 
+버전 제약 조건을 표현할 수 있습니다. 
+두 구문 모두 호환되는 버전 범위를 지정합니다.
 
-The traditional syntax provides an explicit range like `'>=1.2.3 <2.0.0'`.
-The caret syntax provides an explicit starting version `^1.2.3`
+기존 구문은 `'>=1.2.3 <2.0.0'`과 같이 명시적인 범위를 제공합니다. 
+캐럿 구문은 명시적인 시작 버전 `^1.2.3`을 제공합니다.
 
 ```yaml
 environment:
-  # This package must use a 3.x version of the Dart SDK starting with 3.2.
+  # 이 패키지는 3.2부터 시작하는 Dart SDK 3.x 버전을 사용해야 합니다.
   sdk: ^3.2.0
 
 dependencies:
@@ -274,117 +256,109 @@ dependencies:
     hosted:
       name: transmogrify
       url: https://some-package-server.com
-    # This package must use a 1.x version of transmogrify starting with 1.4.
+    # 이 패키지는 1.4부터 시작하는 transmogrify 1.x 버전을 사용해야 합니다.
     version: ^1.4.0
 ```
 
-To learn more about pub's version system, see the [package versioning page][].
+pub의 버전 시스템에 대해 자세히 알아보려면, [패키지 버전 관리 페이지][package versioning page]를 참조하세요.
 
 [package versioning page]: /tools/pub/versioning#semantic-versions
 
-### Traditional syntax
+### 기존 구문 {:#traditional-syntax}
 
-A version constraint that uses the traditional syntax can use any
-of the following values:
+기존 구문을 사용하는 버전 제약 조건은 다음 값 중 하나를 사용할 수 있습니다.
 
-| **Value** |                **Allows**               | **Use?** |                                                                        **Notes**                                                                        |
+| **값** |                **허용**               | **Use?** |                                                                        **메모**                                                                        |
 |:---------:|:----------------------------------------|:--------:|:--------------------------------------------------------------------------------------------------------------------------------------------------------|
-|   `any`   | All versions                            |    No    | Serves as a explicit declaration of empty version constraint.                                                                                           |
-|  `1.2.3`  | Only the given version                  |    No    | Limits adoption of your package due the additional limits it places on apps that use your package.                                                      |
-| `>=1.2.3` | Given version or later                  |    Yes   |                                                                                                                                                         |
-|  `>1.2.3` | Versions later than the given version   |    No    |                                                                                                                                                         |
-| `<=1.2.3` | Given version or earlier                |    No    |                                                                                                                                                         |
-|  `<1.2.3` | Versions earlier than the given version |    No    | Use this when you know an upper bound version that _doesn't_ work with your package. This version might be the first to introduce some breaking change. |
+|   `any`   | 모든 버전                            |    No    | 비어 있는 버전 제약 조건을 명시적으로 선언하는 역할을 합니다.                                                                                           |
+|  `1.2.3`  | 주어진 버전만                  |    No    | 패키지를 사용하는 앱에 추가적인 제한을 가하기 때문에, 패키지 채택이 제한됩니다.                                                     |
+| `>=1.2.3` | 주어진 버전 또는 이후 버전                  |    Yes   |                                                                                                                                                         |
+|  `>1.2.3` | 주어진 버전보다 이후 버전   |    No    |                                                                                                                                                         |
+| `<=1.2.3` | 주어진 버전 또는 이전 버전                |    No    |                                                                                                                                                         |
+|  `<1.2.3` | 주어진 버전보다 이전 버전 |    No    | 패키지와 *호환되지 않는* 상위 버전을 알고 있을 때, 이것을 사용하세요. 이 버전은 breaking change가 도입되는 첫 번째 버전일 수 있습니다. |
 
 {:.table}
 
-You can specify any combination of version values as their ranges intersect.
-For example, if you set the version value as `'>=1.2.3 <2.0.0'`,
-this combines the both limitations so the dependency can be any version
-from `1.2.3` to `2.0.0` excluding `2.0.0` itself.
+버전 값의 범위가 교차할 때 버전 값의 조합을 지정할 수 있습니다. 
+예를 들어 버전 값을 `'>=1.2.3 <2.0.0'`으로 설정하면, 
+두 가지 제한이 결합되어 종속성은 `2.0.0` 자체를 제외한, 
+`1.2.3`에서 `2.0.0`까지의 모든 버전이 될 수 있습니다.
 
 :::warning
-If you include the greater than (**>**) character in the version constraint,
-**quote the entire constraint string**.
-This prevents YAML from interpreting the character as YAML syntax.
-For example: never use `>=1.2.3 <2.0.0`. Use `'>=1.2.3 <2.0.0'` or `^1.2.3`.
+버전 제약 조건에 보다 큼(**>**) 문자를 포함하는 경우, **전체 제약 조건 문자열을 인용**합니다. 
+이렇게 하면 YAML이 해당 문자를 YAML 구문으로 해석하지 못합니다. 
+예를 들어, `>=1.2.3 <2.0.0`은 절대 사용하지 마세요. 
+`'>=1.2.3 <2.0.0'` 또는 `^1.2.3`을 사용하세요.
 :::
 
-### Caret syntax
+### 캐럿 구문 {:#caret-syntax}
 
-Caret syntax expresses the version constraint in a compact way.
-`^version` means _the range of all versions guaranteed to be backwards
-compatible with the given version_.
-This range would include all versions up to the next one to introduce a
-breaking change. As Dart uses semantic versioning, this would be the next
-major version for any package version 1.0 or later
-or the next minor version for any package version earlier than 1.0.
+캐럿 구문은 버전 제약 조건을 간결하게 표현합니다. 
+`^version`은 _주어진 버전과 하위 호환성이 보장되는 모든 버전의 범위_ 를 의미합니다. 
+이 범위에는 다음 버전까지의 모든 버전이 포함되어 breaking change를 도입합니다. 
+Dart는 시맨틱 버전 관리를 사용하므로, 
+이는 모든 패키지 버전 1.0 이상의 다음 major 버전이 되고, 
+모든 패키지 버전 1.0 이전의 다음 minor 버전이 됩니다.
 
-| Version value | Range covers to | Caret Syntax | Traditional Syntax  |
+| 버전 값 | 커버하는 범위 | 캐럿 구문 | 기존 구문  |
 |:-------------:|:---------------:|:------------:|:-------------------:|
-| >=1.0         | Next major      | `^1.3.0`     | `'>=1.3.0 <2.0.0'`  |
-| <1.0          | Next minor      | `^0.1.2`     | `'>=0.1.2 <0.2.0'`  |
+| >=1.0         | 다음 major      | `^1.3.0`     | `'>=1.3.0 <2.0.0'`  |
+| <1.0          | 다음 minor      | `^0.1.2`     | `'>=0.1.2 <0.2.0'`  |
 
 {:.table}
 
-The following example shows caret syntax:
+다음 예에서는 캐럿 구문을 보여줍니다.
 
 ```yaml
 dependencies:
-  # Covers all versions from 1.3.0 to 1.y.z, not including 2.0.0
+  # 2.0.0을 제외한 1.3.0부터 1.y.z까지의 모든 버전을 포함합니다.
   path: ^1.3.0
-  # Covers all versions from 1.1.0 to 1.y.z, not including 2.0.0
+  # 2.0.0을 제외한 1.1.0부터 1.y.z까지의 모든 버전을 포함합니다.
   collection: ^1.1.0
-  # Covers all versions from 0.1.2 to 0.1.z, not including 0.2.0
+  # 0.2.0을 제외한 0.1.2부터 0.1.z까지의 모든 버전을 포함합니다.
   string_scanner: ^0.1.2
 ```
 
-## Dev dependencies
+## 개발 종속성 {:#dev-dependencies}
 
-Pub supports two flavors of dependencies: regular dependencies and _dev
-dependencies._ Dev dependencies differ from regular dependencies in that _dev
-dependencies of packages you depend on are ignored_. Here's an example:
+Pub은 두 가지 종속성 플레이버를 지원합니다. 일반 종속성과 _dev 종속성_ 입니다. 
+dev 종속성은 _사용자가 종속된 패키지의 dev 종속성이 무시_ 된다는 점에서 일반 종속성과 다릅니다.
+다음은 예입니다.
 
-Say the `transmogrify` package uses the `test` package in its tests and only
-in its tests. If someone just wants to use `transmogrify`—import its
-libraries—it doesn't actually need `test`. In this case, it specifies
-`test` as a dev dependency. Its pubspec will have something like:
+`transmogrify` 패키지가 테스트에서 `test` 패키지를 사용하고 테스트에서만 사용한다고 가정해 보겠습니다. 
+누군가가 `transmogrify`만 사용하고 싶어한다면(라이브러리를 가져오기 위해) 실제로 `test`가 필요하지 않습니다. 
+이 경우 `test`를 dev 종속성으로 지정합니다. 
+pubspec은 다음과 같습니다.
 
 ```yaml
 dev_dependencies:
   test: ^1.25.0
 ```
 
-Pub gets every package that your package depends on, and everything _those_
-packages depend on, transitively. It also gets your package's dev dependencies,
-but it _ignores_ the dev dependencies of any dependent packages. Pub only gets
-_your_ package's dev dependencies. So when your package depends on
-`transmogrify` it will get `transmogrify` but not `test`.
+Pub은 패키지가 종속된 모든 패키지와 _해당_ 패키지가 종속된 모든 것을 전이적으로 가져옵니다. 
+또한 패키지의 개발 종속성을 가져오지만, 종속된 모든 패키지의 개발 종속성은 _무시_ 합니다. 
+Pub은 _당신_ 의 패키지의 개발 종속성만 가져옵니다. 
+따라서 패키지가 `transmogrify`에 종속되면, `transmogrify`는 가져오지만, `test`는 가져오지 않습니다.
 
-The rule for deciding between a regular or dev dependency is simple: If
-the dependency is imported from something in your `lib` or `bin` directories,
-it needs to be a regular dependency. If it's only imported from `test`,
-`example`, etc. it can and should be a dev dependency.
+일반 종속성과 개발 종속성 중 하나를 선택하는 규칙은 간단합니다. 
+종속성이 `lib` 또는 `bin` 디렉터리의 어떤 것에서 가져온 경우, 일반 종속성이어야 합니다. 
+`test`, `example` 등에서만 가져온 경우, 개발 종속성이어야 하며 그래야 합니다.
 
-Using dev dependencies makes dependency graphs smaller. That makes `pub` run
-faster, and makes it easier to find a set of package versions that satisfies all
-constraints.
+개발 종속성을 사용하면 종속성 그래프가 더 작아집니다. 
+그러면 `pub`이 더 빨리 실행되고, 모든 제약 조건을 충족하는 패키지 버전 세트를 더 쉽게 찾을 수 있습니다.
 
-## Dependency overrides
+## 종속성 재정의 {:#dependency-overrides}
 
-You can use `dependency_overrides` to temporarily override all references
-to a dependency.
+`dependency_overrides`를 사용하면, 종속성에 대한 모든 참조를 일시적으로 재정의할 수 있습니다.
 
-For example, perhaps you are updating a local copy of transmogrify, a
-published package. Transmogrify is used by other packages in your
-dependency graph, but you don't want to clone each package locally
-and change each pubspec to test your local copy of transmogrify.
+예를 들어, 게시된 패키지인 transmogrify의 로컬 사본을 업데이트하고 있을 수 있습니다. 
+Transmogrify는 종속성 그래프의 다른 패키지에서 사용되지만, 
+각 패키지를 로컬로 복제하고 각 pubspec을 변경하여 transmogrify의 로컬 사본을 테스트하고 싶지는 않습니다.
 
-In this situation, you can override the dependency using
-`dependency_overrides` to specify the directory holding the local
-copy of the package.
+이 상황에서 `dependency_overrides`를 사용하여 종속성을 재정의하여, 
+패키지의 로컬 사본을 보관하는 디렉터리를 지정할 수 있습니다.
 
-The pubspec would look something like the following:
+pubspec은 다음과 같습니다.
 
 ```yaml
 name: my_app
@@ -395,13 +369,11 @@ dependency_overrides:
     path: ../transmogrify_patch/
 ```
 
-When you run [`dart pub get`][] or [`dart pub upgrade`][],
-the pubspec's lockfile is updated to reflect the
-new path to your dependency and, wherever transmogrify is used, pub
-uses the local version instead.
+[`dart pub get`][] 또는 [`dart pub upgrade`][]를 실행하면, 
+pubspec의 lockfile이 업데이트되어 종속성에 대한 새 경로가 반영되고, 
+transmogrify가 사용되는 곳에서는 pub가 대신 로컬 버전을 사용합니다.
 
-You can also use `dependency_overrides` to specify a particular
-version of a package:
+`dependency_overrides`를 사용하여 패키지의 특정 버전을 지정할 수도 있습니다.
 
 ```yaml
 name: my_app
@@ -412,58 +384,48 @@ dependency_overrides:
 ```
 
 :::warning
-Using a dependency override involves some risk. For example,
-using an override to specify a version outside the range that the
-package claims to support, or using an override to specify
-a local copy of a package that has unexpected behaviors,
-may break your application.
+종속성 재정의를 사용하는 데는 어느 정도 위험이 따릅니다. 
+예를 들어, 패키지가 지원한다고 주장하는 범위를 벗어난 버전을 지정하기 위해 재정의를 사용하거나, 
+예상치 못한 동작이 있는 패키지의 로컬 복사본을 지정하기 위해 재정의를 사용하면, 
+애플리케이션이 중단될 수 있습니다.
 :::
 
-Only the dependency overrides in a **package's own pubspec**
-are considered during package resolution. 
-Dependency overrides inside any depended-on packages are ignored.
+패키지 resolution 중에 **패키지의 자체 pubspec**에 있는 종속성 재정의만 고려됩니다. 
+종속된 패키지 내부의 종속성 재정의는 무시됩니다.
 
-As a result, if you publish a package to pub.dev,
-keep in mind that your package's dependency overrides
-are ignored by all users of your package.
+결과적으로, pub.dev에 패키지를 게시하는 경우, 
+패키지의 종속성 재정의는 패키지의 모든 사용자가 무시한다는 점을 명심하세요.
 
-## Best practices
+## 모범 사례 {:#best-practices}
 
-Be proactive in managing your dependencies.
-Ensure that your packages depend on the freshest versions of packages
-when possible.
-If your package depends on a stale package,
-that stale package may depend on other stale packages in its dependency tree.
-Stale versions of packages can have a negative impact on
-the stability, performance, and quality of your app.
+종속성을 관리하는 데 적극적으로 대처하세요. 
+가능하면 패키지가 최신 버전의 패키지에 종속되도록 하세요. 
+패키지가 오래된 패키지에 종속된 경우, 
+해당 오래된 패키지는 종속성 트리에 있는 다른 오래된 패키지에 종속될 수 있습니다. 
+오래된 버전의 패키지는 앱의 안정성, 성능 및 품질에 부정적인 영향을 미칠 수 있습니다.
 
-We recommend the following best practices for package dependencies.
+패키지 종속성에 대한 다음 모범 사례를 권장합니다.
 
-### Use caret syntax
+### 캐럿 구문을 사용하세요 {:#use-caret-syntax}
 
-Specify dependencies using the [caret syntax](#caret-syntax).
-This allows the pub tool to select newer versions of the package
-when they become available.
-Further, it places an upper bound on the allowed version.
+[caret 구문](#caret-syntax)을 사용하여 종속성을 지정합니다. 
+이렇게 하면, pub 도구가 패키지의 새 버전을 사용할 수 있을 때 선택할 수 있습니다. 
+또한, 허용되는 버전에 상한을 설정합니다.
 
-### Depend on the latest stable package versions
+### 최신 stable 패키지 버전을 사용하세요 {:#depend-on-the-latest-stable-package-versions}
 
-Use [`dart pub upgrade`][] to update to the latest package versions
-that your pubspec allows.
-To identify dependencies in your app or package that
-aren't on the latest stable versions,
-use [`dart pub outdated`][].
+[`dart pub upgrade`][]를 사용하여, pubspec에서 허용하는 최신 패키지 버전으로 업데이트합니다. 
+최신 stable 버전에 없는 앱이나 패키지의 종속성을 식별하려면, [`dart pub outdated`][]를 사용합니다.
 
-### Tighten version constraints for dev dependencies
+### 개발 종속성에 대한 버전 제약을 강화합니다 {:#tighten-version-constraints-for-dev-dependencies}
 
-A dev dependency defines a package that you need only when developing.
-A finished app won't need these packages.
-Examples of these packages include tests or code generation tooling.
-Set the version constraints of packages in [`dev_dependencies`][dev-dep]
-to have a lower bound of the latest version on which your package depends.
+개발 종속성은 개발 시에만 필요한 패키지를 정의합니다. 
+완성된 앱에는 이러한 패키지가 필요하지 않습니다. 
+이러한 패키지의 예로는 테스트 또는 코드 생성 도구가 있습니다. 
+패키지가 종속된 최신 버전의 하한을 갖도록, 
+[`dev_dependencies`][dev-dep]에서 패키지의 버전 제약 조건을 설정합니다.
 
-Tightening the version constraints of your dev dependencies might
-resemble the following:
+개발 종속성의 버전 제약 조건을 강화하면, 다음과 유사할 수 있습니다.
 
 ```yaml
 dev_dependencies:
@@ -472,39 +434,34 @@ dev_dependencies:
   test: ^1.25.8
 ```
 
-This YAML sets the `dev_dependencies` to the latest patch versions.
+이 YAML은 `dev_dependencies`를 최신 패치 버전으로 설정합니다.
 
 [dev-dep]: /tools/pub/dependencies#dev-dependencies
 
-### Test whenever you update package dependencies
+### 패키지 종속성을 업데이트할 때마다 테스트하세요 {:#test-whenever-you-update-package-dependencies}
 
-If you run [`dart pub upgrade`][] without updating your pubspec,
-the API should stay the same
-and your code should run as before—but test to make sure.
-If you modify the pubspec and update to a new major version,
-then you might encounter breaking changes,
-so you need to test even more thoroughly.
+pubspec을 업데이트하지 않고 [`dart pub upgrade`][]를 실행하면, 
+API는 동일하게 유지되고 코드는 이전과 동일하게 실행됩니다. 
+하지만 테스트를 통해 확인하세요. 
+pubspec을 수정하고 새로운 주요 버전으로 업데이트하면, 
+breaking changes이 발생할 수 있으므로 더욱 철저하게 테스트해야 합니다.
 
-### Test with downgraded dependencies
+### 다운그레이드된 종속성으로 테스트 {:#test-with-downgraded-dependencies}
 
-When developing packages for publication, it is often preferable to
-allow the widest dependency constraints possible.
-A wide dependency constraint reduces the likelihood that
-package consumers face a version resolution conflict.
+게시용 패키지를 개발할 때는, 
+가능한 한 가장 광범위한 종속성 제약 조건을 허용하는 것이 좋습니다. 
+광범위한 종속성 제약 조건은 패키지 소비자가 버전 해결 충돌에 직면할 가능성을 줄여줍니다.
 
-For example, if you have a dependency on `foo: ^1.2.3` and
-version `1.3.0` of `foo` is released, it might be reasonable to
-keep the existing dependency constraint (`^1.2.3`).
-But if your package starts using features that were added in `1.3.0`, then
-you'll need to bump your constraint to `^1.3.0`.
+예를 들어, `foo: ^1.2.3`에 대한 종속성이 있고, `foo`의 버전 `1.3.0`이 릴리스된 경우, 
+기존 종속성 제약 조건(`^1.2.3`)을 유지하는 것이 합리적일 수 있습니다. 
+하지만, 패키지가 `1.3.0`에서 추가된 기능을 사용하기 시작하면, 제약 조건을 `^1.3.0`으로 높여야 합니다.
 
-However, it's easy to forget to bump a
-dependency constraint when it becomes necessary.
-Therefore, it's a best practice to test your package
-against downgraded dependencies before publishing.
+하지만, 필요할 때 종속성 제약 조건을 높이는 것을 잊기 쉽습니다. 
+따라서, 게시하기 전에 다운그레이드된 종속성에 대해 패키지를 테스트하는 것이 가장 좋습니다.
 
-To test against downgraded dependencies, run [`dart pub downgrade`][] and
-verify your package still analyzes without errors and passes all tests:
+다운그레이드된 종속성에 대해 테스트하려면, 
+[`dart pub downgrade`][]를 실행하고, 
+패키지가 오류 없이 여전히 분석되고 모든 테스트를 통과하는지 확인합니다.
 
 ```console
 dart pub downgrade
@@ -512,36 +469,35 @@ dart analyze
 dart test
 ```
 
-Testing with downgraded dependencies should
-happen alongside normal tests with latest dependencies.
-If dependency constraints need to be bumped, change them yourself or
-use `dart pub upgrade --tighten` to update dependencies to the latest versions.
+다운그레이드된 종속성을 사용한 테스트는 최신 종속성을 사용한 일반 테스트와 함께 수행해야 합니다. 
+종속성 제약 조건을 높여야 하는 경우, 
+직접 변경하거나 `dart pub upgrade --tighten`을 사용하여, 
+종속성을 최신 버전으로 업데이트합니다.
 
 :::note
-Testing with `dart pub downgrade` enables you to find incompatibilities that
-you might not otherwise have discovered.
-But it doesn't exclude the possibility of incompatibilities.
+`dart pub downgrade`로 테스트하면, 
+그렇지 않으면 발견하지 못했을 비호환성을 찾을 수 있습니다. 
+하지만 비호환성의 가능성을 배제하지는 않습니다.
 
-There are often so many different combinations of versions that
-testing them all is infeasible.
-There might also be older versions allowed by your dependency constraints that
-can't be resolved due to mutually incompatible version constraints from
-packages themselves or from your `dev_dependencies`.
+종종 버전 조합이 너무 다양해서 모든 버전을 테스트하는 것은 불가능합니다. 
+종속성 제약 조건으로 허용되는 이전 버전도, 
+패키지 자체 또는 `dev_dependencies`의 상호 호환되지 않는 버전 제약 조건으로 인해, 
+해결할 수 없는 경우가 있습니다.
 :::
 
 [`dart pub downgrade`]: /tools/pub/cmd/pub-downgrade
 
-### Verify the integrity of downloaded packages
+### 다운로드한 패키지의 무결성을 확인하세요 {:#verify-the-integrity-of-downloaded-packages}
 
-When retrieving new dependencies,
-use the [`--enforce-lockfile`][enforce-lock] option to ensure
-the extracted package contents match the contents of the original archive.
-Without modifying the [lockfile][],
-this flag only resolves new dependencies if:
+새로운 종속성을 검색할 때, 
+[`--enforce-lockfile`][enforce-lock] 옵션을 사용하여 
+추출된 패키지 내용이 원래 아카이브의 내용과 일치하는지 확인합니다. 
+[lockfile][]을 수정하지 않고, 
+이 플래그는 다음과 같은 경우에만 새로운 종속성을 해결합니다.
 
-* `pubspec.yaml` is satisfied
-* `pubspec.lock` is not missing
-* The packages' [content hashes][] match
+* `pubspec.yaml`이 충족됨
+* `pubspec.lock`이 누락되지 않음
+* 패키지의 [컨텐츠 해시][content hashes]가 일치함
 
 [enforce-lock]: /tools/pub/cmd/pub-get#enforce-lockfile
 [lockfile]: /tools/pub/glossary#lockfile
@@ -550,11 +506,7 @@ this flag only resolves new dependencies if:
 
 <aside id="fn:semver" class="footnote">
 
-[1] Pub follows version `2.0.0-rc.1` of the
-[semantic versioning specification][]
-because that version allows packages to use build identifiers (`+12345`)
-to differentiate versions. <a href="#fnref:semver">↩</a>
-
+[1] Pub은 [시맨틱 버전 사양][semantic versioning specification]의 버전 `2.0.0-rc.1`을 따릅니다. 이 버전에서는 패키지가 빌드 식별자(`+12345`)를 사용하여 버전을 구분할 수 있기 때문입니다. <a href="#fnref:semver">↩</a>
 </aside>
 
 [GitHub SSH]: https://help.github.com/articles/connecting-to-github-with-ssh/
