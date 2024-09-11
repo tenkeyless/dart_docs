@@ -1,34 +1,32 @@
 ---
-title: "Objective-C and Swift interop using package:ffigen"
-description: "To use Objective-C and Swift code in your Dart program, use package:ffigen."
+# title: "Objective-C and Swift interop using package:ffigen"
+title: "package:ffigen을 사용한 Objective-C와 Swift 상호 운용"
+# description: "To use Objective-C and Swift code in your Dart program, use package:ffigen."
+description: "Dart 프로그램에서 Objective-C 및 Swift 코드를 사용하려면, package:ffigen을 사용하세요."
 ffigen: "https://pub.dev/packages/ffigen"
 example: "https://github.com/dart-lang/native/tree/main/pkgs/ffigen/example/objective_c"
 appledoc: "https://developer.apple.com/documentation"
 ---
 
-Dart mobile, command-line, and server apps
-running on the [Dart Native platform](/overview#platform), on macOS or iOS,
-can use `dart:ffi` and [`package:ffigen`]({{ffigen}})
-to call Objective-C and Swift APIs.
+macOS 또는 iOS에서 [Dart Native 플랫폼](/overview#platform)에서 실행되는 Dart 모바일, 명령줄 및 서버 앱은 `dart:ffi` 및 [`package:ffigen`]({{ffigen}})을 사용하여, 
+Objective-C 및 Swift API를 호출할 수 있습니다.
 
 :::note
-This interop feature is **experimental**,
-and [in active development]({{site.repo.dart.sdk}}/issues/49673).
+이 상호 운용 기능은 **실험적**이며, [현재 활발히 개발 중입니다]({{site.repo.dart.sdk}}/issues/49673).
 :::
 
-`dart:ffi` enables Dart code to interact with native C APIs.
-Objective-C is based on and compatible with C,
-so it is possible to interact with Objective-C APIs using only `dart:ffi`.
-However, doing so involves a lot of boilerplate code,
-so you can use `package:ffigen` to automatically generate
-the Dart FFI bindings for a given Objective-C API.
-To learn more about FFI and interfacing with C code directly,
-see the [C interop guide](/interop/c-interop).
+`dart:ffi`는 Dart 코드가 네이티브 C API와 상호 작용할 수 있도록 합니다. 
+Objective-C는 C를 기반으로 하며 C와 호환되므로, 
+`dart:ffi`만 사용하여 Objective-C API와 상호 작용할 수 있습니다. 
+그러나 그렇게 하려면 많은 보일러플레이트 코드가 필요하므로, 
+`package:ffigen`을 사용하여 지정된 Objective-C API에 대한 Dart FFI 바인딩을 자동으로 생성할 수 있습니다. 
+FFI와 C 코드와의 직접 인터페이싱에 대해 자세히 알아보려면, 
+[C 상호 운용성 가이드](/interop/c-interop)를 참조하세요.
 
-You can generate Objective-C headers for Swift APIs,
-enabling `dart:ffi` and `package:ffigen` to interact with Swift.
+Swift API에 대한 Objective-C 헤더를 생성하여, 
+`dart:ffi` 및 `package:ffigen`을 사용하여 Swift와 상호 작용할 수 있습니다.
 
-## Objective-C Example
+## Objective-C Example {:#objective-c-example}
 
 This guide walks you through [an example]({{example}})
 that uses `package:ffigen` to generate bindings for
@@ -50,7 +48,7 @@ so you'll need to install that first.
 See [Installing LLVM]({{ffigen}}#installing-llvm)
 from the ffigen README for more details.
 
-### Configuring ffigen
+### Configuring ffigen {:#configuring-ffigen}
 
 First, add `package:ffigen` as a dev dependency:
 
@@ -158,7 +156,7 @@ to insert some linter ignore rules at the top of the generated file:
 See the [ffigen readme]({{ffigen}}#configurations)
 for a full list of configuration options.
 
-### Generating the Dart bindings
+### Generating the Dart bindings {:#generating-the-dart-bindings}
 
 To generate the bindings, navigate to the example directory,
 and run ffigen:
@@ -185,7 +183,7 @@ The other classes in this file are all Dart wrappers
 around the Objective-C interfaces that we need,
 such as `AVAudioPlayer` and its dependencies.
 
-### Using the bindings
+### Using the bindings {:#using-the-bindings}
 
 Now you're ready to load and interact with the generated library.
 The example app, [play_audio.dart]({{example}}/play_audio.dart),
@@ -292,7 +290,7 @@ then check the status, and wait for the duration of the audio file:
     }
 ```
 
-### Callbacks and multithreading limitations
+### Callbacks and multithreading limitations {:#callbacks-and-multithreading-limitations}
 
 Multithreading issues are the biggest limitation
 of Dart's experimental support for Objective-C interop.
@@ -351,13 +349,13 @@ as long as you keep these limitations in mind.
 [`NativeCallable.isolateLocal`]: {{site.dart-api}}/dart-ffi/NativeCallable/NativeCallable.isolateLocal.html
 [`NativeCallable.listener`]: {{site.dart-api}}/dart-ffi/NativeCallable/NativeCallable.listener.html
 
-## Swift example
+## Swift example {:#swift-example}
 
 This [example][swift_example] demonstrates how to
 make a Swift class compatible with Objective-C,
 generate a wrapper header, and invoke it from Dart code.
 
-### Generating the Objective-C wrapper header
+### Generating the Objective-C wrapper header {:#generating-the-objective-c-wrapper-header}
 
 Swift APIs can be made compatible with Objective-C,
 by using the `@objc` annotation.
@@ -419,7 +417,7 @@ SWIFT_CLASS("_TtC12swift_module10SwiftClass")
 If the interface is missing, or doesn't have all its methods,
 make sure they're all annotated with `@objc` and `public`.
 
-### Configuring ffigen
+### Configuring ffigen {:#configuring-ffigen-1}
 
 Ffigen only sees the Objective-C wrapper header, `swift_api.h`.
 So most of this config looks similar
@@ -496,7 +494,7 @@ $ echo "_TtC12swift_module10SwiftClass" | swift demangle
 
 This outputs `swift_module.SwiftClass`.
 
-### Generating the Dart bindings
+### Generating the Dart bindings {:#generating-the-dart-bindings-1}
 
 As before, navigate to the example directory,
 and run ffigen:
@@ -507,7 +505,7 @@ $ dart run ffigen
 
 This generates `swift_api_bindings.dart`.
 
-### Using the bindings
+### Using the bindings {:#using-the-bindings-1}
 
 Interacting with these bindings is exactly the same
 as for a normal Objective-C library:

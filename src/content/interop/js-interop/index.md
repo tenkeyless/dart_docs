@@ -1,16 +1,19 @@
 ---
-title: JavaScript interoperability
-short-title: JS interop
-description: Integrate JavaScript code into your Dart web app.
+# title: JavaScript interoperability
+title: JavaScript 상호 운용성
+# short-title: JS interop
+short-title: JS 상호 운용성
+# description: Integrate JavaScript code into your Dart web app.
+description: Dart 웹앱에 JavaScript 코드를 통합합니다.
 ---
 
-The [Dart web platform](/overview#web-platform) supports communication with
-JavaScript apps and libraries, as well as browser APIs, using `dart:js_interop`.
+[Dart 웹 플랫폼](/overview#web-platform)은 `dart:js_interop`를 사용하여, 
+JavaScript 앱 및 라이브러리와 브라우저 API와의 통신을 지원합니다.
 
-Web developers can benefit from using external JS libraries in their Dart code,
-without having to rewrite anything in Dart.
+웹 개발자는 Dart에서 아무것도 다시 작성하지 않고도, 
+Dart 코드에서 외부 JS 라이브러리를 사용하여 이점을 얻을 수 있습니다.
 
-## Next-generation JS interop
+## Next-generation JS interop {:#next-generation-js-interop}
 
 The Dart team [recently][] overhauled the collection of features and APIs that allow
 developers access to JavaScript and browser bindings in their Dart code.
@@ -46,7 +49,7 @@ iterations.
 [`dart:js_util`]: {{site.dart-api}}/dart-js_util/dart-js_util-library.html
 [Past JS interop]: /interop/js-interop/past-js-interop/
 
-## Overview
+## Overview {:#overview}
 
 For information on how to write and use JavaScript interop:
   * [Usage reference]

@@ -1,22 +1,22 @@
 ---
-title: JS types
-description: Usage information about the core types in JS interop.
+# title: JS types
+title: JS 타입
+# description: Usage information about the core types in JS interop.
+description: JS 상호 운용성의 코어 타입에 대한 사용 정보입니다.
 ---
 
-Dart values and JS values belong to separate language domains. When compiling to
-[Wasm][], they execute in separate *runtimes* as well. As such, you should treat JS
-values as foreign types. To provide Dart types for JS values,
-[`dart:js_interop`] exposes a set of types prefixed with `JS` called "JS types".
-These types are used to distinguish between Dart values and JS values at
-compile-time.
+Dart 값과 JS 값은 별도의 언어 도메인에 속합니다. 
+[Wasm][]으로 컴파일할 때도 별도의 *런타임*에서 실행됩니다. 
+따라서, JS 값을 외래 타입(foreign types)으로 처리해야 합니다. 
+JS 값에 Dart 타입을 제공하기 위해, 
+[`dart:js_interop`]는 `JS`로 시작하는 "JS 타입"이라는 타입 세트를 노출합니다. 
+이러한 타입은 컴파일 시 Dart 값과 JS 값을 구별하는 데 사용됩니다.
 
-Importantly, these types are reified differently based on whether you compile to
-Wasm or JS. This means that their runtime type will differ, and therefore you
-[can't use `is` checks and `as` casts](#compatibility-type-checks-and-casts).
-In order to interact with and examine these JS values, you should use
-[`external`] interop members or [conversions](#conversions).
+중요한 점은, 이러한 타입이 Wasm 또는 JS로 컴파일하는지에 따라 다르게 구체화된다는 것입니다. 
+즉, 런타임 타입이 다르므로, [`is` 검사 및 `as` 캐스트를 사용할 수 없습니다](#compatibility-type-checks-and-casts). 
+이러한 JS 값과 상호 작용하고 검사하려면, [`external`] interop 멤버 또는 [변환](#conversions)을 사용해야 합니다.
 
-## Type hierarchy
+## Type hierarchy {:#type-hierarchy}
 
 JS types form a natural type hierarchy:
 
@@ -46,7 +46,7 @@ You can find the definition of each type in the [`dart:js_interop` API docs].
 TODO (srujzs): Should we add a tree diagram instead for JS types?
 {% endcomment %}
 
-## Conversions
+## Conversions {:#conversions}
 
 To use a value from one domain to another, you will likely want to *convert* the
 value to the corresponding type of the other domain. For example, you may want
@@ -100,7 +100,7 @@ the same. Typed array conversions have a similar limitation. Look up the
 specific conversion function for more details.
 :::
 
-## Requirements on `external` declarations and `Function.toJS`
+## Requirements on `external` declarations and `Function.toJS` {:#requirements-on-external-declarations-and-function-tojs}
 
 In order to ensure type safety and consistency, the compiler places requirements
 on what types can flow into and out of JS. Passing arbitrary Dart values into JS
@@ -152,7 +152,7 @@ is critical and you don’t need to examine the contents of the string, then usi
 `JSString` instead to avoid the conversion cost may make sense like in the
 second example.
 
-## Compatibility, type checks, and casts
+## Compatibility, type checks, and casts {:#compatibility-type-checks-and-casts}
 
 The runtime type of JS types may differ based on the compiler. This affects
 runtime type-checking and casts. Therefore, almost always avoid `is` checks
@@ -212,7 +212,7 @@ should prefer that method if it's available.
 Dart may add lints to make runtime checks with JS interop types easier to avoid.
 See issue [#4841] for more details.
 
-## `null` vs `undefined`
+## `null` vs `undefined` {:#null-vs-undefined}
 
 JS has both a `null` and an `undefined` value. This is in contrast with Dart,
 which only has `null`. In order to make JS values more ergonomic to use, if an
@@ -247,7 +247,7 @@ to interop members or distinguish between JS `null` and `undefined` values,
 but this will likely change in the future. See [#54025] for more details.
 :::
 
-## `JSBoxedDartObject` vs `ExternalDartReference`
+## `JSBoxedDartObject` vs `ExternalDartReference` {:#jsboxeddartobject-vs-externaldartreference}
 
 From Dart 3.4 onwards, both [`JSBoxedDartObject`] and [`ExternalDartReference`]
 can be used to pass opaque references to Dart `Object`s through JavaScript.

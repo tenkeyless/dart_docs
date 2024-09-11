@@ -1,19 +1,21 @@
 ---
-title: Past JS interop
-description: Archive of past JS interop implementations.
+# title: Past JS interop
+title: 과거 JS 상호 운용성
+# description: Archive of past JS interop implementations.
+description: 과거 JS 상호 운용성 구현의 아카이브입니다.
 ---
 
 :::warning
-None of these legacy interop libraries are supported when compiling to [Wasm][].
+[Wasm][]으로 컴파일할 때, 이러한 레거시 상호 운용 라이브러리는 지원되지 않습니다.
 :::
 
-This page addresses previous iterations of JS interop for Dart that are
-considered legacy. They are not deprecated yet, but will likely be in the
-future. Therefore, prefer using [`dart:js_interop`] going forwards and migrate
-usages of old interop libraries when possible. While [`dart:html`] and other web
-libraries are closely related, they're covered in the [`package:web`] page.
+이 페이지에서는 레거시로 간주되는 Dart용 JS 상호 운용성의 이전 반복을 다룹니다. 
+아직은 deprecated는 아니지만, 앞으로는 그렇게 될 가능성이 큽니다. 
+따라서, 앞으로는 [`dart:js_interop`]를 사용하고, 
+가능하면 이전 상호 운용성 라이브러리의 사용을 마이그레이션하는 것이 좋습니다. 
+[`dart:html`]과 다른 웹 라이브러리는 밀접하게 관련되어 있지만, [`package:web`] 페이지에서 다룹니다.
 
-## `dart:js`
+## `dart:js` {:#dart-js}
 
 [`dart:js`] exposed a concrete [`object wrapper`] to interop with JS objects.
 This wrapper contained String-based methods to dynamically get, set, and call
@@ -26,7 +28,7 @@ were later re-exposed through other interop libraries.
 This library has been legacy ever since `package:js` and `dart:js_util` were
 released. It will likely be the first to be deprecated.
 
-## `package:js`
+## `package:js` {:#package-js}
 
 [`package:js`] introduced functionality to declare interop types and members.
 It allowed users to write interop classes instead of interop extension types. At
@@ -61,7 +63,7 @@ There are significant differences, however:
   literal constructor. `dart:js_interop` doesn't distinguish types this way and
   any `external` named-argument constructor is an object literal constructor.
 
-### `@staticInterop`
+### `@staticInterop` {:#staticinterop}
 
 Along with `@JS` and `@anonymous`, `package:js` later exposed
 [`@staticInterop`], which was a prototype of interop extension types. It is as
@@ -84,7 +86,7 @@ annotations.
 extension types were added to the language. All such types should now be
 migrated to extension types.
 
-## `dart:js_util`
+## `dart:js_util` {:#dart-js_util}
 
 [`dart:js_util`] supplied a number of utility functions that could not be
 declared in an `package:js` type or were necessary for values to be passed back

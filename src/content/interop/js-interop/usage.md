@@ -1,22 +1,24 @@
 ---
-title: Usage
-description: How to declare and use JS interop members.
+# title: Usage
+title: 사용
+# description: How to declare and use JS interop members.
+description: JS 상호 운용성 멤버를 선언하고 사용하는 방법.
 ---
 
-JS interop provides the mechanisms to interact with JavaScript APIs from Dart.
-It allows you to invoke these APIs and interact with the values that you get
-from them using an explicit, idiomatic syntax.
+JS interop은 Dart의 JavaScript API와 상호 작용하는 메커니즘을 제공합니다. 
+이를 통해 이러한 API를 호출하고 명시적이고 관용적인 구문을 사용하여, 
+해당 API에서 얻은 값과 상호 작용할 수 있습니다.
 
-Typically, you access a JavaScript API by making it available somewhere within
-the [global JS scope]. To call and receive JS values from this API, you use
-[`external` interop members](#interop-members). In order to construct and
-provide types for JS values, you use and declare
-[interop types](#interop-types), which also contain interop members. To pass
-Dart values like `List`s or `Function` to interop members or convert from JS
-values to Dart values, you use [conversion functions] unless the interop member
-[contains a primitive type].
+일반적으로, JavaScript API에 액세스하려면, 
+[전역 JS 범위][global JS scope] 내의 어딘가에 사용 가능하게 만들어야 합니다. 
+이 API에서 JS 값을 호출하고 받으려면, [`external` interop 멤버](#interop-members)를 사용합니다. 
+JS 값에 대한 타입을 구성하고 제공하려면, [interop 타입](#interop-types)을 사용하고 선언합니다. 
+여기에는 interop 멤버도 포함됩니다. 
+`List` 또는 `Function`과 같은 Dart 값을 interop 멤버에 전달하거나, 
+JS 값에서 Dart 값으로 변환하려면, 
+interop 멤버에 [primitive 타입이 포함][contains a primitive type]되어 있지 않은 경우, [변환 함수][conversion functions]를 사용합니다.
 
-## Interop types
+## Interop types {:#interop-types}
 
 When interacting with a JS value, you need to provide a Dart type for it. You
 can do this by either using or declaring an interop type. Interop types are
@@ -54,7 +56,7 @@ Interop types should also generally [implement] their representation type so
 that they can be used where the representation type is expected, like in many
 APIs in [`package:web`].
 
-## Interop members
+## Interop members {:#interop-members}
 
 [`external`] interop members provide an idiomatic syntax for JS members. They
 allow you to write a Dart type signature for its arguments and return value. The
@@ -63,7 +65,7 @@ The JS API the interop member corresponds to is determined by a combination of
 where it's declared, its name, what kind of Dart member it is, and any
 [renames](#js).
 
-### Top-level interop members
+### Top-level interop members {:#top-level-interop-members}
 
 Given the following JS members:
 
@@ -98,7 +100,7 @@ Top-level interop members must be declared with a [`@JS()`](#js) annotation to
 distinguish them from other `external` top-level members, like those that can be
 written using `dart:ffi`.
 
-### Interop type members
+### Interop type members {:#interop-type-members}
 
 Given a JS interface like the following:
 
@@ -238,7 +240,7 @@ Within an interop type, you can declare several different types of
 Lastly, like any other extension type, you're allowed to declare any
 [non-`external` members] in the interop type. `isMidnight` is one such example.
 
-### Extension members on interop types
+### Extension members on interop types {:#extension-members-on-interop-types}
 
 You can also write `external` members in [extensions] of interop types. For
 example:
@@ -257,7 +259,7 @@ in the extension. These extensions are useful for when an interop type doesn't
 expose the `external` member you need and you don't want to create a new interop
 type.
 
-### Parameters
+### Parameters {:#parameters}
 
 `external` interop methods can only contain positional and optional arguments.
 This is because JS members only take positional arguments. The one exception is
@@ -276,7 +278,7 @@ not have to write multiple interop members for the same JS API to avoid passing
 in `null`s. If you declare a parameter with an explicit default value, you will
 get a warning that the value will be ignored.
 
-## `@JS()`
+## `@JS()` {:#js}
 
 It is sometimes useful to refer to a JS property with a different name than the
 one written. For example, if you want to write two `external` APIs that point to
@@ -429,7 +431,7 @@ with a Dart object. To do this, mark the Dart class as exportable using
 For a more detailed explanation of this technique, including how to mock JS
 values, see the [mocking tutorial].
 
-## `dart:js_interop` and `dart:js_interop_unsafe`
+## `dart:js_interop` and `dart:js_interop_unsafe` {:#dart-js_interop-and-dart-js_interop_unsafe}
 
 [`dart:js_interop`] contains all the necessary members you should need,
 including `@JS`, JS types, conversion functions, and various utility functions.

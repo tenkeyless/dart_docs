@@ -1,11 +1,12 @@
 ---
-title: How to mock JavaScript interop objects
+# title: How to mock JavaScript interop objects
+title: JavaScript interop 객체를 mock하는 방법
 ---
 
-In this tutorial, you'll learn how to mock JS objects so that you can test
-interop instance members without having to use a real implementation.
+이 튜토리얼에서는, 실제 구현을 사용하지 않고도 상호 운용성 인스턴스 멤버를 테스트할 수 있도록, 
+JS 객체를 mock 하는 방법을 알아봅니다.
 
-## Background and motivation
+## Background and motivation {:#background-and-motivation}
 
 Mocking classes in Dart is usually done through overriding instance members.
 However, since [extension types] are used to declare interop types, all
@@ -42,7 +43,7 @@ Instead, you should use a combination of [`createJSInteropWrapper`] and
 [`@JSExport`] to declare a type that provides an implementation for all the
 `external` instance members.
 
-## Mocking example
+## Mocking example {:#mocking-example}
 
 ```dart
 import 'dart:js_interop';
@@ -93,7 +94,7 @@ void main() {
 }
 ```
 
-## [`@JSExport`] and [`createJSInteropWrapper`]
+## [`@JSExport`] and [`createJSInteropWrapper`] {:#jsexport-and-createjsinteropwrapper}
 
 `@JSExport` allows you to declare a class that can be used in
 `createJSInteropWrapper`. `createJSInteropWrapper` will create an object literal

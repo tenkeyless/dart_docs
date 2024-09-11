@@ -1,12 +1,13 @@
 ---
-title: Migrate to package:web
+# title: Migrate to package:web
+title: package:web으로 마이그레이션
+# description: How to migrate web interop code from dart:html to package:web.
 description: How to migrate web interop code from dart:html to package:web.
 ---
 
-Dart's [`package:web`][] exposes access to browser APIs,
-enabling interop between Dart applications and the web.
-Use `package:web` to interact with the browser and
-manipulate objects and elements in the DOM.
+Dart의 [`package:web`][]은 브라우저 API에 대한 액세스를 제공하여, 
+Dart 애플리케이션과 웹 간의 상호 운용성을 가능하게 합니다. 
+`package:web`을 사용하여 브라우저와 상호 작용하고 DOM에서 객체와 요소를 조작합니다.
 
 ```dart
 import 'package:web/web.dart';
@@ -18,15 +19,13 @@ void main() {
 ```
 
 :::important
-If you maintain a public Flutter package that uses `dart:html` or any of the
-other Dart SDK web libraries,
-**you should migrate to `package:web` as soon as possible**.
-`package:web` is replacing `dart:html` and other web libraries
-as Dart's web interop solution long-term.
-Read the **`package:web` vs `dart:html`** section for more information.
+`dart:html` 또는 다른 Dart SDK 웹 라이브러리를 사용하는 공개 Flutter 패키지를 유지 관리하는 경우, 
+**가능한 한 빨리 `package:web`으로 마이그레이션해야 합니다.** 
+`package:web`은 장기적으로 Dart의 웹 상호 운용 솔루션으로 `dart:html` 및 기타 웹 라이브러리를 대체합니다. 
+자세한 내용은 **`package:web` vs `dart:html`** 섹션을 읽어보세요.
 :::
 
-## `package:web` vs `dart:html`
+## `package:web` vs `dart:html` {:#package-web-vs-dart-html}
 
 The goal of `package:web` is to revamp how Dart exposes web APIs
 by addressing several concerns with the existing Dart web libraries:
@@ -71,7 +70,7 @@ are addressed in the migration sections that follow. While we only refer to
 `dart:html` for brevity, the same migration patterns apply to any other Dart
 core web library like `dart:svg`.
 
-## Migrating from `dart:html`
+## Migrating from `dart:html` {:#migrating-from-dart-html}
 
 Remove the `dart:html` import and replace it with `package:web/web.dart`:
 
@@ -92,7 +91,7 @@ from `dart:html` to `package:web`.
 For any other migration issues, check the [dart-lang/web][] repo and
 file an issue.
 
-### Renames
+### Renames {:#renames}
 
 Many of the symbols in `dart:html` were renamed from
 their original IDL declaration to align more with Dart style.
@@ -153,7 +152,7 @@ Node append(Node node) native;
 `native` is an internal keyword that means the same as `external` in this
 context.
 
-### Type tests
+### Type tests {:#type-tests}
 
 It's common for code that uses `dart:html` to utilize runtime checks like `is`.
 When used with a `dart:html` object, `is` and `as` verify that the object is
@@ -174,7 +173,7 @@ obj is Window; // Remove
 obj.instanceOfString('Window'); // Add
 ```
 
-### Type signatures
+### Type signatures {:#type-signatures}
 
 Many APIs in `dart:html` support various Dart types in their type signatures.
 Because `dart:js_interop` [restricts] the types that can be written, some of
@@ -200,7 +199,7 @@ flagged with some variation of the exception:
 A value of type '...' can't be assigned to a variable of type 'JSFunction?'
 ```
 
-### Conditional imports
+### Conditional imports {:#conditional-imports}
 
 It is common for code to use a conditional import based on whether `dart:html`
 is supported to differentiate between native and web:
@@ -221,7 +220,7 @@ export 'src/hw_none.dart'
     if (dart.library.js_interop) 'src/hw_web.dart';
 ```
 
-### Virtual dispatch and mocking
+### Virtual dispatch and mocking {:#virtual-dispatch-and-mocking}
 
 `dart:html` classes supported virtual dispatch, but because JS interop uses
 extension types, virtual dispatch is [not possible]. Similarly, `dynamic` calls
@@ -235,7 +234,7 @@ One use case of virtual dispatch is mocking. If you have a mocking class that
 type. Instead, prefer mocking the JS object itself. See the [mocking tutorial]
 for more information.
 
-### Non-`native` APIs
+### Non-`native` APIs {:#non-native-apis}
 
 `dart:html` classes may also contain APIs that have a non-trivial
 implementation. These members may or may not exist in the `package:web`
@@ -245,7 +244,7 @@ However, if you think that's not tractable or if that code would be beneficial
 for other users as well, consider filing an issue or uploading a pull request to
 [`package:web`][dart-lang/web] to support that member.
 
-### Zones
+### Zones {:#zones}
 
 In `dart:html`, callbacks are automatically zoned.
 This is not the case in `package:web`. There is no automatic binding of
@@ -257,7 +256,7 @@ details.
 There is no conversion API or [helper](#helpers) available yet to
 automatically do this.
 
-## Helpers
+## Helpers {:#helpers}
 
 The core of `package:web` contains `external` interop members,
 but does not provide other functionality that `dart:html` provided by default.
@@ -285,7 +284,7 @@ You can find all the helpers and their documentation in the repo at
 [`package:web/helpers`][helpers]. They will continuously be updated to aid users
 in migration and make it easier to use the web APIs.
 
-## Examples
+## Examples {:#examples}
 
 Here are some examples of packages that have been migrated from `dart:html`
 to `package:web`:

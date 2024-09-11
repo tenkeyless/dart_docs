@@ -1,22 +1,21 @@
 ---
-title: "C interop using dart:ffi"
-description: "To use C code in your Dart program, use the dart:ffi library."
+# title: "C interop using dart:ffi"
+title: "dart:ffi를 사용한 C 상호 운용성"
+# description: "To use C code in your Dart program, use the dart:ffi library."
+description: "Dart 프로그램에서 C 코드를 사용하려면, dart:ffi 라이브러리를 사용하세요."
 hw: "https://github.com/dart-lang/samples/tree/main/ffi/hello_world"
 samples: "https://github.com/dart-lang/samples/tree/main/ffi"
 ---
 
-Dart mobile, command-line, and server apps
-running on the [Dart Native platform](/overview#platform)
-can use the `dart:ffi` library to call native C APIs,
-and to read, write, allocate, and deallocate native memory.
-_FFI_ stands for [_foreign function interface._][FFI]
-Other terms for similar functionality include
-_native interface_ and _language bindings._
+[Dart Native 플랫폼](/overview#platform)에서 실행되는 Dart 모바일, 명령줄 및 서버 앱은, 
+`dart:ffi` 라이브러리를 사용하여 네이티브 C API를 호출하고, 
+네이티브 메모리를 읽고, 쓰고, 할당하고, 할당 해제할 수 있습니다. 
+_FFI_ 는 [_외부 함수 인터페이스_][FFI]를 의미합니다.
+유사한 기능에 대한 다른 용어로는 _네이티브 인터페이스_ 및 _언어 바인딩_ 이 있습니다.
 
-API documentation is available in the
-[`dart:ffi` API reference.]({{site.dart-api}}/dart-ffi/dart-ffi-library.html)
+API 문서는 [`dart:ffi` API 참조]({{site.dart-api}}/dart-ffi/dart-ffi-library.html)에서 제공됩니다.
 
-## Download example files
+## Download example files {:#download-example-files}
 
 To work with the examples in this guide,
 download the full [ffi samples]({{samples}}) directory.
@@ -31,14 +30,14 @@ It includes the following examples show how to use the `dart:ffi` library:
 
 {:.table .table-striped }
 
-### Review the hello_world example
+### Review the hello_world example {:#review-the-hello_world-example}
 
 The [hello_world example][hello_world] has the minimum necessary code
 for calling a C library.
 This example can be found in the `samples/ffi` you downloaded in the
 previous section.
 
-#### Files
+#### Files {:#files}
 
 The `hello_world` example has the following files:
 
@@ -66,7 +65,7 @@ including a dynamic library file named
 `libhello.dll` (Windows), or
 `libhello.so` (Linux).
 
-#### Build and execute
+#### Build and execute {:#build-and-execute}
 
 The commands to build the dynamic library and execute the Dart app would
 resemble the following series.
@@ -92,7 +91,7 @@ consult Apple's [Code Signing Guide.][codesign]
 
 [codesign]: {{site.apple-dev}}/library/content/documentation/Security/Conceptual/CodeSigningGuide/Introduction/Introduction.html
 
-#### Leverage dart:ffi
+#### Leverage dart:ffi {:#leverage-dart-ffi}
 
 To learn how to call a C function using the `dart:ffi` library,
 review the [`hello.dart` file]({{hw}}/hello.dart).
@@ -164,7 +163,7 @@ This section explains the contents of this file.
 Once you understand the `hello_world` example,
 consult the [other `dart:ffi` examples](#download-example-files).
 
-## Bundle and load C libraries
+## Bundle and load C libraries {:#bundle-and-load-c-libraries}
 
 The method to bundle / package / distribute then
 load a native C library depends on the platform and library type.
@@ -176,13 +175,13 @@ To learn how, consult the following pages and examples.
 * Flutter `dart:ffi` for [macOS][macos] apps
 * [`dart:ffi` examples]({{samples}})
 
-## Interface with native types
+## Interface with native types {:#interface-with-native-types}
 
 The `dart:ffi` library provides multiple types that implement [`NativeType`][]
 and represent native types in C. You can instantiate some native types.
 Some other native types can be used only as markers in type signatures.
 
-### Can instantiate these type signature markers
+### Can instantiate these type signature markers {:#can-instantiate-these-type-signature-markers}
 
 The following native types can be used as markers in type signatures.
 They or their subtypes _can_ be instantiated in Dart code.
@@ -200,7 +199,7 @@ They or their subtypes _can_ be instantiated in Dart code.
 
 {:.table .table-striped }
 
-### Serve as type signature markers only
+### Serve as type signature markers only {:#serve-as-type-signature-markers-only}
 
 The following list shows which platform-agnostic native types
 that serve as markers in type signatures.
@@ -250,7 +249,7 @@ consult the API documentation linked in the following table.
 
 {:.table .table-striped }
 
-## Generate FFI bindings with `package:ffigen`
+## Generate FFI bindings with `package:ffigen` {:#generate-ffi-bindings-with-package-ffigen}
 
 For large API surfaces, it can be time-consuming
 to write the Dart bindings that integrate with the C code.
@@ -282,7 +281,7 @@ When you [opt in](#opt-in-to-the-experiment) to the native experiment,
 The `flutter (run|build)` and `dart (run|build)` commands
 build and bundle native code with the Dart code.
 
-### Review the `native_add_library` example
+### Review the `native_add_library` example {:#review-the-native_add_library-example}
 
 The [`native_add_library`][] example includes the minimum code to
 build and bundle C code in a Dart package.
@@ -311,7 +310,7 @@ When a Dart or Flutter project depends on `package:native_add_library`,
 it invokes the `hook/build.dart` build hook on `run`, `build`, and `test` commands.
 The [`native_add_app`][] example showcases a use of `native_add_library`.
 
-### Review Native Asset API documentation
+### Review Native Asset API documentation {:#review-native-asset-api-documentation}
 
 API documentation can be found for the following packages:
 
@@ -320,7 +319,7 @@ API documentation can be found for the following packages:
 * To learn about the `hook/build.dart` build hook,
   consult the [`package:native_assets_cli` API reference][].
 
-### Opt-in to the experiment
+### Opt-in to the experiment {:#opt-in-to-the-experiment}
 
 To learn how to enable the experiment and provide feedback,
 consult these tracking issues:

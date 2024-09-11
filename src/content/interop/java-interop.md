@@ -1,46 +1,41 @@
 ---
-title: 'Java interop using package:jnigen'
-description: 'To use Java in your Dart program, use package:jnigen.'
+# title: 'Java interop using package:jnigen'
+title: 'package:jnigen을 사용한 Java 상호 운용성'
+# description: 'To use Java in your Dart program, use package:jnigen.'
+description: 'Dart 프로그램에서 Java를 사용하려면, package:jnigen을 사용하세요.'
 example: 'https://github.com/HosseinYousefi/jnigen_example/tree/main'
 ---
 
-Dart mobile, command-line, and server apps
-running on the [Dart Native platform](/overview#platform), on
-Android, Windows, macOS, and Linux can use [`package:jni`][jni-pkg]
-and [`package:jnigen`][jnigen-pkg]
-to call Java and Kotlin APIs.
+Android, Windows, macOS 및 Linux에서 [Dart Native 플랫폼](/overview#platform)에서 실행되는, 
+Dart 모바일, 명령줄 및 서버 앱은 [`package:jni`][jni-pkg] 및 [`package:jnigen`][jnigen-pkg]를 사용하여 Java 및 Kotlin API를 호출할 수 있습니다.
 
 :::note
-This interop feature is **experimental**,
-and [in active development]({{site.repo.dart.sdk}}/issues/49674).
+이 상호 운용 기능은 **실험적**이며, [현재 활발히 개발 중입니다]({{site.repo.dart.sdk}}/issues/49674).
 :::
 
-`package:jni` allows Dart code to interact
-with Java through [JNI][jnidoc].
-However, doing so involves a lot of boilerplate code,
-so you can use `package:jnigen` to automatically generate
-the Dart bindings for a given Java API.
+`package:jni`는 Dart 코드가 [JNI][jnidoc]를 통해 Java와 상호 작용할 수 있도록 합니다. 
+그러나 그렇게 하려면 많은 보일러플레이트 코드가 필요하므로, 
+`package:jnigen`을 사용하여 지정된 Java API에 대한 Dart 바인딩을 자동으로 생성할 수 있습니다.
 
-You can compile Kotlin to Java bytecode, allowing `package:jnigen`
-to generate bindings for Kotlin as well.
+Kotlin을 Java 바이트코드로 컴파일하여, `package:jnigen`이 Kotlin에 대한 바인딩도 생성할 수 있습니다.
 
 [jni-pkg]: {{site.pub-pkg}}/jni
 [jnigen-pkg]: {{site.pub-pkg}}/jnigen
 [jnidoc]: https://docs.oracle.com/en/java/javase/17/docs/specs/jni/index.html
 
-## Simple Java example
+## Simple Java example {:#simple-java-example}
 
 This guide walks you through [an example]({{example}})
 that uses `package:jnigen` to generate bindings for a simple class.
 
-### Prerequisites
+### Prerequisites {:#prerequisites}
 
 - JDK
 - [Maven][]
 
 [Maven]: https://maven.apache.org/
 
-### Configure `jnigen`
+### Configure `jnigen` {:#configure-jnigen}
 
 First, add `package:jni` as a dependency and
 `package:jnigen` as a [dev dependency][].
@@ -83,7 +78,7 @@ public class Example {
 }
 ```
 
-### Generate the Dart bindings
+### Generate the Dart bindings {:#generate-the-dart-bindings}
 
 To generate the Dart bindings, run `jnigen` and
 specify the config file using the `--config` option:
@@ -100,7 +95,7 @@ This file contains a class called `Example`,
 which has a static method called `sum`, 
 just like the Java file.
 
-### Use the bindings
+### Use the bindings {:#use-the-bindings}
 
 Now you're ready to load and interact with the generated library.
 The example app, [bin/sum.dart]({{example}}/bin/sum.dart), gets 
@@ -112,7 +107,7 @@ Using the `Example.sum` method is identical to Java.
 print(Example.sum(a, b));
 ```
 
-### Run the example
+### Run the example {:#run-the-example}
 
 Before running the example, 
 you must build the dynamic library for `jni`.
@@ -131,7 +126,7 @@ $ dart run jnigen_example:sum 17 25
 
 Which outputs `42`!
 
-## More examples
+## More examples {:#more-examples}
 
 The following are some more comprehensive examples of using `package:jnigen`:
 
