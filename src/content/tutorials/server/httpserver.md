@@ -1,32 +1,34 @@
 ---
-title: "Write HTTP servers"
-description: Communicate over the internet
+# title: "Write HTTP servers"
+title: "HTTP 서버 작성"
+# description: Communicate over the internet
+description: 인터넷을 통해 소통합니다.
 toc: false
 prevpage:
   url: /tutorials/server/fetch-data
-  title: Fetch data from the internet
+  # title: Fetch data from the internet
+  title: 인터넷에서 데이터 가져오기
 ---
 
-Dart resources for writing HTTP servers include:
+HTTP 서버 작성을 위한 Dart 리소스는 다음과 같습니다.
 
-## Documentation
+## 문서 {:#documentation}
 
-* [Using Google Cloud][] has information on Google Cloud products
-  that Dart servers can use, such as Cloud Run.
-* [Using Google APIs][] points to resources to help you
-  use Firebase and Google client APIs from a Dart app.
+* [Google Cloud 사용][Using Google Cloud]에는 Dart 서버에서 사용할 수 있는, 
+  Cloud Run과 같은 Google Cloud 제품에 대한 정보가 있습니다.
+* [Google API 사용][Using Google APIs]은 Dart 앱에서, 
+  Firebase 및 Google 클라이언트 API를 사용하는 데 도움이 되는 리소스를 가리킵니다.
 
-## Samples
+## 샘플 {:#samples}
 
-* [A simple Dart HTTP server][simple-sample]
-  * Uses the [`shelf`][] package.
-  * Also uses the [`shelf_router`][] and [`shelf_static`][] packages.
-  * Is deployable on Cloud Run.
-* [A Dart HTTP server that uses Cloud Firestore][cloud-sample]
-  * Uses the Cloud Firestore features in the [`googleapis`][] package.
-  * Also uses the [`googleapis_auth`][], [`shelf`][], and
-    [`shelf_router`][] packages.
-  * Is deployable on Cloud Run.
+* [간단한 Dart HTTP 서버][simple-sample]
+  * [`shelf`][] 패키지를 사용합니다.
+  * [`shelf_router`][] 및 [`shelf_static`][] 패키지도 사용합니다.
+  * Cloud Run에 배포할 수 있습니다.
+* [Cloud Firestore를 사용하는 Dart HTTP 서버][cloud-sample]
+  * [`googleapis`][] 패키지의 Cloud Firestore 기능을 사용합니다.
+  * [`googleapis_auth`][], [`shelf`][] 및 [`shelf_router`][] 패키지도 사용합니다.
+  * Cloud Run에 배포할 수 있습니다.
 
 [cloud-sample]: {{site.repo.dart.org}}/samples/tree/main/server/google_apis
 [`googleapis`]: {{site.pub-pkg}}/googleapis
