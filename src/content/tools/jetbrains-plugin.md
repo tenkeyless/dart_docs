@@ -1,41 +1,43 @@
 ---
 title: IntelliJ & Android Studio
-description: Use Dart with a variety of IDEs and editors from JetBrains.
+# description: Use Dart with a variety of IDEs and editors from JetBrains.
+description: JetBrains의 다양한 IDE와 편집기로 Dart를 사용하세요.
 ---
 
-The [Dart plugin][] adds Dart support
-to IntelliJ Platform-based IDEs developed by JetBrains.
-These IDEs provide features unique to specific development technologies.
-The IDEs recommended for Dart and Flutter development include:
+[Dart 플러그인][Dart plugin]은 JetBrains에서 개발한 IntelliJ 플랫폼 기반 IDE에 Dart 지원을 추가합니다. 
+이러한 IDE는 특정 개발 기술에 고유한 기능을 제공합니다. 
+Dart 및 Flutter 개발에 권장되는 IDE는 다음과 같습니다.
 
-- [IntelliJ IDEA][] which specializes in JVM-based language development.
-- [WebStorm][] which specializes in web app development.
-- [Android Studio][] which specializes in Android and Flutter development.
+- [IntelliJ IDEA][]
+  - JVM 기반 언어 개발을 전문으로 하는 [IntelliJ IDEA][]
+- [WebStorm][]
+  - 웹 앱 개발을 전문으로 하는 [WebStorm][]
+- [Android Studio][]
+  - Android 및 Flutter 개발을 전문으로 하는 [Android Studio][]
 
-Whichever JetBrains IDE you choose for Dart development,
-this page has resources to help you get started quickly
-and find more information when you need it.
+Dart 개발을 위해 어떤 JetBrains IDE를 선택하든, 
+이 페이지에는 빠르게 시작하고 필요할 때 더 많은 정보를 찾을 수 있도록 도와주는 리소스가 있습니다.
 
 [IntelliJ IDEA]: https://www.jetbrains.com/idea/
 [WebStorm]: https://www.jetbrains.com/webstorm/
 [Android Studio]: {{site.android-dev}}/studio
 
-## Getting started
+## 시작하기 {:#getting-started}
 
-If you don't already have the IDE and the Dart SDK, get them.
-Then install the Dart plugin and tell it where to find the Dart SDK.
+IDE와 Dart SDK가 아직 없다면 받으세요.
+그런 다음, Dart 플러그인을 설치하고 Dart SDK를 찾을 위치를 알려주세요.
 
 
-### Downloading the IDE
+### IDE 다운로드 {:#downloading-the-ide}
 
-Install a JetBrains IDE if you don't already have one. Choose one:
+JetBrains IDE가 없다면 설치하세요. 다음 중 하나를 선택하세요.
 
 * [IntelliJ IDEA][IDEA-Install]{:target="_blank" rel="noopener"}
 * [IntelliJ IDEA EAP][IDEA-EAP-Install]{:target="_blank" rel="noopener"}
-  (for early access to the latest Dart language features and IntelliJ functionality)
+  (최신 Dart 언어 기능 및 IntelliJ 기능에 대한 조기 액세스를 위해)
 * [WebStorm][WS-Install]{:target="_blank" rel="noopener"}
 * [Android Studio][AS-Install]{:target="_blank" rel="noopener"}
-* [Another JetBrains product][Other]{:target="_blank" rel="noopener"}
+* [다른 JetBrains 제품][Other]{:target="_blank" rel="noopener"}
 
 [IDEA-Install]: https://www.jetbrains.com/idea/download/
 [IDEA-EAP-Install]: https://www.jetbrains.com/idea/nextversion/
@@ -44,117 +46,109 @@ Install a JetBrains IDE if you don't already have one. Choose one:
 [Other]: https://www.jetbrains.com/products.html
 
 :::note
-The Community Edition of IntelliJ IDEA has limited functionality.
-For example, it doesn't directly support debugging web apps.
-It also has very little support for JavaScript, HTML, CSS, and YAML.
+IntelliJ IDEA 커뮤니티 에디션의 기능은 제한적입니다. 
+예를 들어, 웹 앱 디버깅을 직접 지원하지 않습니다. 
+또한 JavaScript, HTML, CSS 및 YAML에 대한 지원이 거의 없습니다.
 :::
 
 
-### Downloading the Dart SDK
+### Dart SDK 다운로드 {:#downloading-the-dart-sdk}
 
-If you don't already have the Dart SDK,
-install it.
-You can get it either by itself or by downloading the Flutter SDK,
-which includes the full Dart SDK.
+아직 Dart SDK가 없다면 설치하세요. 
+Dart SDK만 따로 받거나, 전체 Dart SDK가 포함된 Flutter SDK를 다운로드하여 받을 수 있습니다.
 
-Choose one:
+다음 중 하나를 선택하세요.
 
-* [Download the Dart SDK](/get-dart)
-* [Download the Flutter SDK]({{site.flutter-docs}}/get-started/install)
+* [Dart SDK 다운로드](/get-dart)
+* [Flutter SDK 다운로드]({{site.flutter-docs}}/get-started/install)
 
 
-### Configuring Dart support
+### Dart 지원 구성 {:#configuring-dart-support}
 
-Here's one way to configure Dart support:
+Dart 지원을 구성하는 한 가지 방법은 다음과 같습니다.
 
 <ol>
 <li>
   <p>
-    Start the IDE, and install the <b>Dart</b> plugin.
+    IDE를 시작하고 <b>Dart</b> 플러그인을 설치합니다.
   </p>
 
   <ol type="a">
-    <li>From the Welcome screen, choose <b>Plugins</b>.</li>
-    <li>Search for <b>Dart</b>.</li>
-    <li>Once you've installed the Dart plugin, restart the IDE.</li>
+    <li>Welcome 화면에서, <b>Plugins</b>을 선택합니다.</li>
+    <li><b>Dart</b>를 검색합니다.</li>
+    <li>Dart 플러그인을 설치한 후, IDE를 다시 시작합니다.</li>
   </ol>
 </li>
 <br>
 
 <li>
   <p>
-    Create a new Dart project:
+    새로운 Dart 프로젝트를 만드세요:
   </p>
 
   <ol type="a">
-    <li>From the Welcome screen, click <b>New Project</b>.</li>
-    <li>In the next dialog, click <b>Dart</b>.</li>
+    <li>Welcome 화면에서 <b>New Project</b>를 클릭합니다.</li>
+    <li>다음 대화 상자에서, <b>Dart</b>를 클릭합니다.</li>
   </ol>
 </li>
 <br>
 
 <li>
   <p>
-    If you don't see a value for the <b>Dart SDK</b> path,
-    enter or select it.
+    <b>Dart SDK</b> 경로에 대한 값이 보이지 않으면, 값을 입력하거나 선택하세요.
   </p>
 
   <p>
-    For example, the SDK path might be
-    <code><em>&lt;dart installation directory></em>/dart/dart-sdk</code>.
+    예를 들어, SDK 경로는 <code><em>&lt;dart 설치 디렉토리></em>/dart/dart-sdk</code> 일 수 있습니다.
   </p>
 
   :::note
-  The **Dart SDK** specifies the directory that
-  contains the SDK's `bin` and `lib` directories;
-  the `bin` directory contains tools such as `dart` and `dartaotruntime`.
-  The IDE ensures that the path is valid.
+  **Dart SDK**는 SDK의 `bin` 및 `lib` 디렉토리를 포함하는 디렉토리를 지정합니다. 
+  `bin` 디렉토리에는 `dart` 및 `dartaotruntime`과 같은 도구가 포함됩니다. 
+  IDE는 경로가 유효한지 확인합니다.
   :::
 </li>
 
 <li>
   <p>
-    Choose a starting template.
+    시작 템플릿을 선택하세요.
   </p>
 
   <ol type="a">
-    <li>To enable starting templates, click <b>Generate sample content</b>.</li>
-    <li>Pick your desired template.</li>
+    <li>시작 템플릿을 활성화하려면, <b>Generate sample content</b>을 클릭합니다.</li>
+    <li>원하는 템플릿을 선택합니다.</li>
   </ol>
 
   :::note
-  The provided templates are supplied and created
-  by [`dart create`](/tools/dart-create).
+  제공된 템플릿은 [`dart create`](/tools/dart-create)에서 제공 및 생성됩니다.
   :::
 </li>
 
 <li>
-  <p>Click <b>Next</b> and continue project setup.</p>
+  <p><b>Next</b>을 클릭하고, 프로젝트 설정을 계속하세요.</p>
 </li>
 </ol>
 
-An alternative to Step 2 is to open an existing Dart project,
-and then open its `pubspec.yaml` file or any of its Dart files.
+2단계의 대안은 기존 Dart 프로젝트를 열고, 
+해당 프로젝트의 `pubspec.yaml` 파일이나 Dart 파일을 여는 것입니다.
 
 
-## Reporting issues
+## 보고된 문제 {:#reporting-issues}
 
-Please report issues and feedback via the official
-[JetBrains issue tracker for Dart.][]
+공식 [Dart용 JetBrains 이슈 트래커][JetBrains issue tracker for Dart.]를 통해, 문제와 피드백을 보고해 주세요.
 
-Include details of the expected behavior, the actual behavior,
-and screenshots if appropriate.
+예상 동작, 실제 동작, 적절한 경우 스크린샷에 대한 세부 정보를 포함하세요.
 
 [JetBrains issue tracker for Dart.]: https://youtrack.jetbrains.com/issues?q=Subsystem:%20%7BLang.%20Dart%7D%20
 
-## More information
+## 더 많은 정보 {:#more-information}
 
-See the JetBrains website for more information.
+자세한 내용은 JetBrains 웹사이트를 참조하세요.
 
 * [IntelliJ IDEA](https://www.jetbrains.com/idea/)
-  * [Dart WebStorm Help](https://www.jetbrains.com/help/webstorm/dart.html)
-  * [Features](https://www.jetbrains.com/idea/features/)
-  * [Quick start](https://www.jetbrains.com/help/idea/getting-started.html)
-* [Dart Plugin by JetBrains][Dart plugin]
+  * [Dart WebStorm 도움말](https://www.jetbrains.com/help/webstorm/dart.html)
+  * [기능](https://www.jetbrains.com/idea/features/)
+  * [빠른 시작](https://www.jetbrains.com/help/idea/getting-started.html)
+* [JetBrains의 Dart 플러그인][Dart plugin]
 
 [Dart plugin]: https://plugins.jetbrains.com/plugin/6351-dart/

@@ -1,49 +1,49 @@
 ---
-title: Tools
-description: The tools that support the Dart language.
+# title: Tools
+title: 도구
+# description: The tools that support the Dart language.
+description: Dart 언어를 지원하는 도구.
 ---
 
-When you're ready to create an app, get the SDK and tools for your app
-type. If you aren't sure which tools you need, **get the Flutter SDK.**
+앱을 만들 준비가 되면 앱 타입에 맞는 SDK와 도구를 받으세요. 
+어떤 도구가 필요한지 잘 모르겠다면, **Flutter SDK를 받으세요.**
 
-| App type                  | Get started instructions                                     | Tool information                                           |
+| 앱 타입                  | 시작하기 지침                                     | 도구 정보                                           |
 |---------------------------|--------------------------------------------------------------|------------------------------------------------------------|
-| Flutter (mobile and more) | [Install Flutter]({{site.flutter-docs}}/get-started/install) | [Flutter tools]({{site.flutter-docs}}/using-ide)           |
-| Web app (non-Flutter)     | [Install the Dart SDK](/tools/sdk)                           | [General-purpose tools][] and [web tools](#web)            |
-| Server or command line    | [Install the Dart SDK](/tools/sdk)                           | [General-purpose tools][] and [specialized tools](#server) |
+| Flutter (모바일 및 기타) | [Flutter 설치]({{site.flutter-docs}}/get-started/install) | [Flutter 도구]({{site.flutter-docs}}/using-ide)           |
+| (Flutter가 아닌) 웹 앱     | [Dart SDK 설치](/tools/sdk)                           | [일반 목적 도구][General-purpose tools] 및 [웹 도구](#web)            |
+| 서버 또는 명령줄    | [Dart SDK 설치](/tools/sdk)                           | [일반 목적 도구][General-purpose tools] 및 [특수 도구](#server) |
 
 {:.table .table-striped}
 
 [General-purpose tools]: #general-purpose-tools
 
 :::note
-  The Flutter SDK includes the full Dart SDK.
+  Flutter SDK에는 전체 Dart SDK가 포함되어 있습니다.
 :::
 
-## General-purpose tools
+## 일반 목적 도구 {:#general-purpose-tools}
 
-The following tools support the Dart language on all platforms.
+다음 도구는 모든 플랫폼에서 Dart 언어를 지원합니다.
 
 * [DartPad](#dartpad)
-* [IDEs and editors](#editors)
-* [Command-line tools](#cli)
+* [IDE 및 편집기](#editors)
+* [명령줄 도구](#cli)
 
 
-### DartPad
+### DartPad {:#dartpad}
 
 <img src="/assets/img/dartpad-hello.png" alt="DartPad Hello World" width="200px" align="right" />
 
-[DartPad](/tools/dartpad) is
-a great, no-download-required way to learn Dart syntax
-and to experiment with Dart language features.
-It supports Dart's core libraries,
-except for VM libraries such as `dart:io`.
+[DartPad](/tools/dartpad)는, Dart 구문을 배우고 Dart 언어 기능을 실험할 수 있는, 
+훌륭한, 다운로드가 필요 없는 방법입니다. 
+`dart:io`와 같은 VM 라이브러리를 제외한, Dart의 코어 라이브러리를 지원합니다.
 
 
 <a id="ides-and-editors"></a>
-### IDEs and editors {:#editors}
+### IDE 및 편집기 {:#editors}
 
-Dart plugins exist for these commonly used IDEs.
+일반적으로 사용되는 이러한 IDE에는 Dart 플러그인이 있습니다.
 
 <ul class="cols2">
 <li>
@@ -53,7 +53,7 @@ Dart plugins exist for these commonly used IDEs.
 <li>
 <img src="/assets/img/tools/intellij-idea.svg" class="list-image" alt="IntelliJ logo">
 <a href="/tools/jetbrains-plugin"><b>IntelliJ IDEA<br>
-(and other JetBrains IDEs)</b></a>
+(및 기타 JetBrains IDE)</b></a>
 </li>
 <li>
 <img src="/assets/img/tools/vscode.svg" class="list-image" alt="Visual Studio Code logo">
@@ -61,8 +61,7 @@ Dart plugins exist for these commonly used IDEs.
 </li>
 </ul>
 
-The following Dart plugins are also available,
-thanks to the Dart community.
+Dart 커뮤니티 덕분에, 다음에서도 Dart 플러그인을 사용할 수 있습니다.
 
 <ul class="cols2">
 <li>
@@ -79,43 +78,41 @@ thanks to the Dart community.
 </li>
 </ul>
 
-A [Language Server Protocol implementation][LSP] is also available for
-[LSP-capable editors][] that don't have specific Dart extensions.
+[LSP 지원 편집기][LSP-capable editors]에는 특정 Dart 확장 기능이 없는, 
+[언어 서버 프로토콜(Language Server Protocol, LSP) 구현][LSP]도 사용할 수 있습니다.
 
 [LSP]: {{site.repo.dart.sdk}}/blob/main/pkg/analysis_server/tool/lsp_spec/README.md
 [LSP-capable editors]: https://microsoft.github.io/language-server-protocol/implementors/tools/
 
-### Command-line tools {:#cli}
+### 명령줄 도구 {:#cli}
 
-The Dart SDK includes the following general-purpose `dart` tool:
+Dart SDK에는 다음과 같은 범용 `dart` 도구가 포함되어 있습니다.
 
 [`dart`](/tools/dart-tool)
-: A command-line interface (CLI) for creating, formatting, analyzing,
-  testing, documenting, compiling, and running Dart code,
-  as well as working with the [pub package manager](/guides/packages).
+: Dart 코드를 만들고, 포맷하고, 분석하고, 테스트하고, 문서화하고, 컴파일하고, 
+  실행하고, [pub 패키지 관리자](/guides/packages)와 작업하기 위한 명령줄 인터페이스(CLI).
 
 
-### Debugging
+### 디버깅 {:#debugging}
 
 [Dart DevTools](/tools/dart-devtools)
-: A suite of debugging and performance tools.
+: 디버깅 및 성능 도구 모음입니다.
 
 
-## Tool for developing web apps {:#web}
+## 웹 앱 개발 도구 {:#web}
 
-The following tool supports developing web apps:
+다음 도구는 웹 앱 개발을 지원합니다.
 
 [`webdev`](/tools/webdev)
-: A CLI to build and serve Dart web apps.
+: Dart 웹 앱을 빌드하고 제공하는 CLI입니다.
 
-## Tools for developing command-line apps and servers {:#server}
+## 명령줄 앱 및 서버 개발을 위한 도구 {:#server}
 
-The following tools support developing or running
-command-line apps and servers:
+다음 도구는 명령줄 앱과 서버 개발 또는 실행을 지원합니다.
 
 [`dart run`](/tools/dart-run)
-: Use the `dart run` command to run uncompiled Dart command-line apps
-  and some kinds of snapshots.
+: `dart run` 명령을 사용하여, 컴파일되지 않은 Dart 명령줄 앱과 일부 종류의 스냅샷을 실행합니다.
 
 [`dartaotruntime`](/tools/dartaotruntime)
-: Use this Dart runtime to run AOT snapshots.
+: 이 Dart 런타임을 사용하여, AOT 스냅샷을 실행합니다.
+

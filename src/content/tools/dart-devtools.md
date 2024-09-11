@@ -1,17 +1,16 @@
 ---
 title: Dart DevTools
-description: A suite of debugging and performance tools.
+# description: A suite of debugging and performance tools.
+description: 디버깅 및 성능 도구 모음입니다.
 ---
 
-Dart DevTools is a suite of debugging and performance tools
-for Dart and Flutter.
-These tools are distributed as part of the `dart` tool
-and interact with tools such as IDEs, `dart run`, and `webdev`.
+Dart DevTools는 Dart와 Flutter를 위한 디버깅 및 성능 도구 모음입니다. 
+이러한 도구는 `dart` 도구의 일부로 배포되며, 
+IDE, `dart run`, `webdev`와 같은 도구와 상호 작용합니다.
 
 <img src="/assets/img/tools/devtools.png" width="800" alt="Screenshot of DevTools' Memory page">
 
-The following table shows which tools
-you can use with common Dart app types.
+다음 표는 일반적인 Dart 앱 타입에서 사용할 수 있는 도구를 보여줍니다.
 
 {% assign y = '<span class="material-symbols user-select-none" title="Supported" aria-label="Supported">done</span>' %}
 {% assign b = '&nbsp;' %}
@@ -21,47 +20,42 @@ you can use with common Dart app types.
   assign b = '<span class="material-symbols" title="use browser tools instead">web</span>'
 {% endcomment %}
 
-| Tool                  | [Flutter mobile or desktop][Flutter devtools] | [Flutter web][Flutter devtools] | [Other web][] | [Command-line][] |
+| Tool                  | [Flutter 모바일 또는 데스크탑][Flutter devtools] | [Flutter 웹][Flutter devtools] | [기타 웹][Other web] | [명령줄][Command-line] |
 |-----------------------|:---------------------------------------------:|:-------------------------------:|:-------------:|:----------------:|
-| [Debugger][]          |                     {{y}}                     |              {{y}}              |     {{y}}     |      {{y}}       |
-| [Logging view]        |                     {{y}}                     |              {{y}}              |     {{y}}     |      {{y}}       |
-| [App size tool][]     |                     {{y}}                     |                                 |               |      {{y}}       |
-| [CPU profiler][]      |                     {{y}}                     |                                 |               |      {{y}}       |
-| [Memory view][]       |                     {{y}}                     |                                 |               |      {{y}}       |
-| [Network view][]      |                     {{y}}                     |                                 |               |      {{y}}       |
-| [Performance view][]  |                     {{y}}                     |                                 |               |      {{y}}       |
-| [Flutter inspector][] |                     {{y}}                     |              {{y}}              |               |                  |
+| [디버거][Debugger]          |                     {{y}}                     |              {{y}}              |     {{y}}     |      {{y}}       |
+| [로깅 뷰][Logging view]        |                     {{y}}                     |              {{y}}              |     {{y}}     |      {{y}}       |
+| [앱 크기 툴][App size tool]     |                     {{y}}                     |                                 |               |      {{y}}       |
+| [CPU 프로파일러][CPU profiler]      |                     {{y}}                     |                                 |               |      {{y}}       |
+| [메모리 뷰][Memory view]       |                     {{y}}                     |                                 |               |      {{y}}       |
+| [네트워크 뷰][Network view]      |                     {{y}}                     |                                 |               |      {{y}}       |
+| [성능 뷰][Performance view]  |                     {{y}}                     |                                 |               |      {{y}}       |
+| [Flutter 검사기][Flutter inspector] |                     {{y}}                     |              {{y}}              |               |                  |
 
 {:.table .table-striped .nowrap}
 
-For information about using Dart DevTools with each app type
-(for example, command-line apps),
-click the app type in the top row.
-For details about individual tools
-(for example, the debugger),
-click the tool name in the left column.
+각 앱 타입(예: 명령줄 앱)에서 Dart DevTools를 사용하는 방법에 대한 자세한 내용은, 
+맨 위 행에서 앱 타입을 클릭합니다. 
+개별 도구(예: 디버거)에 대한 자세한 내용은, 왼쪽 열에서 도구 이름을 클릭합니다.
 
-As the table shows, the debugger and the logging view
-are the only parts of Dart DevTools that are available to all app types.
-Web apps can't use the timeline, memory, and performance views;
-instead, they can use browser tools such as the [Chrome DevTools.][]
-The Flutter inspector works only for Flutter apps;
-other web apps should use browser tools such as the Chrome DevTools.
+표에서 볼 수 있듯이, 디버거와 로깅 뷰는 모든 앱 타입에서 사용할 수 있는 Dart DevTools의 유일한 부분입니다. 
+웹 앱은 타임라인, 메모리 및 성능 뷰를 사용할 수 없습니다. 
+대신 [Chrome DevTools][]와 같은 브라우저 도구를 사용할 수 있습니다. 
+Flutter 검사기는 Flutter 앱에서만 작동합니다. 
+다른 웹 앱은 Chrome DevTools와 같은 브라우저 도구를 사용해야 합니다.
 
 
-## Using DevTools with a command-line app
+## 명령줄 앱과 함께 DevTools 사용 {:#using-devtools-with-a-command-line-app}
 
-You can use DevTools to perform source-level debugging 
-or to view general log and diagnostics information
-for a running command-line app.
+DevTools를 사용하면 소스 레벨 디버깅을 수행하거나, 
+실행 중인 명령줄 앱에 대한 일반 로그 및 진단 정보를 볼 수 있습니다.
 
 
-### 1. Start the target app
+### 1. 대상 앱 시작 {:#1-start-the-target-app}
 
-Use the `dart run --observe` command to execute the main file
-for the Dart command-line app that you want to debug or observe.
-Optionally add `--pause-isolates-on-start`,
-which automatically breaks execution at the start of the script.
+`dart run --observe` 명령을 사용하여, 
+디버깅하거나 관찰하려는 Dart 명령줄 앱의 메인 파일을 실행합니다. 
+선택적으로 `--pause-isolates-on-start`를 추가하면, 
+스크립트 시작 시 실행이 자동으로 중단됩니다.
 
 ```console
 $ cd path/to/dart/app
@@ -71,44 +65,37 @@ The Dart VM service is listening on http://127.0.0.1:8181/afZySiNbDPg=/
 The Dart DevTools debugger and profiler is available at: http://127.0.0.1:8181/afZySiNbDPg=/devtools/#/?uri=ws%3A%2F%2F127.0.0.1%3A8181%2FafZySiNbDPg%3D%2Fws
 ```
 
-Note the **Dart DevTools debugger and profiler** URL.
-You'll need it in the next step.
+**Dart DevTools 디버거 및 프로파일러** URL을 기록해 두세요. 다음 단계에서 필요합니다.
 
 :::important
-This URL contains a security token and
-is different for each run of your app.
-If you stop your app and rerun it,
-then you need to connect to DevTools with the new URL.
+이 URL에는 보안 토큰이 포함되어 있으며, 앱을 실행할 때마다 다릅니다. 
+앱을 중지하고 다시 실행하면, 새 URL로 DevTools에 연결해야 합니다.
 :::
 
-### 2. Open DevTools and connect to the target app
+### 2. DevTools를 열고 대상 앱에 연결합니다. {:#2-open-devtools-and-connect-to-the-target-app}
 
-Copy the **Dart DevTools debugger and profiler** URL,
-and paste it into the address bar of a Chrome browser window.
+**Dart DevTools 디버거 및 프로파일러** URL을 복사하여, Chrome 브라우저 창의 주소창에 붙여넣습니다.
 
-When you visit that URL in Chrome,
-the Dart DevTools UI appears,
-displaying information about the target app.
-Click **Debugger** to start debugging the app.
+Chrome에서 해당 URL을 방문하면, 
+Dart DevTools UI가 나타나 대상 앱에 대한 정보를 표시합니다. 
+**Debugger**를 클릭하여 앱 디버깅을 시작합니다.
 
 
-## Using DevTools with a Flutter app
+## Flutter 앱과 함께 DevTools 사용 {:#using-devtools-with-a-flutter-app}
 
-For details on using DevTools with a Flutter app for any platform
-(including web) see the
-[DevTools documentation on flutter.dev.][Flutter devtools]
+웹을 포함한 모든 플랫폼의 Flutter 앱에서 DevTools를 사용하는 방법에 대한 자세한 내용은, 
+[flutter.dev에 대한 DevTools 문서][Flutter devtools]를 참조하세요.
 
+## Flutter가 아닌 웹 앱에서 DevTools 사용 {:#using-devtools-with-a-non-flutter-web-app}
 
-## Using DevTools with a non-Flutter web app
-
-To launch a web app so that you can use Dart DevTools,
-use the `webdev serve` command with the `--debug` or `--debug-extension` flag:
+Dart DevTools를 사용할 수 있도록 웹 앱을 시작하려면, 
+`webdev serve` 명령을 `--debug` 또는 `--debug-extension` 플래그와 함께 사용합니다.
 
 ```console
 $ webdev serve --debug
 ```
 
-For more information, see [Debugging Dart web apps][].
+자세한 내용은 [Dart 웹앱 디버깅][Debugging Dart web apps]을 참조하세요.
 
 [App size tool]: {{site.flutter-docs}}/tools/devtools/app-size
 [Chrome DevTools.]: https://developer.chrome.com/docs/devtools/
