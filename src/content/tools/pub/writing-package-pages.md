@@ -1,6 +1,8 @@
 ---
-title: Writing package pages
-description: Learn how to write a good package page.
+# title: Writing package pages
+title: 패키지 페이지 작성
+# description: Learn how to write a good package page.
+description: 좋은 패키지 페이지를 작성하는 방법을 알아보세요.
 ---
 
 <style>
@@ -18,28 +20,24 @@ description: Learn how to write a good package page.
   }
 </style>
 
-The guidelines on this page can help you create good package pages on pub.dev.
-Specifically, this page has tips for
-writing a better package README,
-which provides the content marked **README (this document)**
-in the following screenshot:
+이 페이지의 가이드라인은 pub.dev에서 좋은 패키지 페이지를 만드는 데 도움이 될 수 있습니다. 
+특히, 이 페이지에는 더 나은 패키지 README를 작성하기 위한 팁이 있으며, 
+다음 스크린샷에서 **README (이 문서)** 로 표시된 내용을 제공합니다.
 
 <img 
   src="/assets/img/libraries/package-page-sections.png"
   alt="package page contains sections like package layout, flutter favorite, package scoring, verified publishers, pubspec file" 
   class="screenshot">
 
-For details about other parts of the package page,
-follow these links:
+패키지 페이지의 다른 부분에 대한 자세한 내용은, 다음 링크를 따르세요.
 
-1. [Package layout ](/tools/pub/package-layout)
+1. [패키지 레이아웃](/tools/pub/package-layout)
 2. [Flutter Favorite]({{site.flutter-docs}}/development/packages-and-plugins/favorites)
-3. [Package scoring]({{site.pub}}/help/scoring)
-4. [Verified publishers](/tools/pub/verified-publishers)
-5. [Pubspec file](/tools/pub/pubspec)
+3. [패키지 스코어링]({{site.pub}}/help/scoring)
+4. [검증된 게시자](/tools/pub/verified-publishers)
+5. [Pubspec 파일](/tools/pub/pubspec)
 
-
-## Writing a good README is important
+## 좋은 README를 작성하는 것이 중요합니다 {:#writing-a-good-readme-is-important}
 
 People who find your package on pub.dev are likely to
 quickly scan the README when deciding whether to try your package.
@@ -58,7 +56,7 @@ If your package is simple and has no associated UI,
 its README might look more like the one for the [`yaml`][] package. 
 
 
-## Seven tips for good README
+## 좋은 README를 위한 7가지 팁 {:#seven-tips-for-good-readme}
 
 Here are some suggestions for creating a README
 that works well on pub.dev:
@@ -378,7 +376,7 @@ that has information for potential contributors:
   class="screenshot">
 
 
-## Learn more about good README authoring
+## 좋은 README 작성에 대해 자세히 알아보세요 {:#learn-more-about-good-readme-authoring}
 
 We've suggested seven tips for good README in this documentation.
 You can learn more about common recommendations for developer documentation

@@ -1,14 +1,14 @@
 ---
-title: Creating packages
-description: Learn how to create packages in Dart.
+# title: Creating packages
+title: 패키지 생성
+# description: Learn how to create packages in Dart.
+description: Dart에서 패키지를 만드는 방법을 알아보세요.
 ---
 
-The Dart ecosystem uses [packages](/guides/packages)
-to share software such as libraries and tools.
-This page tells you how to create a standard shared 
-[package](/tools/pub/glossary#package).
+Dart 생태계는 (라이브러리 및 도구와 같은) 소프트웨어를 공유하기 위해 [패키지](/guides/packages)를 사용합니다. 
+이 페이지에서는 표준 공유 [패키지](/tools/pub/glossary#package)를 만드는 방법을 설명합니다.
 
-## Creating a new package
+## 새로운 패키지 생성 {:#creating-a-new-package}
 
 To create the initial directory and structure for a package,
 use the [`dart create`](/tools/dart-create) command
@@ -18,7 +18,7 @@ and the `package` template:
 $ dart create -t package <PACKAGE_NAME>
 ```
 
-## What makes a package
+## 패키지를 만드는 것 {:#what-makes-a-package}
 
 The following diagram shows the simplest layout of a package:
 
@@ -45,7 +45,7 @@ lib directory
 
 [application package]: /tools/pub/glossary#application-package
 
-## Organizing a package
+## 패키지 구성하기 {:#organizing-a-package}
 
 Packages are easiest to maintain, extend, and test
 when you create small, individual libraries, referred to as
@@ -117,7 +117,7 @@ Also, avoid imports of <code>package:<em>package_name</em>/src/...</code>.
 
 [`webdev serve`]: /tools/webdev#serve
 
-## Importing library files
+## 라이브러리 파일 import {:#importing-library-files}
 
 When importing a library file from another package, use
 the `package:` directive to specify the URI of that file.
@@ -139,7 +139,7 @@ to import `lib/foo/a.dart` from both lib and web.
   alt="lib/bar/b.dart uses a relative import; web/main.dart uses a package import">
 
 
-## Conditionally importing and exporting library files
+## 라이브러리 파일을 조건부로 import 및 export {:#conditionally-importing-and-exporting-library-files}
 
 If your library supports multiple platforms,
 then you might need to conditionally import or export library files.
@@ -212,7 +212,7 @@ void main() {
 }
 ```
 
-## Providing additional files
+## 추가적인 파일 제공 {:#providing-additional-files}
 
 A well-designed package is easy to test.
 We recommend that you write tests using the
@@ -241,7 +241,7 @@ described in [Publishing a package](/tools/pub/publishing).
 For more information on how to organize a package directory,
 see the [pub package layout conventions](/tools/pub/package-layout).
 
-## Documenting a library
+## 라이브러리 문서화 {:#documenting-a-library}
 
 You can generate API docs for your library using
 the [`dart doc`][] tool.
@@ -265,7 +265,7 @@ For the how-and-why of documenting libraries, see
 [Effective Dart: Documentation](/effective-dart/documentation#consider-writing-a-library-level-doc-comment).
 
 
-## Distributing an open source library {:#distributing-a-library}
+## 오픈소스 라이브러리 배포 {:#distributing-a-library}
 
 If your library is open source,
 we recommend sharing it on the [pub.dev site.]({{site.pub}})
@@ -294,7 +294,7 @@ follow these steps:
 * If the docs didn't generate at all,
   click **failed** in the **Versions** tab to see the `dart doc` output.
 
-## Resources
+## 리소스 {:#resources}
 
 Use the following resources to learn more about packages:
 

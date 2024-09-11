@@ -1,49 +1,44 @@
 ---
-title: Using Google APIs
+# title: Using Google APIs
+title: Google APIs 사용
 short-title: Google APIs
-description: Your Dart apps can use Firebase and Google client APIs.
+# description: Your Dart apps can use Firebase and Google client APIs.
+description: Dart 앱은 Firebase와 Google 클라이언트 API를 사용할 수 있습니다.
 lastVerified: 2021-05-13
 ---
 
-This page points to resources to help you use
-[Firebase][] and [Google client APIs][] from a Dart app.
+이 페이지는 Dart 앱에서 [Firebase][] 및 [Google 클라이언트 API][Google client APIs]를 사용하는 데, 
+도움이 되는 리소스를 알려줍니다.
 
+## Firebase {:#firebase}
 
-## Firebase
+Firebase와 함께 사용하는 Dart API는 Flutter 앱 또는 다른 종류의 Dart 앱에 대한 코드를 작성하는지 여부에 따라 달라집니다.
 
-The Dart API that you use with Firebase depends
-on whether you're writing code for a Flutter app or another kind of Dart app.
+Flutter 앱은 Analytics, Cloud Firestore, Cloud Functions, Crashlytics와 같은 인기 있는 Firebase 제품에 대해 공식적으로 지원되는 여러 플러그인 중에서 선택할 수 있습니다. 
+이러한 플러그인의 전체 리스트는 [FlutterFire][]를 참조하세요.
 
-Flutter apps can choose from many officially supported plugins for
-popular Firebase products such as Analytics, Cloud Firestore,
-Cloud Functions, and Crashlytics.
-For a full list of these plugins, see [FlutterFire][].
+다른 종류의 Dart 앱은 커뮤니티에서 지원하는 [`firebase` 패키지][`firebase` package]를 사용할 수 있습니다.
 
-Other kinds of Dart apps can use
-the community-supported [`firebase` package][].
+## Google 클라이언트 APIs {:#google-client-apis}
 
-## Google client APIs
+[`googleapis` 패키지][`googleapis` package]에는, 
+Google Docs API, YouTube Data API, 
+Cloud Translation API, Cloud Storage API 등 180개가 넘는, 
+Google 클라이언트 API에 대해 생성된 API가 포함되어 있습니다.
 
-The [`googleapis` package][] contains generated APIs for
-over 180 Google client APIs,
-such as the Google Docs API, YouTube Data API,
-Cloud Translation API, and Cloud Storage API.
+Flutter 애플리케이션을 빌드하는 경우, 
+[Google API에 대한 Flutter 가이드][flutter-google-apis]를 참조하세요.
 
-If you're building a Flutter application, see the
-[Flutter guide for Google APIs][flutter-google-apis].
+서버 애플리케이션의 일부로 Google API를 사용하려면, 
+[google_apis 서버 샘플][server-sample]을 참조하세요.
 
-If you'd like to use Google APIs as part of a server application, see the
-[google_apis server sample][server-sample].
+일부 패키지는 `googleapis`에서 제공하는 API에 대한 관용적인 Dart 래퍼를 제공합니다. 
+예를 들어, Google Sheets API를 사용하려면, 
+[자동으로 생성된 API][gsheets-api-docs-gapi]에 대한 
+[대체 API][gsheets-api-docs]를 제공하는 [`gsheets` 패키지][`gsheets` package]를 고려하세요.
 
-Some packages provide idiomatic Dart wrappers for
-the APIs provided by `googleapis`.
-For example, if you want to use the Google Sheets API,
-consider the [`gsheets` package][],
-which provides an [alternative API][gsheets-api-docs] to the
-[automatically generated API][gsheets-api-docs-gapi].
-
-To find wrapper packages for Google client APIs, search for
-[packages that depend on `googleapis`][gapi-packages].
+Google 클라이언트 API에 대한 래퍼 패키지를 찾으려면, 
+[`googleapis`에 종속된 패키지][gapi-packages]를 검색하세요.
 
 
 [Firebase]: https://firebase.google.com/use-cases

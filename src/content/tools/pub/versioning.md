@@ -1,34 +1,32 @@
 ---
-title: Package versioning
-description: "How Dart's package management tool, pub, handles versioning of packages."
+# title: Package versioning
+title: 패키지 버전 관리
+# description: "How Dart's package management tool, pub, handles versioning of packages."
+description: "Dart의 패키지 관리 도구인 pub가 패키지 버전 관리를 처리하는 방법."
 ---
 
-The [pub package manager][pub] helps you work with versioning.
-This guide explains a bit about the history of versioning and pub's
-approach to it.
+[pub 패키지 관리자][pub]는 버전 관리 작업에 도움이 됩니다. 
+이 가이드에서는 버전 관리의 역사와 pub의 버전 관리 접근 방식에 대해 간략히 설명합니다.
 
-Consider this to be advanced information.
-To learn _why_ pub was designed the way it was, keep reading.
-If you want to _use_ pub, consult the [other docs][pub].
+이를 고급 정보로 간주하세요. pub이 *왜* 이런 방식으로 설계되었는지 알아보려면, 계속 읽어보세요. 
+pub을 _사용_ 하려면 [다른 문서][pub]를 참조하세요.
 
-Modern software development, especially web development, leans heavily on
-reusing lots and lots of existing code. That includes code _you_ wrote in the
-past, but also code from third-parties, everything from big frameworks to small
-utility libraries. It's not uncommon for an application to depend on
-dozens of different packages and libraries.
+최신 소프트웨어 개발, 특히 웹 개발은 기존 코드를 많이 재사용하는 데 크게 의존합니다. 
+여기에는 과거에 _사용자가_ 작성한 코드뿐만 아니라, 
+타사의 코드, 대규모 프레임워크에서 소규모 유틸리티 라이브러리에 이르기까지 모든 것이 포함됩니다. 
+애플리케이션이 수십 개의 서로 다른 패키지와 라이브러리에 의존하는 것은 드문 일이 아닙니다.
 
-It's hard to understate how powerful this is. When you see stories of small web
-startups building a site in a few weeks that gets millions of users, the
-only reason they can achieve this is because the open source community has
-laid a feast of software at their feet.
+이것이 얼마나 강력한지 과소평가하기 어렵습니다. 
+몇 주 만에 수백만 명의 사용자를 확보하는 사이트를 구축하는 소규모 웹 스타트업의 이야기를 볼 때, 
+이를 달성할 수 있는 유일한 이유는 오픈 소스 커뮤니티가 소프트웨어의 향연을 발 앞에 펼쳐놓았기 때문입니다.
 
-But this doesn't come for free: There's a challenge to code
-reuse, especially reusing code you don't maintain. When your app uses code
-being developed by other people, what happens when they change it?
-They don't want to break your app, and you certainly don't either.
-We solve this problem by _versioning_.
+하지만 이것은 무료로 제공되지 않습니다. 
+코드 재사용, 특히 유지 관리하지 않는 코드 재사용에는 어려움이 있습니다. 
+앱에서 다른 사람이 개발한 코드를 사용하는 경우, 그들이 코드를 변경하면 어떻게 될까요? 
+그들은 앱을 망가뜨리고 싶어하지 않으며, 여러분도 마찬가지입니다. 
+우리는 _버전 관리_ 를 통해 이 문제를 해결합니다.
 
-## A name and a number
+## 이름과 번호 {:#a-name-and-a-number}
 
 When you depend on some piece of outside code,
 you don't just say "My app uses `widgets`." You say, "My app uses
@@ -47,7 +45,7 @@ version number set in the package filename.
 They might include `-0` or `-beta`.
 These notations don't affect dependency resolution.
 
-## Resolving shared dependencies
+## 공유 종속성 해결 {:#resolving-shared-dependencies}
 
 Depending on specific versions works fine when your dependency
 _graph_ is really just a dependency _tree_. If your app depends on a bunch of
@@ -63,7 +61,7 @@ So your app uses `widgets` and `templates`, and _both_ of those use
 `widgets` wants to use `collection 2.3.5` and `templates` wants
 `collection 2.3.7`? What if they don't agree on a version?
 
-### Unshared libraries (the npm approach)
+### Unshared libraries (the npm approach) {:#unshared-libraries-the-npm-approach}
 
 One option is to just let the app use both
 versions of `collection`. It will have two copies of the library at different
@@ -89,7 +87,7 @@ Because of this (and because of the headaches of trying to debug an app that
 has multiple versions of things with the same name), we've decided npm's model
 isn't a good fit.
 
-### Version lock (the dead end approach)
+### Version lock (the dead end approach) {:#version-lock-the-dead-end-approach}
 
 Instead, when you depend on a package, your app only uses a single copy of
 that package. When you have a shared dependency, everything that depends on it
@@ -119,7 +117,7 @@ That's called **version lock**:
 everyone wants to move their dependencies forward,
 but no one can take the first step because it forces everyone else to as well.
 
-### Version constraints (the Dart approach)
+### Version constraints (the Dart approach) {:#version-constraints-the-dart-approach}
 
 To solve version lock, we loosen the constraints that packages place on their
 dependencies. If `widgets` and `templates` can both indicate a _range_ of
@@ -142,7 +140,7 @@ You could pick version `2.3.7` for `collection`.
 A single concrete version would satisfy constraints for
 both the `widgets` and `templates` packages.
 
-## Semantic versions
+## 시맨틱 버전 {:#semantic-versions}
 
 When you add a dependency to your package, you'll sometimes want to specify a
 range of versions to allow. How do you know what range to pick? You need to be
@@ -192,7 +190,7 @@ For simplicity's sake, avoid using `+` after the version reaches `1.0.0`.
 We've got almost all of the pieces we need to deal with versioning and API
 evolution now. Let's see how they play together and what pub does.
 
-## Constraint solving
+## 제약 조건 해결 {:#constraint-solving}
 
 When you define your package, you list its
 [immediate dependencies][immediate-dep].
@@ -232,7 +230,7 @@ The highest version number that fits in all of those ranges is `1.8.2`, so pub
 picks that. That means your app _and every package your app uses_ will all use
 `collection 1.8.2`.
 
-## Constraint context
+## 제약조건 컨텍스트 {:#constraint-context}
 
 The fact that selecting a package version takes into account _every_ package
 that depends on it has an important consequence: _the specific version that
@@ -276,7 +274,7 @@ the _other_ constraint that `otherapp` places on it.
 This is why each app gets its own `package_config.json` file: The concrete version selected for each package depends on
 the entire dependency graph of the containing app.
 
-## Constraint solving for exported dependencies
+## 내보낸(exported) 종속성에 대한 제약 조건 해결 {:#constraint-solving-for-exported-dependencies}
 
 Package authors must define package constraints with care.
 Consider the following scenario:
@@ -340,7 +338,7 @@ as well.
 Using this convention ensures that users have the correct version of
 both packages, even if one is not a direct dependency.
 
-## Lockfiles
+## Lockfiles {:#lockfiles}
 
 So once pub has solved your app's version constraints, then what? The end
 result is a complete list of every package that your app depends on either
@@ -364,7 +362,7 @@ the exact same versions of every dependency when they build your app. You'll
 also use this when you deploy your app so you can ensure that your production
 servers are using the exact same packages that you're developing with.
 
-## When things go wrong
+## 일이 잘못될 때 {:#when-things-go-wrong}
 
 Of course, all of this presumes that your dependency graph is perfect and
 flawless. Even with version ranges and pub's constraint solving and
@@ -373,7 +371,7 @@ dangers of versionitis.
 
 You might run into one of the following problems:
 
-### You can have disjoint constraints
+### You can have disjoint constraints {:#you-can-have-disjoint-constraints}
 
 Lets say your app uses `widgets` and
 `templates` and both use `collection`. But `widgets` asks for a version
@@ -381,7 +379,7 @@ of it between `1.0.0` and `2.0.0` and `templates` wants something
 between `3.0.0` and `4.0.0`. Those ranges don't even overlap. There's no
 possible version that would work.
 
-### You can have ranges that don't contain a released version
+### You can have ranges that don't contain a released version {:#you-can-have-ranges-that-dont-contain-a-released-version}
 
 Let's say after putting all of the constraints on a shared dependency together,
 you have a narrow range of `>=1.2.4 <1.2.6`. It's not an empty range.
@@ -390,7 +388,7 @@ But maybe they never released that version.
 Instead, they went straight from `1.2.3` to `1.3.0`.
 You've got a range with nothing inside it.
 
-### You can have an unstable graph
+### You can have an unstable graph {:#you-can-have-an-unstable-graph}
 
 This is, by far, the most challenging part of
 pub's version solving process. The process was described as _build up the
@@ -440,7 +438,7 @@ your app, and when this happens pub reports an error and tells you what's
 going on. It definitely won't leave you in some weird state where you
 think things can work but won't.
 
-## Summary
+## 요약 {:#summary}
 
 In summary:
 
