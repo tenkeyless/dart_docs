@@ -1,9 +1,6 @@
-To develop real apps,
-you need an SDK.
-You can either download the Dart SDK directly
-(as described below)
-or [download the Flutter SDK,][]
-which includes the full Dart SDK.
+실제 앱을 개발하려면 SDK가 필요합니다. 
+Dart SDK를 직접 다운로드하거나(아래 설명 참조), 
+전체 Dart SDK가 포함된 [Flutter SDK를 다운로드][download the Flutter SDK,]할 수 있습니다.
 
 [download the Flutter SDK,]: {{site.flutter-docs}}/get-started/install
 
@@ -15,18 +12,15 @@ which includes the full Dart SDK.
 
 <div id="tab-sdk-install-windows" class="tabs__content current">
 
-  Use [Chocolatey](https://chocolatey.org) to install a stable release of
-  the Dart SDK.
+  [Chocolatey](https://chocolatey.org)를 사용하여, Dart SDK의 stable 릴리스를 설치하세요.
 
   :::important
-  These commands require administrator privileges.
-  If you need help on starting an administrator-level command prompt,
-  try a search like
-  <em><a href="https://www.google.com/search?q=cmd+admin"
-  target="blank">cmd admin</a>.</em>
+  이러한 명령에는 관리자 권한이 필요합니다. 
+  관리자 레벨 명령 프롬프트를 시작하는 데 도움이 필요하면, 
+  <em><a href="https://www.google.com/search?q=cmd+admin" target="blank">cmd admin</a>과 같은 검색을 시도하세요.</em>
   :::
 
-  To install the Dart SDK:
+  Dart SDK를 설치하려면:
 
   ```ps
   C:\> choco install dart-sdk
@@ -35,10 +29,10 @@ which includes the full Dart SDK.
 </div>
 
 <div id="tab-sdk-install-linux" class="tabs__content">
+  
+  APT를 사용하여, Linux에 Dart SDK를 설치할 수 있습니다.
 
-  You can use APT to install the Dart SDK on Linux.
-
-  1. Perform the following one-time setup:
+  1. 다음 일회성 셋업을 수행합니다.
   
      ```console
      $ sudo apt-get update
@@ -47,7 +41,7 @@ which includes the full Dart SDK.
      $ echo 'deb [signed-by=/usr/share/keyrings/dart.gpg arch=amd64] https://storage.googleapis.com/download.dartlang.org/linux/debian stable main' | sudo tee /etc/apt/sources.list.d/dart_stable.list
      ```
 
-  2. Install the Dart SDK:
+  2. Dart SDK 설치:
   
      ```console
      $ sudo apt-get update
@@ -58,8 +52,7 @@ which includes the full Dart SDK.
 
 <div id="tab-sdk-install-mac" class="tabs__content">
 
-  With [Homebrew,](https://brew.sh/)
-  installing Dart is easy.
+  [Homebrew](https://brew.sh/)를 사용하면, Dart를 쉽게 설치할 수 있습니다.
 
   ```console
   $ brew tap dart-lang/dart
@@ -69,6 +62,5 @@ which includes the full Dart SDK.
 </div>
 
 :::important
-For more information, including how to **adjust your `PATH`**, see
-[Get the Dart SDK](/get-dart).
+자세한 내용(**`PATH` 조정 방법** 포함)은, [Dart SDK 가져오기](/get-dart)를 참조하세요.
 :::
