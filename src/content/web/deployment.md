@@ -1,64 +1,57 @@
 ---
-title: Web deployment
-description: Learn how to build your Dart web app for production deployment.
+# title: Web deployment
+title: 웹 배포
+# description: Learn how to build your Dart web app for production deployment.
+description: 프로덕션 배포를 위한 Dart 웹 앱을 만드는 방법을 알아보세요.
 ---
 
-Deploying a Dart web app works like deploying any other web app.
-This page describes how to compile your app, tips for making it smaller
-and faster, and points you to resources for serving the app.
+Dart 웹 앱 배포는 다른 웹 앱 배포와 동일하게 작동합니다. 
+이 페이지에서는 앱을 컴파일하는 방법, 
+앱을 더 작고 빠르게 만드는 팁, 앱을 서비스하기 위한 리소스를 설명합니다.
 
-## Building your app {:#compiling-to-javascript}
+## 앱 구축하기 {:#compiling-to-javascript}
 
-Use the `webdev` tool to build your app. It compiles Dart to JavaScript
-and generates all the assets you need for deployment.
-When you build using the production mode of the compiler,
-you get a JavaScript file that's reasonably small,
-thanks to the compiler support for tree shaking.
+`webdev` 도구를 사용하여 앱을 빌드하세요. 
+이 도구는 Dart를 JavaScript로 컴파일하고, 배포에 필요한 모든 에셋을 생성합니다. 
+컴파일러의 프로덕션 모드를 사용하여 빌드하면, 컴파일러가 트리 셰이킹을 지원하여, 
+상당히 작은 JavaScript 파일을 얻을 수 있습니다.
 
-With a little extra work, you can make your deployable app
-[smaller, faster, and more reliable](#make-your-app-smaller-faster-and-more-reliable).
+약간의 추가 작업으로, 배포 가능한 앱을 [더 작고, 더 빠르고, 더 안정적으로](#make-your-app-smaller-faster-and-more-reliable) 만들 수 있습니다.
 
-### Compile using webdev
+### Webdev를 사용하여 컴파일 {:#compile-using-webdev}
 
-[Use the `webdev build` command][build] to create a deployable version
-of your app. This command converts your code to JavaScript and saves
-the result as `build/web/main.dart.js`. You can use [any option
-available to `dart compile js`](/tools/dart-compile#prod-compile-options)
-with `webdev build`.
+[`webdev build` 명령을 사용하여][build], 배포 가능한 버전의 앱을 만듭니다. 
+이 명령은 코드를 JavaScript로 변환하고, 결과를 `build/web/main.dart.js`로 저장합니다. 
+`webdev build`와 함께 [`dart compile js`에 사용 가능한 모든 옵션](/tools/dart-compile#prod-compile-options)을 사용할 수 있습니다.
 
-### Make your app smaller, faster, and more reliable
+### 앱을 더 작고, 더 빠르고, 더 안정적으로 만들어보세요 {:#make-your-app-smaller-faster-and-more-reliable}
 
-The following steps are optional. They can help make your app more
-reliable and responsive.
+다음 단계는 선택 사항입니다. 앱의 안정성과 반응성을 높이는 데 도움이 될 수 있습니다.
 
-* [Use deferred loading to reduce your app's initial size](#use-deferred-loading-to-reduce-your-apps-initial-size)
-* [Follow best practices for web apps](#follow-best-practices-for-web-apps)
-* [Remove unneeded build files](#remove-unneeded-build-files)
+* [지연된(deferred) 로딩을 사용하여, 앱의 초기 크기를 줄이기](#use-deferred-loading-to-reduce-your-apps-initial-size)
+* [웹 앱에 대한 모범 사례 따르기](#follow-best-practices-for-web-apps)
+* [불필요한 빌드 파일 제거하기](#remove-unneeded-build-files)
 
-#### Use deferred loading to reduce your app's initial size
+#### 지연된 로딩을 사용하여 앱의 초기 크기를 줄이세요. {:#use-deferred-loading-to-reduce-your-apps-initial-size}
 
-You can use Dart's support for deferred loading to
-reduce your app's initial download size.
-For details, see the language tour's coverage of
-[deferred loading](/language/libraries#lazily-loading-a-library).
+Dart의 지연 로딩 지원을 사용하면 앱의 초기 다운로드 크기를 줄일 수 있습니다. 
+자세한 내용은 언어 투어의 [지연 로딩](/language/libraries#lazily-loading-a-library)에 대한 내용을 참조하세요.
 
-#### Follow best practices for web apps
+#### 웹 앱에 대한 모범 사례를 따르세요. {:#follow-best-practices-for-web-apps}
 
-The usual advice for web apps applies to Dart web apps.
-Here are a few resources:
+웹 앱에 대한 일반적인 조언은 Dart 웹 앱에도 적용됩니다. 다음은 몇 가지 리소스입니다.
 
-* [Fast load times](https://web.dev/fast/)
-* [Web Fundamentals](https://developers.google.com/web/fundamentals/)
-  (especially [Optimizing Content Efficiency](https://developers.google.com/web/fundamentals/performance/optimizing-content-efficiency/))
-* [Progressive Web Apps](https://web.dev/progressive-web-apps/)
+* [빠른 로드 시간](https://web.dev/fast/)
+* [웹 기초](https://developers.google.com/web/fundamentals/) (특히 [콘텐츠 효율성 최적화](https://developers.google.com/web/fundamentals/performance/optimizing-content-efficiency/))
+* [프로그레시브 웹 앱](https://web.dev/progressive-web-apps/)
 * [Lighthouse](https://developers.google.com/web/tools/lighthouse/)
 
-#### Remove unneeded build files
+#### 불필요한 빌드 파일을 제거하세요. {:#remove-unneeded-build-files}
 
-Web compilers can produce files that are useful during development,
-such as Dart-to-JavaScript map files, but unnecessary in production.
+웹 컴파일러는 개발 중에는 유용하지만 프로덕션에서는 불필요한, 
+Dart-to-JavaScript 맵 파일과 같은 파일을 생성할 수 있습니다.
 
-To remove these files, you can run a command like the following:
+이러한 파일을 제거하려면, 다음과 같은 명령을 실행할 수 있습니다.
 
 {% comment %}
 Revise the following once https://github.com/dart-lang/angular/issues/1123 is resolved:
@@ -69,38 +62,32 @@ Revise the following once https://github.com/dart-lang/angular/issues/1123 is re
 $ find build -type f -name "*.js.map" -exec rm {} +
 ```
 
-## Serving your app
+## 앱 서비스하기 {:#serving-your-app}
 
-You can serve your Dart Web app just like you'd serve any other web app.
-This section points to tips for serving Dart Web apps,
-as well as Dart-specific resources to help you use GitHub Pages or Firebase
-to serve your app.
+다른 웹 앱을 서비스하는 것처럼, Dart 웹 앱을 서비스할 수 있습니다. 
+이 섹션에서는 Dart 웹 앱을 서비스하기 위한 팁과, 
+GitHub Pages 또는 Firebase를 사용하여 앱을 서비스하는 데 도움이 되는, 
+Dart 관련 리소스를 설명합니다.
 
-### GitHub Pages
+### GitHub Pages {:#github-pages}
 
-If your app doesn't use routing or require server-side support,
-you can serve the app using [GitHub Pages](https://pages.github.com/).
-The [peanut][] package is
-an easy way to automatically produce a gh-pages branch for any Dart web app.
+앱에서 라우팅을 사용하지 않거나 서버 측 지원이 필요하지 않은 경우, 
+[GitHub Pages](https://pages.github.com/)를 사용하여 앱을 제공할 수 있습니다. 
+[peanut][] 패키지는 모든 Dart 웹 앱에 대한 gh-pages 브랜치를 자동으로 생성하는 간편한 방법입니다.
 
-The [startup_namer example](https://filiph.github.io/startup_namer/)
-is hosted using GitHub Pages.
-Its files are in the **gh-pages** branch of the
-[filiph/startup_namer repo](https://github.com/filiph/startup_namer)
-and were built using [peanut.][peanut]
+[startup_namer 예제](https://filiph.github.io/startup_namer/)는 GitHub Pages를 사용하여 호스팅됩니다. 
+해당 파일은 [filiph/startup_namer repo](https://github.com/filiph/startup_namer)의 **gh-pages** 브랜치에 있으며, [peanut][]을 사용하여 빌드되었습니다.
 
-### Firebase
+### Firebase {:#firebase}
 {% comment %}
 TODO: Give an example of how to deploy with Firebase, which originally was shown on https://dart.academy/build-a-real-time-chat-web-app-with-dart-angular-2-and-firebase-3/
 {% endcomment %}
 
-To learn more about deploying with Firebase, see the following resources:
+Firebase를 사용하여 배포하는 방법에 대해 자세히 알아보려면, 다음 리소스를 참조하세요.
 
-* The [Firebase Hosting documentation](https://firebase.google.com/docs/hosting/)
-  describes how to deploy web apps with Firebase.
-* In the Firebase Hosting documentation,
-  [Configure Hosting Behavior](https://firebase.google.com/docs/hosting/full-config)
-  covers redirects, rewrites, and more.
+* [Firebase 호스팅 문서](https://firebase.google.com/docs/hosting/)는 
+  Firebase를 사용하여 웹 앱을 배포하는 방법을 설명합니다.
+* Firebase 호스팅 문서의 [호스팅 동작 구성](https://firebase.google.com/docs/hosting/full-config)은 리디렉션, 재작성 등을 다룹니다.
 
 [build]: /tools/webdev#build
 [build_runner]: /tools/build_runner
