@@ -1,39 +1,32 @@
 ---
-title: Learning Dart as a Swift developer
-description: Leverage your Swift knowledge when learning Dart.
+# title: Learning Dart as a Swift developer
+title: Swift 개발자로서 Dart 배우기
+# description: Leverage your Swift knowledge when learning Dart.
+description: Dart를 배울 때 Swift에 대한 지식을 활용하세요.
 body_class: highlight-languages
 lastVerified: 2022-12-13
 ---
 
-This guide aims to leverage your Swift programming
-knowledge when learning Dart. It showcases key
-similarities and differences in both languages,
-and introduces Dart concepts that aren't present in Swift.
-As a Swift developer, Dart might feel familiar,
-as both languages share many concepts. 
+이 가이드는 Dart를 배울 때 Swift 프로그래밍 지식을 활용하는 것을 목표로 합니다. 
+두 언어의 주요 유사점과 차이점을 보여주고, Swift에 없는 Dart 개념을 소개합니다. 
+Swift 개발자라면 두 언어가 많은 개념을 공유하기 때문에 Dart가 익숙할 수 있습니다.
 
-Both Swift and Dart support sound null safety. 
-Neither language allows variables to be null by default.
- 
-Like Swift, Dart has similar support for
-[collections](#collections), [generics](#generics),
-[concurrency](#concurrency) (using async/await),
-and [extensions](#extension-methods).
+Swift와 Dart는 모두 건전한 null 안전성을 지원합니다. 
+두 언어 모두 기본적으로 변수가 null이 되는 것을 허용하지 않습니다.
 
-[Mixins](#mixins) are another concept in Dart
-that might be new for Swift developers.
-Like Swift, Dart offers AOT (ahead-of-time) compilation.
-However, Dart also supports a JIT (just-in-time)
-compilation mode to aid with various development aspects,
-such as incremental recompilation or debugging.
-For more information, check out the [Dart overview][].
+Swift와 마찬가지로 Dart는 [collections](#collections), [generics](#generics), [concurrency](#concurrency)(async/await 사용) 및 [extensions](#extension-methods)에 대한 유사한 지원을 제공합니다.
+
+[Mixins](#mixins)는 Swift 개발자에게 새로운 Dart의 또 다른 개념입니다. 
+Swift와 마찬가지로 Dart는 AOT(ahead-of-time) 컴파일을 제공합니다. 
+그러나 Dart는 증분 재컴파일이나 디버깅과 같은 다양한 개발 측면을 지원하기 위해, 
+JIT(just-in-time) 컴파일 모드도 지원합니다. 
+자세한 내용은 [Dart 개요][Dart overview]를 확인하세요.
 
 [Dart overview]: /overview#native-platform
 
 :::note
-Flutter uses the Dart language,
-so if you are coding Flutter, you might find
-[Flutter for iOS developers][] to be useful.
+Flutter는 Dart 언어를 사용하므로, 
+Flutter로 코딩하는 경우, [iOS 개발자를 위한 Flutter][Flutter for iOS developers]가 유용할 수 있습니다.
 :::
 
 [Flutter for iOS developers]: {{site.flutter-docs}}/get-started/flutter-for/ios-devs

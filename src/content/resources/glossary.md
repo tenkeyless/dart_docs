@@ -1,67 +1,63 @@
 ---
-title: Glossary
-description: A glossary reference for terminology used across dart.dev.
+# title: Glossary
+title: 용어집
+# description: A glossary reference for terminology used across dart.dev.
+description: dart.dev에서 사용되는 용어에 대한 용어집입니다.
 ---
 
-The following are definitions of terms used across the Dart documentation.
+다음은 Dart 문서 전체에서 사용되는 용어의 정의입니다.
 
-## Constant context
+## 상수 컨텍스트 {:#constant-context}
 
-A _constant context_ is a region of code in which it isn't necessary to include
-the `const` keyword because it's implied by the fact that everything in that
-region is required to be a constant. The following locations are constant
-contexts:
+_상수 컨텍스트_ 는 `const` 키워드를 포함할 필요가 없는 코드 영역입니다. 
+해당 영역의 모든 것이 상수여야 한다는 사실에 의해 암시되기 때문입니다. 
+다음 위치는 상수 컨텍스트입니다.
 
-* Everything inside a list, map or set literal that's prefixed by the
-  `const` keyword. Example:
+* `const` 키워드로 접두사가 붙은 리스트, 맵 또는 세트 리터럴 내부의 모든 것. 예:
 
   ```dart
-  var l = const [/*constant context*/];
+  var l = const [/*상수 컨텍스트*/];
   ```
 
-* The arguments inside an invocation of a constant constructor. Example:
+* 상수 생성자 호출 내부의 인수. 예:
 
   ```dart
-  var p = const Point(/*constant context*/);
+  var p = const Point(/*상수 컨텍스트*/);
   ```
 
-* The initializer for a variable that's prefixed by the `const` keyword.
-  Example:
+* `const` 키워드로 접두사가 붙은 변수의 초기화자입니다. 예:
 
   ```dart
-  const v = /*constant context*/;
+  const v = /*상수 컨텍스트*/;
   ```
 
-* Annotations
+* 어노테이션
 
-* The expression in a `case` clause. Example:
+* `case` 절의 표현식. 예:
 
   ```dart
   void f(int e) {
     switch (e) {
-      case /*constant context*/:
+      case /*상수 컨텍스트*/:
         break;
     }
   }
   ```
 
-## Definite assignment
+## 명확한 할당 {:#definite-assignment}
 
-Definite assignment analysis is the process of determining, for each local
-variable at each point in the code, which of the following is true:
-- The variable has definitely been assigned a value (_definitely assigned_).
-- The variable has definitely not been assigned a value (_definitely
-  unassigned_).
-- The variable might or might not have been assigned a value, depending on the
-  execution path taken to arrive at that point.
+명확한 할당 분석은, 코드의 각 지점에서 각 로컬 변수에 대해, 다음 중 어느 것이 true인지 판별하는 프로세스입니다.
 
-Definite assignment analysis helps find problems in code, such as places where a
-variable that might not have been assigned a value is being referenced, or
-places where a variable that can only be assigned a value one time is being
-assigned after it might already have been assigned a value.
+- 변수에 확실히 값이 할당되었습니다. (_확실히 할당됨(definitely assigned)_)
+- 변수에 확실히 값이 할당되지 않았습니다. (_확실히 할당되지 않음(definitely unassigned)_)
+- 해당 지점에 도달하기 위해 수행한 실행 경로에 따라, 
+  변수에 값이 할당되었을 수도 있고 할당되지 않았을 수도 있습니다.
 
-For example, in the following code the variable `s` is definitely unassigned
-when it's passed as an argument to `print`:
+명확한 할당 분석은 값이 할당되지 않았을 수 있는 변수가 참조되는 위치나, 
+한 번만 값을 할당할 수 있는 변수에, 이미 값이 할당된 후에, 값이 다시 할당되는 위치와 같은,
+코드의 문제를 찾는 데 도움이 됩니다.
+
+예를 들어, 다음 코드에서 변수 `s`는 `print`에 인수로 전달될 때 확실히 할당되지 않습니다.
 
 ```dart
 void f() {
@@ -70,7 +66,7 @@ void f() {
 }
 ```
 
-But in the following code, the variable `s` is definitely assigned:
+하지만 다음 코드에서는, 변수 `s`가 명확하게 할당되었습니다.
 
 ```dart
 void f(String name) {
@@ -79,12 +75,9 @@ void f(String name) {
 }
 ```
 
-Definite assignment analysis can even tell whether a variable is definitely
-assigned (or unassigned) when there are multiple possible execution paths. In
-the following code the `print` function is called if execution goes through
-either the true or the false branch of the `if` statement, but because `s` is
-assigned no matter which branch is taken, it's definitely assigned before it's
-passed to `print`:
+명확한 할당 분석은 여러 실행 경로가 있을 때 변수가 확정적으로 할당되었는지(또는 할당되지 않았는지)를 알려줄 수도 있습니다. 
+다음 코드에서 `print` 함수는 실행이 `if` 문의 true 또는 false 분기를 거치면 호출되지만, 
+`s`는 어떤 분기를 취하든 할당되기 때문에, `print`에 전달되기 전에 확정적으로 할당됩니다.
 
 ```dart
 void f(String name, bool casual) {
@@ -98,16 +91,14 @@ void f(String name, bool casual) {
 }
 ```
 
-In flow analysis, the end of the `if` statement is referred to as a _join_—a
-place where two or more execution paths merge back together. Where there's a
-join, the analysis says that a variable is definitely assigned if it's
-definitely assigned along all of the paths that are merging, and definitely
-unassigned if it's definitely unassigned along all of the paths.
+흐름 분석에서, `if` 문의 끝은 _join_ 이라고 합니다. (두 개 이상의 실행 경로가 다시 합쳐지는 곳입니다.) 
+조인이 있는 경우, 분석은 병합되는 모든 경로에 따라 확실히 할당된 경우 **변수가 확실히 할당되었다**고 하고, 
+모든 경로에 따라 확실히 할당 해제된 경우 **확실히 할당 해제되었다**고 말합니다.
 
-Sometimes a variable is assigned a value on one path but not on another, in
-which case the variable might or might not have been assigned a value. In the
-following example, the true branch of the `if` statement might or might not be
-executed, so the variable might or might be assigned a value:
+때로는 변수에 한 경로에서는 값이 할당되지만 다른 경로에서는 할당되지 않는 경우가 있는데, 
+이 경우 변수에 값이 할당되었을 수도 있고 할당되지 않았을 수도 있습니다. 
+다음 예에서 `if` 문의 진정한 분기는 실행되었을 수도 있고 실행되지 않았을 수도 있으므로, 
+변수에 값이 할당되었을 수도 있고 할당되지 않았을 수도 있습니다.
 
 ```dart
 void f(String name, bool casual) {
@@ -119,42 +110,38 @@ void f(String name, bool casual) {
 }
 ```
 
-The same is true if there is a false branch that doesn't assign a value to `s`.
+`s`에 값을 할당하지 않는 false 분기가 있는 경우에도 마찬가지입니다.
 
-The analysis of loops is a little more complicated, but it follows the same
-basic reasoning. For example, the condition in a `while` loop is always
-executed, but the body might or might not be. So just like an `if` statement,
-there's a join at the end of the `while` statement between the path in which the
-condition is `true` and the path in which the condition is `false`.
+루프 분석은 조금 더 복잡하지만 동일한 기본 추론을 따릅니다. 
+예를 들어, `while` 루프의 조건은 항상 실행되지만, 본문은 실행될 수도 있고 그렇지 않을 수도 있습니다. 
+따라서 `if` 문과 마찬가지로, 
+`while` 문의 끝에 조건이 `true`인 경로와 조건이 `false`인 경로 사이에 조인이 있습니다.
 
-For additional details, see the
-[specification of definite assignment][definiteAssignmentSpec].
+자세한 내용은 [명확한 할당의 사양][definiteAssignmentSpec]을 참조하세요.
 
 [definiteAssignmentSpec]: {{site.repo.dart.lang}}/blob/main/resources/type-system/flow-analysis.md
 
-## Function
+## 함수 {:#function}
 
-Unless noted otherwise, the term *function* refers to top-level functions, local functions, static
-methods, and instance methods.
+달리 언급되지 않는 한, *함수*라는 용어는 최상위 함수, 로컬 함수, 정적 메서드, 인스턴스 메서드를 말합니다.
 
-For additional details, see the documentation on [Functions][_functions_].
+자세한 내용은 [함수][_functions_]에 대한 문서를 참조하세요.
 
 [_functions_]: /language/functions
 
-## Irrefutable pattern
+## Irrefutable 패턴 {:#irrefutable-pattern}
 
-_Irrefutable patterns_ are patterns that always match. 
-Irrefutable patterns are the only patterns that can appear in
-_irrefutable contexts_: the [_declaration_][] and [_assignment_][] 
-pattern contexts.
+_Irrefutable(반박할 수 없는) 패턴_ 은 항상 일치하는 패턴입니다. 
+Irrefutable 패턴은 _Irrefutable 컨텍스트_ 에 나타날 수 있는 유일한 패턴입니다. 
+[_declaration_][] 및 [_assignment_][] 패턴 컨텍스트입니다.
 
 [_declaration_]: /language/patterns#variable-declaration 
 [_assignment_]: /language/patterns#variable-assignment
 
-## Mixin application
+## Mixin 애플리케이션 {:#mixin-application}
 
-A _mixin application_ is the class created when a mixin is applied to a class.
-For example, consider the following declarations:
+_믹스인 애플리케이션_ 은 믹스인이 클래스에 적용될 때 생성되는 클래스입니다. 
+예를 들어, 다음 선언을 고려하세요.
 
 ```dart
 class A {}
@@ -164,11 +151,10 @@ mixin M {}
 class B extends A with M {}
 ```
 
-The class `B` is a subclass of the mixin application of `M` to `A`, sometimes
-nomenclated as `A+M`. The class `A+M` is a subclass of `A` and has members that
-are copied from `M`.
+클래스 `B`는 `M`에서 `A`로의 믹스인 애플리케이션의 하위 클래스이며, 때때로 `A+M`으로 명명됩니다. 
+클래스 `A+M`은 `A`의 하위 클래스이며, `M`에서 복사된 멤버를 갖습니다.
 
-You can give an actual name to a mixin application by defining it as:
+다음과 같이 정의하여, 믹스인 애플리케이션에 실제 이름을 지정할 수 있습니다.
 
 ```dart
 class A {}
@@ -178,22 +164,20 @@ mixin M {}
 class A_M = A with M;
 ```
 
-Given this declaration of `A_M`, the following declaration of `B` is equivalent
-to the declaration of `B` in the original example:
+`A_M`의 선언이 주어졌을 때, 다음의 `B` 선언은 원래 예에서의 `B` 선언과 동등합니다.
 
 ```dart
 class B extends A_M {}
 ```
 
-## Override inference
+## 오버라이드 추론 {:#override-inference}
 
-Override inference is the process by which any missing types in a method
-declaration are inferred based on the corresponding types from the method or
-methods that it overrides.
+오버라이드 추론은 메서드 선언에서 누락된 모든 타입이, 
+오버라이드하는 메서드 또는 메서드의 해당 타입을 기반으로 추론되는 프로세스입니다.
 
-If a candidate method (the method that's missing type information) overrides a
-single inherited method, then the corresponding types from the overridden method
-are inferred. For example, consider the following code:
+후보 메서드(타입 정보가 누락된 메서드)가 단일 상속된 메서드를 오버라이드하는 경우, 
+오버라이드된 메서드의 해당 타입이 추론됩니다. 
+예를 들어 다음 코드를 고려해 보세요.
 
 ```dart
 class A {
@@ -206,16 +190,16 @@ class B extends A {
 }
 ```
 
-The declaration of `m` in `B` is a candidate because it's missing both the
-return type and the parameter type. Because it overrides a single method (the
-method `m` in `A`), the types from the overridden method will be used to infer
-the missing types and it will be as if the method in `B` had been declared as
-`int m(String s) => 1;`.
+`B`에서 `m`의 선언은 반환 타입과 매개변수 타입이 모두 누락되어 후보입니다. 
+단일 메서드(`A`의 메서드 `m`)를 오버라이드하기 때문에, 
+오버라이드된 메서드의 타입이 누락된 타입을 추론하는 데 사용되고, 
+`B`의 메서드가 `int m(String s) => 1;`로 선언된 것과 같습니다.
 
-If a candidate method overrides multiple methods, and the function type one of
-those overridden methods, M<sub>s</sub>, is a supertype of the function types of
-all of the other overridden methods, then M<sub>s</sub> is used to infer the
-missing types. For example, consider the following code:
+후보 메서드가 여러 메서드를 오버라이드하고, 
+오버라이드된 메서드 중 하나인 함수 타입 M<sub>s</sub>가, 
+다른 모든 오버라이드된 메서드의 함수 타입의 슈퍼타입인 경우, 
+M<sub>s</sub>가 누락된 타입을 추론하는 데 사용됩니다. 
+예를 들어, 다음 코드를 고려해 보겠습니다.
 
 ```dart
 class A {
@@ -232,107 +216,97 @@ class C implements A, B {
 }
 ```
 
-The declaration of `m` in `C` is a candidate for override inference because it's
-missing both the return type and the parameter type. It overrides both `m` in
-`A` and `m` in `B`, so we need to choose one of them from which the missing
-types can be inferred. But because the function type of `m` in `A`
-(`int Function(num)`) is a supertype of the function type of `m` in `B`
-(`num Function(int)`), the function in `A` is used to infer the missing types.
-The result is the same as declaring the method in `C` as `int m(num n) => 1;`.
+`C`에서 `m`의 선언은 반환 타입과 매개변수 타입이 모두 없기 때문에, 
+오버라이드 추론의 후보입니다. 
+`A`의 `m`과 `B`의 `m`을 모두 오버라이드하므로, 
+누락된 타입을 추론할 수 있는 타입을 선택해야 합니다. 
+하지만 `A`의 `m` 함수 타입(`int Function(num)`)이 
+`B`의 `m` 함수 타입(`num Function(int)`)의 슈퍼 타입이기 때문에, 
+`A`의 함수가 누락된 타입을 추론하는 데 사용됩니다. 
+결과는 `C`에서 메서드를 `int m(num n) => 1;`로 선언하는 것과 같습니다.
 
-It is an error if none of the overridden methods has a function type that is a
-supertype of all the other overridden methods.
+오버라이드된 메서드 중 어느 것도, 
+다른 모든 오버라이드된 메서드의 슈퍼 타입인 함수 타입을 갖지 않으면 오류입니다.
 
-## Part file
+## Part 파일 {:#part-file}
 
-A part file is a Dart source file that contains a `part of` directive.
-For usage guidance, visit the [Effective Dart][part] entry.
+part 파일은 `part of` 지시어를 포함하는 Dart 소스 파일입니다. 
+사용 지침은 [효과적인 Dart][part] 항목을 방문하세요.
 
 [part]: /effective-dart/usage#do-use-strings-in-part-of-directives
 
-## Potentially non-nullable
+## 잠재적으로 non-nullable {:#potentially-non-nullable}
 
-A type is _potentially non-nullable_ if it's either explicitly non-nullable or
-if it's a type parameter.
+타입은 명시적으로 non-nullable이거나 타입 매개변수인 경우, _잠재적으로 non-nullable_ 입니다.
 
-A type is explicitly non-nullable if it is a type name that isn't followed by a
-question mark. Note that there are a few types that are always nullable, such as
-`Null` and `dynamic`, and that `FutureOr` is only non-nullable if it isn't
-followed by a question mark _and_ the type argument is non-nullable (such as
-`FutureOr<String>`).
+타입은 물음표가 뒤에 오지 않는 타입 이름인 경우, 명시적으로 non-nullable 입니다. 
+`Null` 및 `dynamic`과 같이 항상 null을 허용하는 몇 가지 타입이 있으며, 
+`FutureOr`는 물음표가 뒤에 오지 않고 타입 인수가 non-nullable인 경우(예: `FutureOr<String>`)에만, 
+non-nullable 입니다.
 
-Type parameters are potentially non-nullable because the actual runtime type
-(the type specified as a type argument) might be non-nullable. For example,
-given a declaration of `class C<T> {}`, the type `C` could be used with a
-non-nullable type argument as in `C<int>`.
+타입 매개변수는 실제 런타임 타입(타입 인수로 지정된 타입)이 non-nullable 일 수 있으므로, 
+잠재적으로 non-nullable 입니다. 
+예를 들어, `class C<T> {}`의 선언이 주어지면, 
+타입 `C`는 `C<int>`와 같이 non-nullable 타입 인수와 함께 사용될 수 있습니다.
 
-## Public library
+## Public 라이브러리 {:#public-library}
 
-A public library is a library that is located inside the package's `lib`
-directory but not inside the `lib/src` directory.
+공개 라이브러리는 패키지의 `lib` 디렉토리에 위치하지만, 
+`lib/src` 디렉토리에는 없는 라이브러리입니다.
 
-## Refutable pattern
+## Refutable 패턴 {:#refutable-pattern}
 
-A _refutable pattern_ is a pattern that can be tested against a value to
-determine if the pattern matches the value. 
-If not, the pattern _refutes_, or denies, the match.
-Refutable patterns appear in [_matching contexts_][].
+_Refutable(반박 가능한) 패턴_ 은 패턴이 값과 일치하는지 확인하기 위해 값에 대해 테스트할 수 있는 패턴입니다. 
+일치하지 않으면 패턴은 일치를 _반박(refutes)_ 하거나 거부(denies)합니다. 
+Refutable 패턴은 [_일치하는 컨텍스트_][_matching contexts_]에 나타납니다.
 
 [_matching contexts_]: /language/patterns#matching
 
-## Subclass
+## Subclass {:#subclass}
 
-A _subclass_ is a class that inherits the implementation of another class by using the
-[`extends`](/language/extend) keyword, or by [mixin application](#mixin-application).
+_하위 클래스_ 는 [`extends`](/language/extend) 키워드나, 
+[mixin 애플리케이션](#mixin-application)을 사용하여, 
+다른 클래스의 구현을 상속하는 클래스입니다.
 
 ```dart
-class A extends B {} // A is a subclass of B; B is the superclass of A. 
+class A extends B {} // A는 B의 하위 클래스(subclass)이고 B는 A의 상위 클래스(superclass)입니다.
 
-class B1 extends A with M {} // B1 has the superclass `A with M`, which has the superclass A.
+class B1 extends A with M {} // B1에는 슈퍼클래스 `A with M`이 있고, 이 슈퍼클래스에는 슈퍼클래스 A가 있습니다.
 ```
 
-A subclass relation also implies an associated [subtype](#subtype) relation.
-For example, `class A` implicitly defines an associated type `A`
-which instances of the class `A` inhabit.
-So, `class A extends B` declares not just that the class
-`A` is a subclass of `B`, but also establishes that the *type* `A` is a 
-*subtype* of the type `B`.
+하위 클래스 관계는 연관된 [subtype](#subtype) 관계도 의미합니다. 
+예를 들어, `class A`는 클래스 `A`의 인스턴스가 거주하는(inhabit) 연관된 타입 `A`를 암묵적으로 정의합니다. 
+따라서, `class A extends B`는 클래스 `A`가 `B`의 하위 클래스라는 것을 선언할 뿐만 아니라, 
+*타입* `A`가 타입 `B`의 *하위 타입*임을 확립합니다.
 
-Subclass relations are a subset of subtype relations.
-When the documentation says "`S` must be a subtype of `T`",
-it's fine for `S` to be a subclass of `T`.
-However, the converse is not true: not all subtypes are subclasses.
-See the [subtype](#subtype) entry for more information.
+하위 클래스 관계는 하위 타입 관계의 하위 집합입니다. 
+문서에 "`S`는 `T`의 하위 타입이어야 합니다"라고 나와 있을 때, 
+`S`가 `T`의 하위 클래스가 되어도 괜찮습니다. 
+그러나 그 반대는 사실이 아닙니다. 
+모든 하위 타입이 하위 클래스는 아닙니다. 
+자세한 내용은 [subtype](#subtype) 항목을 참조하세요.
 
-## Subtype
+## Subtype {:#subtype}
 
-A _subtype_ relation is where a value of a certain type is substitutable
-where the value of another type, the supertype, is expected.
-For example, if `S` is a subtype of `T`,
-then you can substitute a value of type `S`
-where a value of type `T` is expected. 
+_하위 타입_ 관계는 특정 타입의 값이 다른 타입인 상위 타입의 값이 예상되는 곳에서 대체 가능한 관계입니다.
+예를 들어, `S`가 `T`의 하위 타입인 경우, `T` 타입의 값이 예상되는 곳에서 `S` 타입의 값을 대체할 수 있습니다.
 
-A subtype supports all of the operations of its supertype
-(and possibly some extra operations).
-In practice, this means you can assign the value of a subtype
-to any location expecting the supertype,
-and all of the methods of the supertype are available on the subtype.
+하위 타입은 상위 타입의 모든 연산(그리고 아마도 일부 추가 연산)을 지원합니다. 
+실제로 이는 하위 타입의 값을 상위 타입을 예상하는 모든 위치에 할당할 수 있으며, 
+상위 타입의 모든 메서드가 하위 타입에서 사용 가능하다는 것을 의미합니다.
 
-This is true at least statically.
-A specific API might not allow the substitution at run time,
-depending on its operations. 
+이는 적어도 정적으로는 사실입니다. 특정 API는 연산에 따라 런타임에 대체를 허용하지 않을 수 있습니다.
 
-Some subtype relations are based on the structure of the type,
-like with nullable types (for example, `int` is a subtype of `int?`)
-and function types
-(for example, `String Function()` is a subtype of `void Function()`).
+일부 하위 타입 관계는, 
+nullable 타입(예: `int`는 `int?`의 하위 타입) 및 
+함수 타입(예: `String Function()`는 `void Function()`의 하위 타입)과 같이, 
+타입의 구조를 기반으로 합니다.
 
-Subtypes can also be introduced for classes by
-[implementation](/language/classes#implicit-interfaces)
-or [inheritance](/language/extend) (direct or indirect):
+하위 타입은 [구현](/language/classes#implicit-interfaces) 또는 
+[상속](/language/extend)(직접 또는 간접)을 통해 클래스에 대해 도입될 수도 있습니다.
 
 ```dart
-class A implements B {} // A is a subtype of B, but NOT a subclass of B.
+class A implements B {} // A는 B의 하위 타입이지만, B의 하위 클래스는 아닙니다.
 
-class C extends D {} // C is a subtype AND a subclass of D.
+class C extends D {} // C는 D의 하위 타입이자, 하위 클래스입니다.
 ```

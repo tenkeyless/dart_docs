@@ -47,6 +47,11 @@ Dart 문서에 오신 것을 환영합니다!
   - 도구 & 기술
     - 정적 분석
       - [진단 메시지](/tools/diagnostic-messages) : 직접 편집 불가
+  - 리소스
+    - [Dart 3 마이그레이션 가이드](/resources/dart-3-migration)
+    - ...에서 이전
+      - [JavaScript에서 Dart로](/resources/coming-from/js-to-dart)
+      - [Swift에서 Dart로](/resources/coming-from/swift-to-dart)
 ---
 
 이 사이트에서 가장 많이 방문한 페이지는 다음과 같습니다.

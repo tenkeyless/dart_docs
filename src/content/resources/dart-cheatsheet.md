@@ -1,38 +1,35 @@
 ---
-title: Dart cheatsheet
-description: Interactively learn (or relearn) some of Dart's unique features.
+# title: Dart cheatsheet
+title: Dart 치트시트
+# description: Interactively learn (or relearn) some of Dart's unique features.
+description: Dart의 고유한 기능 중 일부를 대화형으로 학습(또는 다시 학습)해 보세요.
 js: [{url: '/assets/js/inject_dartpad.js', defer: true}]
 ---
 <?code-excerpt replace="/ *\/\/\s+ignore_for_file:[^\n]+\n//g; /(^|\n) *\/\/\s+ignore:[^\n]+\n/$1/g; /(\n[^\n]+) *\/\/\s+ignore:[^\n]+\n/$1\n/g"?>
 
-The Dart language is designed to be easy to learn for
-coders coming from other languages,
-but it has a few unique features.
-This tutorial walks you through
-the most important of these language features.
+Dart 언어는 다른 언어에서 온 코더가 배우기 쉽도록 설계되었지만, 몇 가지 고유한 기능이 있습니다. 
+이 튜토리얼은 이러한 언어 기능 중 가장 중요한 기능을 안내합니다.
 
-The embedded editors in this tutorial have partially completed code snippets.
-You can use these editors to test your knowledge by completing the code and
-clicking the **Run** button. The editors also contain thorough test code;
-**don't edit the test code**, but feel free to study it to learn about testing. 
+이 튜토리얼의 내장된 편집기는 부분적으로 완성된 코드 스니펫을 가지고 있습니다. 
+이러한 편집기를 사용하여 코드를 완성하고, **Run** 버튼을 클릭하여 지식을 테스트할 수 있습니다. 
+편집기에는 철저한 테스트 코드도 포함되어 있습니다. **테스트 코드를 편집하지 마세요**. 
+하지만, 테스트에 대해 배우기 위해 자유롭게 공부하세요.
 
-
-If you need help, expand the **Solution for...** dropdown beneath each DartPad
-for an explanation and the answer.
+도움이 필요하면, 각 DartPad 아래의 **...에 대한 솔루션** 드롭다운을 확장하여, 설명과 답을 확인하세요.
 
 :::note
-This page uses embedded DartPads to display runnable examples.
+이 페이지에서는 실행 가능한 예제를 표시하기 위해 내장된 DartPad를 사용합니다.
 {% render 'dartpads-embedded-troubleshooting.md' %}
 :::
 
-## String interpolation
+## 문자열 보간 {:#string-interpolation}
 
-To put the value of an expression inside a string, use `${expression}`.
-If the expression is an identifier, you can omit the `{}`.
+표현식의 값을 문자열 안에 넣으려면, `${expression}`을 사용합니다. 
+표현식이 식별자인 경우 `{}`를 생략할 수 있습니다.
 
-Here are some examples of using string interpolation:
+다음은 문자열 보간을 사용하는 몇 가지 예입니다.
 
-| String                      | Result                             |
+| 문자열                      | 결과                             |
 |-----------------------------|------------------------------------|
 | `'${3 + 2}'`                | `'5'`                              |
 | `'${"word".toUpperCase()}'` | `'WORD'`                           |
@@ -40,9 +37,9 @@ Here are some examples of using string interpolation:
 
 ### Code example {:.no_toc}
 
-The following function takes two integers as parameters.
-Make it return a string containing both integers separated by a space.
-For example, `stringify(2, 3)` should return `'2 3'`.
+다음 함수는 두 개의 정수를 매개변수로 사용합니다. 
+두 정수를 공백으로 구분하여 포함하는 문자열을 반환하도록 합니다. 
+예를 들어, `stringify(2, 3)`는 `'2 3'`을 반환해야 합니다.
 
 ```dartpad
 String stringify(int x, int y) {
@@ -50,7 +47,7 @@ String stringify(int x, int y) {
 }
 
 
-// Tests your solution (Don't edit!): 
+// 당신의 솔루션을 테스트합니다. (편집하지 마세요!): 
 void main() {
   assert(stringify(2, 3) == '2 3',
       "Your stringify method returned '${stringify(2, 3)}' instead of '2 3'");
@@ -59,13 +56,11 @@ void main() {
 ```
 
 <details>
-  <summary>Solution for string interpolation example</summary>
+  <summary>문자열 보간 예제에 대한 솔루션</summary>
 
-  Both `x` and `y` are simple values,
-  and Dart's string interpolation will handle
-  converting them to string representations.
-  All you need to do is use the `$` operator to
-  reference them inside single quotes, with a space in between:
+  `x`와 `y`는 모두 간단한 값이고, 
+  Dart의 문자열 보간은 이를 문자열 표현으로 변환합니다. 
+  `$` 연산자를 사용하여 작은 따옴표 안에 공백을 두고 참조하기만 하면 됩니다.
 
   ```dart
   String stringify(int x, int y) {
@@ -76,54 +71,53 @@ void main() {
 </details>
 
 
-## Nullable variables
+## Nullable 변수 {:#nullable-variables}
 
-Dart enforces sound null safety.
-This means values can't be null unless you say they can be.
-In other words, types default to non-nullable.
+Dart는 sound null 안전성을 적용합니다. 
+즉, 값은 null이 될 수 있다고 말하지 않는 한, null이 될 수 없습니다. 
+즉, 타입은 기본적으로 null이 허용되지 않습니다.
 
-For example, consider the following code.
-With null safety, this code returns an error.
-A variable of type `int` can't have the value `null`:
+예를 들어 다음 코드를 고려해 보세요. 
+null 안전성이 있는 경우, 이 코드는 오류를 반환합니다. 
+`int` 타입의 변수는 `null` 값을 가질 수 없습니다.
 
 <?code-excerpt "misc/bin/cheatsheet/nullable.dart (invalid-null)" replace="/null;/[!null!];/g"?>
 ```dart
-int a = [!null!]; // INVALID.
+int a = [!null!]; // 유효하지 않음.
 ```
 
-When creating a variable, add `?` to the type to indicate
-that the variable can be `null`:
+변수를 생성할 때, 변수가 `null`이 될 수 있음을 나타내기 위해, 타입에 `?`를 추가합니다.
 
 <?code-excerpt "misc/bin/cheatsheet/nullable.dart (valid-null)" replace="/int\?/[!int?!]/g"?>
 ```dart
-[!int?!] a = null; // Valid.
+[!int?!] a = null; // 유효함.
 ```
 
-You can simplify that code a bit because, in all versions of Dart,
-`null` is the default value for uninitialized variables:
+모든 버전의 Dart에서, 
+초기화되지 않은 변수의 기본값은 `null`이므로, 
+해당 코드를 약간 단순화할 수 있습니다.
 
 <?code-excerpt "misc/bin/cheatsheet/nullable.dart (simple-null)"?>
 ```dart
-int? a; // The initial value of a is null.
+int? a; // a의 초기값은 null입니다.
 ```
 
-To learn more about null safety in Dart,
-read the [sound null safety guide](/null-safety).
+Dart의 null 안전성에 대해 자세히 알아보려면, [sound null 안전성 가이드](/null-safety)를 읽어보세요.
 
 ### Code example {:.no_toc}
 
-Declare two variables in this DartPad:
+이 DartPad에서 두 개의 변수를 선언합니다.
 
-* A nullable `String` named `name` with the value `'Jane'`.
-* A nullable `String` named `address` with the value `null`.
+* `'Jane'` 값을 가진 `name`이라는 nullable `String`.
+* `null` 값을 가진 `address`라는 nullable `String`.
 
-Ignore all initial errors in the DartPad.
+DartPad의 모든 초기 오류를 무시합니다.
 
 ```dartpad
 // TODO: Declare the two variables here
 
 
-// Tests your solution (Don't edit!): 
+// 당신의 솔루션을 테스트합니다. (편집하지 마세요!): 
 void main() {
   try {
     if (name == 'Jane' && address == null) {
@@ -140,11 +134,11 @@ void main() {
 ```
 
 <details>
-  <summary>Solution for nullable variables example</summary>
+  <summary>nullable 변수에 대한 솔루션 예</summary>
 
-  Declare the two variables as `String` followed by `?`.
-  Then, assign `'Jane'` to `name`
-  and leave `address` uninitialized:
+  두 변수를 `String` 뒤에 `?`로 선언합니다. 
+  그런 다음 `'Jane'`을 `name`에 할당하고, 
+  `address`는 초기화하지 않은 상태로 둡니다.
 
   ```dart
   String? name = 'Jane';
@@ -153,54 +147,51 @@ void main() {
 
 </details>
 
-## Null-aware operators
+## Null 인식 연산자 {:#null-aware-operators}
 
-Dart offers some handy operators for dealing with values that might be null. One is the
-`??=` assignment operator, which assigns a value to a variable only if that
-variable is currently null:
+Dart는 null일 수 있는 값을 처리하기 위한 몇 가지 편리한 연산자를 제공합니다. 
+하나는 `??=` 할당 연산자로, 해당 변수가 현재 null인 경우에만 변수에 값을 할당합니다.
 
 <?code-excerpt "misc/test/cheatsheet/null_aware_test.dart (null-aware-operators)"?>
 ```dart
 int? a; // = null
 a ??= 3;
-print(a); // <-- Prints 3.
+print(a); // <-- 3 출력.
 
 a ??= 5;
-print(a); // <-- Still prints 3.
+print(a); // <-- 여전히 3 출력.
 ```
 
-Another null-aware operator is `??`,
-which returns the expression on its left unless
-that expression's value is null,
-in which case it evaluates and returns the expression on its right:
+또 다른 null 인식 연산자는 `??`로, 
+표현식의 값이 null인 경우 왼쪽의 표현식을 반환하고, 
+null인 경우, 오른쪽의 표현식을 평가하여 반환합니다.
 
 <?code-excerpt "misc/test/cheatsheet/null_aware_test.dart (null-aware-operators-2)"?>
 ```dart
-print(1 ?? 3); // <-- Prints 1.
-print(null ?? 12); // <-- Prints 12.
+print(1 ?? 3); // <-- 1 출력.
+print(null ?? 12); // <-- 12 출력.
 ```
 
 ### Code example {:.no_toc}
 
-Try substituting in the `??=` and `??` operators
-to implement the described behavior in the following snippet.
+다음 스니펫에 설명된 동작을 구현하려면, `??=` 및 `??` 연산자를 대체해 보세요.
 
-Ignore all initial errors in the DartPad.
+DartPad의 모든 초기 오류를 무시합니다.
 
 ```dartpad
 String? foo = 'a string';
 String? bar; // = null
 
-// Substitute an operator that makes 'a string' be assigned to baz.
+// baz에 'a string'을 할당하도록 연산자를 대체하세요.
 String? baz = foo /* TODO */ bar;
 
 void updateSomeVars() {
-  // Substitute an operator that makes 'a string' be assigned to bar.
+  // 'a string'을 bar에 할당하도록 연산자를 대체하세요.
   bar /* TODO */ 'a string';
 }
 
 
-// Tests your solution (Don't edit!):
+// 당신의 솔루션을 테스트합니다. (편집하지 마세요!):
 void main() {
   try {
     updateSomeVars();
@@ -222,19 +213,17 @@ void main() {
 ```
 
 <details>
-  <summary>Solution for null-aware operators example</summary>
+  <summary>null 인식 연산자에 대한 솔루션 예</summary>
 
-  All you need to do in this exercise is
-  replace the `TODO` comments with either `??` or `??=`.
-  Read the text above to make sure you understand both,
-  and then give it a try:
+  이 연습에서 해야 할 일은 `TODO` 주석을 `??` 또는 `??=`로 바꾸는 것뿐입니다. 
+  위의 텍스트를 읽고 둘 다 이해했는지 확인한 다음 시도해 보세요.
 
   ```dart
-  // Substitute an operator that makes 'a string' be assigned to baz.
+  // baz에 'a string'을 할당하도록 연산자를 대체하세요.
   String? baz = foo ?? bar;
   
   void updateSomeVars() {
-    // Substitute an operator that makes 'a string' be assigned to bar.
+    // 'a string'을 bar에 할당하도록 연산자를 대체하세요.
     bar ??= 'a string';
   }
   ```
@@ -242,48 +231,46 @@ void main() {
 </details>
 
 
-## Conditional property access
+## 조건부 속성 액세스 {:#conditional-property-access}
 
-To guard access to a property or method of an object that might be null,
-put a question mark (`?`) before the dot (`.`):
+null일 수 있는 개체의 속성이나 메서드에 대한 액세스를 보호하려면, 
+마침표(`.`) 앞에 물음표(`?`)를 넣습니다.
 
 <?code-excerpt "misc/test/cheatsheet/null_aware_test.dart (conditional-property-access)" replace="/result = //g; /;//g;"?>
 ```dart
 myObject?.someProperty
 ```
 
-The preceding code is equivalent to the following:
+앞의 코드는 다음 코드와 동일합니다.
 
 <?code-excerpt "misc/test/cheatsheet/null_aware_test.dart (conditional-property-access-equivalent)" replace="/result = //g; /;//g;"?>
 ```dart
 (myObject != null) ? myObject.someProperty : null
 ```
 
-You can chain multiple uses of `?.` together in a single expression:
+단일 표현식에서 `?.`를 여러번 체인으로 연결할 수 있습니다.
 
 <?code-excerpt "misc/test/cheatsheet/null_aware_test.dart (conditional-property-access-multiple)" replace="/result = //g; /;//g;"?>
 ```dart
 myObject?.someProperty?.someMethod()
 ```
 
-The preceding code returns null (and never calls `someMethod()`) if either
-`myObject` or `myObject.someProperty` is
-null.
+앞의 코드는 `myObject` 또는 `myObject.someProperty`가 null인 경우 null을 반환하고, 
+`someMethod()`를 호출하지 않습니다.
 
 
 ### Code example {:.no_toc}
 
-The following function takes a nullable string as a parameter. 
-Try using conditional property access to make it
-return the uppercase version of `str`, or `null` if `str` is `null`.
+다음 함수는 nullable 문자열을 매개변수로 사용합니다. 
+조건부 속성 액세스를 사용하여, `str`의 대문자 버전을 반환하거나, `str`이 `null`이면 `null`을 반환해 보세요.
 
 ```dartpad
 String? upperCaseIt(String? str) {
-  // TODO: Try conditionally accessing the `toUpperCase` method here.
+  // TODO: 여기서 `toUpperCase` 메서드에 조건부로 접근해 보세요.
 }
 
 
-// Tests your solution (Don't edit!):
+// 당신의 솔루션을 테스트합니다. (편집하지 마세요!):
 void main() {
   try {
     String? one = upperCaseIt(null);
@@ -312,11 +299,11 @@ void main() {
 ```
 
 <details>
-  <summary>Solution for conditional property access example</summary>
+  <summary>조건부 속성 액세스 예제에 대한 솔루션</summary>
 
-  If this exercise wanted you to conditionally lowercase a string,
-  you could do it like this: `str?.toLowerCase()`. Use the equivalent
-  method to uppercase a string!
+  이 연습에서 문자열을 조건부로 소문자로 바꾸려면 다음과 같이 할 수 있습니다. 
+  `str?.toLowerCase()`. 
+  문자열을 대문자로 바꾸려면 동일한 메서드를 사용하세요!
 
   ```dart
   String? upperCaseIt(String? str) {
@@ -326,10 +313,9 @@ void main() {
 
 </details>
 
-## Collection literals
+## 컬렉션 리터럴 {:#collection-literals}
 
-Dart has built-in support for lists, maps, and sets.
-You can create them using literals:
+Dart에는 리스트, 맵 및 세트에 대한 빌트인 지원이 있습니다. 리터럴을 사용하여 만들 수 있습니다.
 
 <?code-excerpt "misc/test/cheatsheet/collections_test.dart (collection-literals-inferred)"?>
 ```dart
@@ -342,11 +328,10 @@ final aMapOfStringsToInts = {
 };
 ```
 
-Dart's type inference can assign types to these variables for you.
-In this case, the inferred types are `List<String>`,
-`Set<String>`, and `Map<String, int>`.
+Dart의 타입 추론은 이러한 변수에 타입을 할당할 수 있습니다. 
+이 경우 추론된 타입은 `List<String>`, `Set<String>`, `Map<String, int>`입니다.
 
-Or you can specify the type yourself:
+또는 직접 타입을 지정할 수 있습니다.
 
 <?code-excerpt "misc/test/cheatsheet/collections_test.dart (collection-literals-specified)"?>
 ```dart
@@ -355,8 +340,9 @@ final aSetOfInts = <int>{};
 final aMapOfIntToDouble = <int, double>{};
 ```
 
-Specifying types is handy when you initialize a list with contents of a subtype,
-but still want the list to be `List<BaseType>`:
+하위 타입의 내용으로 리스트를 초기화하지만, 
+여전히 리스트를 `List<BaseType>`로 유지하고 싶은 경우, 
+타입을 지정하는 것이 편리합니다.
 
 <?code-excerpt "misc/test/cheatsheet/collections_test.dart (collection-literals-subtypes)"?>
 ```dart
@@ -365,29 +351,29 @@ final aListOfBaseType = <BaseType>[SubType(), SubType()];
 
 ### Code example {:.no_toc}
 
-Try setting the following variables to the indicated values. Replace the existing null values.
+다음 변수를 표시된 값으로 설정해 보세요. 기존 null 값을 대체합니다.
 
 ```dartpad
-// Assign this a list containing 'a', 'b', and 'c' in that order:
+// 여기에 'a', 'b', 'c'를 순서대로 포함하는 리스트를 할당하세요.
 final aListOfStrings = null;
 
-// Assign this a set containing 3, 4, and 5:
+// 여기에 3, 4, 5를 포함하는 세트를 할당하세요.
 final aSetOfInts = null;
 
-// Assign this a map of String to int so that aMapOfStringsToInts['myKey'] returns 12:
+// String to int의 맵을 지정하여, aMapOfStringsToInts['myKey']가 12를 반환하도록 합니다.
 final aMapOfStringsToInts = null;
 
-// Assign this an empty List<double>:
+// 여기에 비어있는 List<double>을 할당하세요.
 final anEmptyListOfDouble = null;
 
-// Assign this an empty Set<String>:
+// 여기에 비어있는 Set<String>을 할당하세요.
 final anEmptySetOfString = null;
 
-// Assign this an empty Map of double to int:
+// 여기에 비어있는 double to int의 Map을 할당합니다.
 final anEmptyMapOfDoublesToInts = null;
 
 
-// Tests your solution (Don't edit!):
+// 당신의 솔루션을 테스트합니다. (편집하지 마세요!):
 void main() {
   final errs = <String>[];
   
@@ -442,42 +428,40 @@ void main() {
 ```
 
 <details>
-  <summary>Solution for collection literals example</summary>
+  <summary>컬렉션 리터럴 예제에 대한 솔루션</summary>
 
-  Add a list, set, or map literal after each equals sign.
-  Remember to specify the types for the empty declarations,
-  since they can't be inferred.
+  각 등호 뒤에 리스트, 세트 또는 맵 리터럴을 추가합니다. 
+  비어있는 선언은 추론할 수 없으므로, 타입을 지정하는 것을 잊지 마세요.
+  Add a list, set, or map literal after each equals sign. Remember to specify the types for the empty declarations, since they can't be inferred.
 
   ```dart
-  // Assign this a list containing 'a', 'b', and 'c' in that order:
+  // 여기에 'a', 'b', 'c'를 순서대로 포함하는 리스트를 할당하세요.
   final aListOfStrings = ['a', 'b', 'c'];
 
-  // Assign this a set containing 3, 4, and 5:
+  // 여기에 3, 4, 5를 포함하는 세트를 할당하세요.
   final aSetOfInts = {3, 4, 5};
 
-  // Assign this a map of String to int so that aMapOfStringsToInts['myKey'] returns 12:
+  // String to int의 맵을 지정하여, aMapOfStringsToInts['myKey']가 12를 반환하도록 합니다.
   final aMapOfStringsToInts = {'myKey': 12};
 
-  // Assign this an empty List<double>:
+  // 여기에 비어있는 List<double>을 할당하세요.
   final anEmptyListOfDouble = <double>[];
 
-  // Assign this an empty Set<String>:
+  // 여기에 비어있는 Set<String>을 할당하세요.
   final anEmptySetOfString = <String>{};
 
-  // Assign this an empty Map of double to int:
+  // 여기에 비어있는 double to int의 Map을 할당합니다.
   final anEmptyMapOfDoublesToInts = <double, int>{};
   ```
 
 </details>
 
-## Arrow syntax
+## 화살표 구문 {:#arrow-syntax}
 
-You might have seen the `=>` symbol in Dart code.
-This arrow syntax is a way to define a function that executes the
-expression to its right and returns its value.
+Dart 코드에서 `=>` 기호를 본 적이 있을 것입니다. 
+이 화살표 구문은 오른쪽에 있는 표현식을 실행하고, 값을 반환하는 함수를 정의하는 방법입니다.
 
-For example, consider this call to the `List` class's
-`any()` method:
+예를 들어, `List` 클래스의 `any()` 메서드에 대한 이 호출을 고려해 보세요.
 
 <?code-excerpt "misc/test/cheatsheet/arrow_functions_test.dart (has-empty-long)"?>
 ```dart
@@ -486,7 +470,7 @@ bool hasEmpty = aListOfStrings.any((s) {
 });
 ```
 
-Here's a simpler way to write that code:
+해당 코드를 작성하는 더 간단한 방법은 다음과 같습니다.
 
 <?code-excerpt "misc/test/cheatsheet/arrow_functions_test.dart (has-empty-short)"?>
 ```dart
@@ -495,7 +479,7 @@ bool hasEmpty = aListOfStrings.any((s) => s.isEmpty);
 
 ### Code example {:.no_toc}
 
-Try finishing the following statements, which use arrow syntax.
+화살표 구문을 사용하는 다음 문장을 완성해 보세요.
 
 ```dartpad
 class MyClass {
@@ -503,19 +487,18 @@ class MyClass {
   int value2 = 3;
   int value3 = 5;
   
-  // Returns the product of the above values:
+  // 위 값들의 곱을 반환합니다.
   int get product => TODO();
   
-  // Adds 1 to value1:
+  // value1에 1을 더합니다:
   void incrementValue1() => TODO();
   
-  // Returns a string containing each item in the
-  // list, separated by commas (e.g. 'a,b,c'): 
+  // 리스트의 각 항목을 쉼표로 구분하여, 포함하는 문자열을 반환합니다. (예: 'a,b,c'):
   String joinWithCommas(List<String> strings) => TODO();
 }
 
 
-// Tests your solution (Don't edit!):
+// 당신의 솔루션을 테스트합니다. (편집하지 마세요!):
 void main() {
   final obj = MyClass();
   final errs = <String>[];
@@ -562,11 +545,11 @@ void main() {
 ```
 
 <details>
-  <summary>Solution for arrow syntax example</summary>
+  <summary>화살표 구문 예제에 대한 솔루션</summary>
 
-  For the product, you can use `*` to multiply the three values together.
-  For `incrementValue1`, you can use the increment operator (`++`).
-  For `joinWithCommas`, use the `join` method found in the `List` class.
+  곱의 경우, `*`를 사용하여 세 값을 함께 곱할 수 있습니다.
+  `incrementValue1`의 경우, 증가 연산자(`++`)를 사용할 수 있습니다.
+  `joinWithCommas`의 경우, `List` 클래스에서 찾을 수 있는 `join` 메서드를 사용합니다.
 
   ```dart
   class MyClass {
@@ -574,48 +557,44 @@ void main() {
     int value2 = 3;
     int value3 = 5;
 
-    // Returns the product of the above values:
+    // 위 값들의 곱을 반환합니다.
     int get product => value1 * value2 * value3;
     
-    // Adds 1 to value1:
+    // value1에 1을 더합니다:
     void incrementValue1() => value1++; 
     
-    // Returns a string containing each item in the
-    // list, separated by commas (e.g. 'a,b,c'): 
+    // 리스트의 각 항목을 쉼표로 구분하여, 포함하는 문자열을 반환합니다. (예: 'a,b,c'):
     String joinWithCommas(List<String> strings) => strings.join(',');
   }
   ```
 </details>
 
 
-## Cascades
+## 캐스케이드 (cascades) {:#cascades}
 
-To perform a sequence of operations on the same object, use cascades (`..`).
-We've all seen an expression like this:
+동일한 객체에 대한 일련의 연산을 수행하려면, 캐스케이드(`..`)를 사용합니다.
+우리는 모두 다음과 같은 표현식을 보았습니다.
 
 <?code-excerpt "misc/bin/cheatsheet/cascades.dart (no-cascade)" replace="/;//g"?>
 ```dart
 myObject.someMethod()
 ```
 
-It invokes `someMethod()` on `myObject`, and the result of
-the expression is the return value of `someMethod()`.
+`myObject`에서 `someMethod()`를 호출하고, 표현식의 결과는 `someMethod()`의 반환 값입니다.
 
-Here's the same expression with a cascade:
+다음은 캐스케이드가 있는 동일한 표현식입니다.
 
 <?code-excerpt "misc/bin/cheatsheet/cascades.dart (uses-cascade)" replace="/;//g"?>
 ```dart
 myObject..someMethod()
 ```
 
-Although it still invokes `someMethod()` on `myObject`, the result
-of the expression **isn't** the return value—it's a reference to `myObject`!
+`myObject`에서 `someMethod()`를 여전히 호출하지만, 
+표현식의 결과는 반환 값이 **아니라** `myObject`에 대한 참조입니다!
 
-Using cascades, you can chain together operations that
-would otherwise require separate statements.
-For example, consider the following code,
-which uses the conditional member access operator (`?.`)
-to read properties of `button` if it isn't `null`:
+캐스케이드를 사용하면, 별도의 명령문이 필요한 작업을 함께 연결할 수 있습니다. 
+예를 들어, `button`이 `null`이 아닌 경우, 
+`?.` 조건부 멤버 액세스 연산자를 사용하여 `button`의 속성을 읽는 다음 코드를 고려하세요.
 
 <?code-excerpt "misc/bin/cheatsheet/cascades.dart (query-without-cascades)"?>
 ```dart
@@ -626,12 +605,9 @@ button?.onClick.listen((e) => window.alert('Confirmed!'));
 button?.scrollIntoView();
 ```
 
-To instead use cascades, 
-you can start with the _null-shorting_ cascade (`?..`), 
-which guarantees that none of the cascade operations
-are attempted on a `null` object.
-Using cascades shortens the code
-and makes the `button` variable unnecessary:
+대신 캐스케이드를 사용하려면, _null-shorting_ 캐스케이드(`?..`)로 시작할 수 있습니다. 
+이는 `null` 객체에 캐스케이드 연산이 시도되지 않도록 보장합니다. 
+캐스케이드를 사용하면 코드가 단축되고, `button` 변수가 필요 없게 됩니다.
 
 <?code-excerpt "misc/bin/cheatsheet/cascades.dart (query-with-cascades)"?>
 ```dart
@@ -644,10 +620,9 @@ querySelector('#confirm')
 
 ### Code example {:.no_toc}
 
-Use cascades to create a single statement that
-sets the `anInt`, `aString`, and `aList` properties of a `BigObject`
-to `1`, `'String!'`, and `[3.0]` (respectively)
-and then calls `allDone()`.
+캐스케이드를 사용하여 `BigObject`의 `anInt`, `aString`, `aList` 속성을, 
+각각 `1`, `'String!'`, `[3.0]`으로 설정한 다음, 
+`allDone()`을 호출하는 단일 명령문을 만듭니다.
 
 ```dartpad
 class BigObject {
@@ -662,12 +637,12 @@ class BigObject {
 }
 
 BigObject fillBigObject(BigObject obj) {
-  // Create a single statement that will update and return obj:
+  // obj를 업데이트하고 반환하는 단일 명령문을 만듭니다.
   return TODO('obj..');
 }
 
 
-// Tests your solution (Don't edit!):
+// 당신의 솔루션을 테스트합니다. (편집하지 마세요!):
 void main() {
   BigObject obj;
 
@@ -713,12 +688,12 @@ void main() {
 ```
 
 <details>
-  <summary>Solution for cascades example</summary>
+  <summary>캐스케이드 예제에 대한 솔루션</summary>
 
-  The best solution for this exercise starts with `obj..` and
-  has four assignment operations chained together.
-  Start with `return obj..anInt = 1`,
-  then add another cascade (`..`) and start the next assignment.
+  이 연습에 대한 최상의 솔루션은 `obj..`로 시작하고, 
+  4개의 할당 연산이 함께 연결됩니다. 
+  `return obj..anInt = 1`로 시작한 다음, 
+  또다른 캐스케이드(`..`)를 추가하고 다음 할당을 시작합니다.
 
   ```dart
   BigObject fillBigObject(BigObject obj) {
@@ -732,13 +707,11 @@ void main() {
 </details>
 
 
-## Getters and setters
+## Getters 및 setters {:#getters-and-setters}
 
-You can define getters and setters
-whenever you need more control over a property
-than a simple field allows.
+간단한 필드에서 허용하는 것보다 속성을 더 많이 제어해야 할 때마다 getter와 setter를 정의할 수 있습니다.
 
-For example, you can make sure a property's value is valid:
+예를 들어, 속성 값이 유효한지 확인할 수 있습니다.
 
 <?code-excerpt "misc/lib/cheatsheet/getters_setters.dart"?>
 ```dart
@@ -755,7 +728,7 @@ class MyClass {
 }
 ```
 
-You can also use a getter to define a computed property:
+getter를 사용하여 계산된 속성을 정의할 수도 있습니다.
 
 <?code-excerpt "misc/lib/cheatsheet/getter_compute.dart"?>
 ```dart
@@ -766,7 +739,7 @@ class MyClass {
     _values.add(value);
   }
 
-  // A computed property.
+  // 계산된 속성.
   int get count {
     return _values.length;
   }
@@ -775,16 +748,13 @@ class MyClass {
 
 ### Code example {:.no_toc}
 
-Imagine you have a shopping cart class that keeps a private `List<double>`
-of prices.
-Add the following:
+private 가격 `List<double>`을 보관하는 쇼핑 카트 클래스가 있다고 가정해 보겠습니다. 다음을 추가합니다.
 
-* A getter called `total` that returns the sum of the prices
-* A setter that replaces the list with a new one,
-  as long as the new list doesn't contain any negative prices
-  (in which case the setter should throw an `InvalidPriceException`).
+* 가격 합계를 반환하는 `total`이라는 getter
+* 새 리스트에 음수 가격이 포함되지 않는 한, 리스트를 새 리스트로 대체하는 setter
+  (이 경우 setter는 `InvalidPriceException`을 throw해야 함)
 
-Ignore all initial errors in the DartPad.
+DartPad의 모든 초기 오류를 무시합니다.
 
 ```dartpad
 class InvalidPriceException {}
@@ -792,13 +762,13 @@ class InvalidPriceException {}
 class ShoppingCart {
   List<double> _prices = [];
   
-  // TODO: Add a "total" getter here:
+  // TODO: 여기에 "total" getter를 추가합니다.
 
-  // TODO: Add a "prices" setter here:
+  // TODO: 여기에 "prices" setter를 추가합니다.
 }
 
 
-// Tests your solution (Don't edit!):
+// 당신의 솔루션을 테스트합니다. (편집하지 마세요!):
 void main() {
   var foundException = false;
   
@@ -856,20 +826,18 @@ void main() {
 ```
 
 <details>
-  <summary>Solution for getters and setters example</summary>
+  <summary>getters와 setters 예제에 대한 솔루션</summary>
 
-  Two functions are handy for this exercise. 
-  One is `fold`, which can reduce a list to a single value
-  (use it to calculate the total).
-  The other is `any`, which can check each item in a list
-  with a function you give it
-  (use it to check if there are any negative prices in the prices setter).
+  이 연습에는 두 가지 함수가 편리합니다. 
+  하나는 `fold`로, 리스트를 단일 값으로 축소할 수 있습니다. (전체를 계산하는 데 사용)
+  다른 하나는 `any`로, 제공된 함수로 리스트의 각 아이템을 확인할 수 있습니다.
+  (가격 setter에 음수 가격이 있는지 확인하는 데 사용)
 
   ```dart
-  // Add a "total" getter here:
+  // 여기에 "total" getter를 추가합니다.
   double get total => _prices.fold(0, (e, t) => e + t);
 
-  // Add a "prices" setter here:
+  // 여기에 "prices" setter를 추가합니다.
   set prices(List<double> value) {
     if (value.any((p) => p < 0)) {
       throw InvalidPriceException();
@@ -882,10 +850,10 @@ void main() {
 </details>
 
 
-## Optional positional parameters
+## 선택적인 위치 매개변수 {:#optional-positional-parameters}
 
-Dart has two kinds of function parameters: positional and named. 
-Positional parameters are the kind you're likely familiar with:
+Dart에는 위치 매개변수와 명명된 매개변수의 두 가지 함수 매개변수가 있습니다.
+위치 매개변수는 여러분이 익숙할 만한 종류입니다.
 
 <?code-excerpt "misc/lib/cheatsheet/optional_positional_args.dart (optional-positional-args)"?>
 ```dart
@@ -896,7 +864,7 @@ int sumUp(int a, int b, int c) {
   int total = sumUp(1, 2, 3);
 ```
 
-With Dart, you can make these positional parameters optional by wrapping them in brackets:
+Dart를 사용하면, 이러한 위치 매개변수를 대괄호로 묶어 선택 사항으로 만들 수 있습니다.
 
 <?code-excerpt "misc/lib/cheatsheet/optional_positional_args.dart (optional-positional-args-2)" replace="/total2/total/g"?>
 ```dart
@@ -913,9 +881,8 @@ int sumUpToFive(int a, [int? b, int? c, int? d, int? e]) {
   int otherTotal = sumUpToFive(1, 2, 3, 4, 5);
 ```
 
-Optional positional parameters are always last
-in a function's parameter list.
-Their default value is null unless you provide another default value:
+선택적 위치 매개변수는 항상 함수 매개변수 리스트의 마지막에 있습니다. 
+다른 기본값을 제공하지 않는 한 기본값은 null입니다.
 
 <?code-excerpt "misc/lib/cheatsheet/optional_positional_args2.dart (sum-no-impl)"?>
 ```dart
@@ -925,17 +892,16 @@ int sumUpToFive(int a, [int b = 2, int c = 3, int d = 4, int e = 5]) {
 
 void main() {
   int newTotal = sumUpToFive(1);
-  print(newTotal); // <-- prints 15
+  print(newTotal); // <-- 15 출력
 }
 ```
 
 ### Code example {:.no_toc}
 
-Implement a function called `joinWithCommas()` that accepts one to
-five integers, then returns a string of those numbers separated by commas.
-Here are some examples of function calls and returned values:
+1~5개의 정수를 받아들이고, 쉼표로 구분된 숫자의 문자열을 반환하는 `joinWithCommas()`라는 함수를 구현합니다. 
+다음은 함수 호출과 반환 값의 몇 가지 예입니다.
 
-| Function call                   | Returned value |
+| 함수 호출                   |  반환 값 |
 |---------------------------------|----------------|
 | `joinWithCommas(1)`             | `'1'`          |
 | `joinWithCommas(1, 2, 3)`       | `'1,2,3'`      |
@@ -949,7 +915,7 @@ String joinWithCommas(int a, [int? b, int? c, int? d, int? e]) {
 }
 
 
-// Tests your solution (Don't edit!):
+// 당신의 솔루션을 테스트합니다. (편집하지 마세요!):
 void main() {
   final errs = <String>[];
   
@@ -1004,11 +970,11 @@ void main() {
 ```
 
 <details>
-  <summary>Solution for positional parameters example</summary>
+  <summary>위치 매개변수 예제에 대한 솔루션</summary>
 
-  The `b`, `c`, `d`, and `e` parameters are null if they aren't provided by the
-  caller. The important thing, then, is to check whether those arguments are `null`
-  before you add them to the final string.
+  `b`, `c`, `d`, `e` 매개변수는 호출자가 제공하지 않으면 null입니다. 
+  따라서 중요한 것은 최종 문자열에 추가하기 전에, 
+  해당 인수가 `null`인지 확인하는 것입니다.
 
   ```dart
   String joinWithCommas(int a, [int? b, int? c, int? d, int? e]) {
@@ -1024,13 +990,11 @@ void main() {
 </details>
 
 <a id="optional-named-parameters"></a>
-## Named parameters
+## 명명된 매개변수 {:#named-parameters}
 
-Using a curly brace syntax at the end of the parameter list,
-you can define parameters that have names.
+매개변수 리스트 끝에 중괄호 구문을 사용하면, 이름이 있는 매개변수를 정의할 수 있습니다.
 
-Named parameters are optional
-unless they're explicitly marked as `required`.
+명명된 매개변수는 `required`로 명시적으로 표시되지 않는 한, 선택 사항입니다.
 
 <?code-excerpt "misc/lib/cheatsheet/named_parameters.dart"?>
 ```dart
@@ -1041,21 +1005,16 @@ void printName(String firstName, String lastName, {String? middleName}) {
 void main() {
   printName('Dash', 'Dartisan');
   printName('John', 'Smith', middleName: 'Who');
-  // Named arguments can be placed anywhere in the argument list
+  // 명명된 인수는 인수 리스트의 어느 곳에나 배치될 수 있습니다.
   printName('John', middleName: 'Who', 'Smith');
 }
 ```
 
-As you might expect,
-the default value of a nullable named parameter is `null`,
-but you can provide a custom default value.
+예상할 수 있듯이, nullable 명명된 매개변수의 기본값은 `null`이지만, 커스텀 기본값을 제공할 수 있습니다.
 
-If the type of a parameter is non-nullable,
-then you must either provide a default value
-(as shown in the following code)
-or mark the parameter as `required`
-(as shown in the
-[constructor section](#using-this-in-a-constructor)).
+매개변수의 타입이 non-nullable인 경우, 
+(다음 코드에서와 같이) 기본값을 제공하거나,  
+([constructor 섹션](#using-this-in-a-constructor)에서와 같이) 매개변수를 `required`로 표시해야 합니다.
 
 <?code-excerpt "misc/test/cheatsheet/arguments_test.dart (defaulted-middle)" replace="/ = ''/[! = ''!]/g;"?>
 ```dart
@@ -1064,26 +1023,23 @@ void printName(String firstName, String lastName, {String middleName[! = ''!]}) 
 }
 ```
 
-A function can't have both optional positional and named parameters.
+함수는 선택적 위치 매개변수와 명명된 매개변수를 동시에 가질 수 없습니다.
 
 
 ### Code example {:.no_toc}
 
-Add a `copyWith()` instance method to the `MyDataObject`
-class. It should take three named, nullable parameters:
+`MyDataObject` 클래스에 `copyWith()` 인스턴스 메서드를 추가합니다. 
+세 개의 명명된 nullable 매개변수를 사용해야 합니다.
 
 * `int? newInt`
 * `String? newString`
 * `double? newDouble`
 
-Your `copyWith()` method should return a new `MyDataObject`
-based on the current instance,
-with data from the preceding parameters (if any)
-copied into the object's properties.
-For example, if `newInt` is non-null,
-then copy its value into `anInt`.
+`copyWith()` 메서드는 현재 인스턴스를 기반으로 새 `MyDataObject`를 반환해야 하며, 
+이전 매개변수의 데이터(있는 경우)를 객체의 속성에 복사해야 합니다. 
+예를 들어 `newInt`가 null이 아니면, 해당 값을 `anInt`에 복사합니다.
 
-Ignore all initial errors in the DartPad.
+DartPad의 모든 초기 오류를 무시합니다.
 
 ```dartpad
 class MyDataObject {
@@ -1097,11 +1053,11 @@ class MyDataObject {
      this.aDouble = 2.0,
   });
 
-  // TODO: Add your copyWith method here:
+  // TODO: 여기에 copyWith 메서드를 추가하세요:
 }
 
 
-// Tests your solution (Don't edit!):
+// 당신의 솔루션을 테스트합니다. (편집하지 마세요!):
 void main() {
   final source = MyDataObject();
   final errs = <String>[];
@@ -1151,15 +1107,15 @@ void main() {
 ```
 
 <details>
-  <summary>Solution for named parameters example</summary>
+  <summary>명명된 매개변수 예제에 대한 솔루션</summary>
 
-  The `copyWith` method shows up in a lot of classes and libraries.
-  Yours should do a few things:
-  use optional named parameters,
-  create a new instance of `MyDataObject`,
-  and use the data from the parameters to fill it
-  (or the data from the current instance if the parameters are null).
-  This is a chance to get more practice with the `??` operator!
+  `copyWith` 메서드는 많은 클래스와 라이브러리에 나타납니다. 
+  여러분의 메서드는 몇 가지 작업을 수행해야 합니다. 
+  선택적 명명된 매개변수를 사용하고, 
+  `MyDataObject`의 새 인스턴스를 만들고, 
+  매개변수의 데이터를 사용하여 채웁니다.
+  (또는 매개변수가 null인 경우 현재 인스턴스의 데이터)
+  이것은 `??` 연산자를 더 연습할 수 있는 기회입니다!
 
   ```dart
     MyDataObject copyWith({int? newInt, String? newString, double? newDouble}) {
@@ -1173,15 +1129,14 @@ void main() {
 </details>
 
 
-## Exceptions
+## 예외 {:#exceptions}
 
-Dart code can throw and catch exceptions.
-In contrast to Java, all of Dart's exceptions are unchecked.
-Methods don't declare which exceptions they might throw and
-you aren't required to catch any exceptions.
+Dart 코드는 예외를 throw하고 catch할 수 있습니다. 
+Java와 달리 Dart의 모든 예외는 unchecked입니다. 
+메서드는 throw할 수 있는 예외를 선언하지 않으며, 예외를 catch할 필요가 없습니다.
 
-Dart provides `Exception` and `Error` types, but you're
-allowed to throw any non-null object:
+Dart는 `Exception` 및 `Error` 타입을 제공하지만, 
+null이 아닌 모든 객체를 throw할 수 있습니다.
 
 <?code-excerpt "misc/test/cheatsheet/exceptions_test.dart (simple-throws)"?>
 ```dart
@@ -1189,30 +1144,30 @@ throw Exception('Something bad happened.');
 throw 'Waaaaaaah!';
 ```
 
-Use the `try`, `on`, and `catch` keywords when handling exceptions:
+예외를 처리할 때는 `try`, `on`, `catch` 키워드를 사용하세요.
 
 <?code-excerpt "misc/test/cheatsheet/exceptions_test.dart (try-on-catch)"?>
 ```dart
 try {
   breedMoreLlamas();
 } on OutOfLlamasException {
-  // A specific exception
+  // 특정 예외
   buyMoreLlamas();
 } on Exception catch (e) {
-  // Anything else that is an exception
+  // 그 밖에 예외인 사항
   print('Unknown exception: $e');
 } catch (e) {
-  // No specified type, handles all
+  // 지정된 타입 없음, 모든 것을 처리합니다
   print('Something really unknown: $e');
 }
 ```
 
-The `try` keyword works as it does in most other languages.
-Use the `on` keyword to filter for specific exceptions by type,
-and the `catch` keyword to get a reference to the exception object.
+`try` 키워드는 다른 대부분의 언어에서와 마찬가지로 작동합니다. 
+`on` 키워드를 사용하여 유형별로 특정 예외를 필터링하고, 
+`catch` 키워드를 사용하여 예외 객체에 대한 참조를 가져옵니다.
 
-If you can't completely handle the exception, use the `rethrow` keyword
-to propagate the exception:
+예외를 완전히 처리할 수 없는 경우, 
+`rethrow` 키워드를 사용하여 예외를 전파합니다.
 
 <?code-excerpt "misc/test/cheatsheet/exceptions_test.dart (try-catch)"?>
 ```dart
@@ -1224,35 +1179,38 @@ try {
 }
 ```
 
-To execute code whether or not an exception is thrown,
-use `finally`:
+예외가 발생하든 발생하지 않든 코드를 실행하려면, `finally`를 사용합니다.
 
 <?code-excerpt "misc/test/cheatsheet/exceptions_test.dart (try-catch-finally)"?>
 ```dart
 try {
   breedMoreLlamas();
 } catch (e) {
-  // ... handle exception ...
+  // ... 예외 처리 ...
 } finally {
-  // Always clean up, even if an exception is thrown.
+  // 예외가 발생하더라도, 항상 정리하세요.
   cleanLlamaStalls();
 }
 ```
 
 ### Code example {:.no_toc}
 
-Implement `tryFunction()` below. It should execute an untrustworthy method and
-then do the following:
+Implement `tryFunction()` below. It should execute an untrustworthy method and then do the following:
 
-* If `untrustworthy()` throws an `ExceptionWithMessage`,
-  call `logger.logException` with the exception type and message
-  (try using `on` and `catch`).
-* If `untrustworthy()` throws an `Exception`,
-  call `logger.logException` with the exception type
-  (try using `on` for this one).
+* If `untrustworthy()` throws an `ExceptionWithMessage`, call `logger.logException` with the exception type and message (try using `on` and `catch`).
+* If `untrustworthy()` throws an `Exception`, call `logger.logException` with the exception type (try using `on` for this one).
 * If `untrustworthy()` throws any other object, don't catch the exception.
-* After everything's caught and handled, call `logger.doneLogging`
-  (try using `finally`).
+* After everything's caught and handled, call `logger.doneLogging` (try using `finally`).
+
+아래에 `tryFunction()`을 구현합니다. 
+신뢰할 수 없는 메서드를 실행한 다음, 다음을 수행해야 합니다.
+
+* `untrustworthy()`가 `ExceptionWithMessage`를 throw하는 경우, 
+  예외 타입과 메시지로 `logger.logException`을 호출합니다. (`on`과 `catch`를 사용해 보세요)
+* `untrustworthy()`가 `Exception`을 throw하는 경우, 
+  예외 타입으로 `logger.logException`을 호출합니다. (여기서는 `on`을 사용해 보세요)
+* `untrustworthy()`가 다른 객체를 throw하는 경우, 예외를 catch하지 않습니다.
+* 모든 것이 catch되고 처리된 후, `logger.doneLogging`을 호출합니다. (`finally`를 사용해 보세요)
 
 ```dartpad
 typedef VoidFunction = void Function();
@@ -1262,25 +1220,17 @@ class ExceptionWithMessage {
   const ExceptionWithMessage(this.message);
 }
 
-// Call logException to log an exception, and doneLogging when finished.
+// 예외를 기록하려면 logException을 호출하고, 완료되면 doneLogging을 호출합니다.
 abstract class Logger {
   void logException(Type t, [String? msg]);
   void doneLogging();
 }
 
 void tryFunction(VoidFunction untrustworthy, Logger logger) {
-  try {
-    untrustworthy();
-  } on ExceptionWithMessage catch (e) {
-    logger.logException(e.runtimeType, e.message); 
-  } on Exception catch (e) {
-    logger.logException(e.runtimeType);
-  } finally {
-    logger.doneLogging();
-  }
+  // TODO: 여기에 tryFunction의 내용을 작성하세요:
 }
 
-// Tests your solution (Don't edit!):
+// 당신의 솔루션을 테스트합니다. (편집하지 마세요!):
 class MyLogger extends Logger {
   Type? lastType;
   String lastMessage = '';
@@ -1378,12 +1328,12 @@ void main() {
 ```
 
 <details>
-  <summary>Solution for exceptions example</summary>
+  <summary>예외에 대한 솔루션 예</summary>
 
-  This exercise looks tricky, but it's really one big `try` statement.
-  Call `untrustworthy` inside the `try`, and
-  then use `on`, `catch`, and `finally` to catch exceptions and
-  call methods on the logger.
+  이 연습은 까다로워 보이지만, 실제로는 하나의 큰 `try` 문입니다. 
+  `try` 내부에서 `untrustworthy`를 호출한 다음, 
+  `on`, `catch`, `finally`를 사용하여 예외를 잡고, 
+  logger에서 메서드를 호출합니다.
 
   ```dart
   void tryFunction(VoidFunction untrustworthy, Logger logger) {
@@ -1402,11 +1352,10 @@ void main() {
 </details>
 
 
-## Using `this` in a constructor
+## 생성자에서 `this` 사용 {:#using-this-in-a-constructor}
 
-Dart provides a handy shortcut for assigning
-values to properties in a constructor:
-use `this.propertyName` when declaring the constructor:
+Dart는 생성자에서 속성에 값을 할당하기 위한, 편리한 shortcut을 제공합니다. 
+생성자를 선언할 때, `this.propertyName`을 사용하세요.
 
 <?code-excerpt "misc/lib/cheatsheet/this_constructor.dart (required-positional)"?>
 ```dart
@@ -1421,8 +1370,8 @@ class MyColor {
 final color = MyColor(80, 80, 128);
 ```
 
-This technique works for named parameters, too.
-Property names become the names of the parameters:
+이 기술은 명명된 매개변수에도 적용됩니다. 
+속성 이름은 매개변수의 이름이 됩니다.
 
 <?code-excerpt "misc/lib/cheatsheet/this_constructor.dart (required-named)" replace="/int.*;/.../g; /olorRN/olor/g;"?>
 ```dart
@@ -1435,24 +1384,23 @@ class MyColor {
 final color = MyColor(red: 80, green: 80, blue: 80);
 ```
 
-In the preceding code, `red`, `green`, and `blue` are marked as `required`
-because these `int` values can't be null.
-If you add default values, you can omit `required`:
+앞의 코드에서, `red`, `green`, `blue`는 `required`로 표시되어 있습니다. 
+이러한 `int` 값은 null이 될 수 없기 때문입니다. 
+기본값을 추가하면, `required`를 생략할 수 있습니다.
 
 <?code-excerpt "misc/lib/cheatsheet/this_constructor.dart (defaulted)" replace="/olorO/olor/g; /.positional//g; /.named//g;"?>
 ```dart
 MyColor([this.red = 0, this.green = 0, this.blue = 0]);
-// or
+// 또는
 MyColor({this.red = 0, this.green = 0, this.blue = 0});
 ```
 
 ### Code example {:.no_toc}
 
-Add a one-line constructor to `MyClass` that uses
-`this.` syntax to receive and assign values for
-all three properties of the class.
+`MyClass`에 `this.` 구문을 사용하여, 
+클래스의 세 가지 속성에 대한 값을 수신하고 할당하는 한 줄짜리 생성자를 추가합니다.
 
-Ignore all initial errors in the DartPad.
+DartPad의 모든 초기 오류를 무시합니다.
 
 ```dartpad
 class MyClass {
@@ -1460,11 +1408,11 @@ class MyClass {
   final String aString;
   final double aDouble;
   
-  // TODO: Create the constructor here.
+  // TODO: 여기에 생성자를 만듭니다.
 }
 
 
-// Tests your solution (Don't edit!):
+// 당신의 솔루션을 테스트합니다. (편집하지 마세요!):
 void main() {
   final errs = <String>[];
   
@@ -1495,12 +1443,10 @@ void main() {
 ```
 
 <details>
-  <summary>Solution for `this` example</summary>
+  <summary>`this` 예제에 대한 솔루션</summary>
 
-  This exercise has a one-line solution.
-  Declare the constructor with
-  `this.anInt`, `this.aString`, and `this.aDouble`
-  as its parameters in that order.
+  이 연습은 한 줄짜리 솔루션입니다. 
+  `this.anInt`, `this.aString`, `this.aDouble`을 매개변수로 하여 생성자를 선언합니다.
 
   ```dart    
   MyClass(this.anInt, this.aString, this.aDouble);
@@ -1516,14 +1462,11 @@ Move it up higher? Or make it more challenging, somehow?
 Maybe require both positional and optional named parameters (with defaults)?
 {% endcomment %}
 
-## Initializer lists
+## 이니셜라이저 리스트 {:#initializer-lists}
 
-Sometimes when you implement a constructor,
-you need to do some setup before the constructor body executes.
-For example, final fields must have values
-before the constructor body executes.
-Do this work in an initializer list,
-which goes between the constructor's signature and its body:
+생성자를 구현할 때, 생성자 본문이 실행되기 전에 몇 가지 설정을 해야 할 때가 있습니다. 
+예를 들어, final 필드는 생성자 본문이 실행되기 전에 값이 있어야 합니다. 
+생성자의 서명과 본문 사이에 있는 이니셜라이저 리스트에서 이 작업을 수행하세요.
 
 <?code-excerpt "misc/lib/language_tour/classes/point_alt.dart (initializer-list-no-comment)"?>
 ```dart
@@ -1534,8 +1477,7 @@ Point.fromJson(Map<String, double> json)
 }
 ```
 
-The initializer list is also a handy place to put asserts,
-which run only during development:
+이니셜라이저 리스트는 개발 중에만 실행되는 어설션을 넣기에 편리한 곳이기도 합니다.
 
 <?code-excerpt "misc/lib/cheatsheet/initializer_lists.dart (assert)"?>
 ```dart
@@ -1548,12 +1490,11 @@ NonNegativePoint(this.x, this.y)
 
 ### Code example {:.no_toc}
 
-Complete the `FirstTwoLetters` constructor below.
-Use an initializer list to assign the first two characters in `word` to
-the `letterOne` and `LetterTwo` properties.
-For extra credit, add an `assert` to catch words of less than two characters.
+아래의 `FirstTwoLetters` 생성자를 완성하세요. 
+이니셜라이저 리스트를 사용하여 `word`의 처음 두 문자를 `letterOne` 및 `LetterTwo` 속성에 할당하세요. 
+추가 점수를 위해, `assert`를 추가하여 두 문자 미만의 단어를 잡으세요.
 
-Ignore all initial errors in the DartPad.
+DartPad의 모든 초기 오류를 무시하세요.
 
 {% comment %}
 Is the assert even executed? I can't see any effect on the test,
@@ -1574,13 +1515,13 @@ class FirstTwoLetters {
   final String letterOne;
   final String letterTwo;
 
-  // TODO: Create a constructor with an initializer list here:
+  // TODO: 여기에 이니셜라이저 리스트가 있는 생성자를 만듭니다.
   FirstTwoLetters(String word)
 
 }
 
 
-// Tests your solution (Don't edit!):
+// 당신의 솔루션을 테스트합니다. (편집하지 마세요!):
 void main() {
   final errs = <String>[];
 
@@ -1619,11 +1560,11 @@ void main() {
 ```
 
 <details>
-  <summary>Solution for initializer lists example</summary>
+  <summary>이니셜라이저 리스트 예제에 대한 솔루션</summary>
 
-  Two assignments need to happen:
-  `letterOne` should be assigned `word[0]`,
-  and `letterTwo` should be assigned `word[1]`.
+  두 가지 할당이 이루어져야 합니다. 
+  `letterOne`에 `word[0]`을 할당하고, 
+  `letterTwo`에 `word[1]`을 할당해야 합니다.
 
   ```dart    
     FirstTwoLetters(String word)
@@ -1633,7 +1574,7 @@ void main() {
   ```
 </details>
 
-## Named constructors
+## 명명된 생성자 {:#named-constructors}
 
 {% comment %}
 Much like JavaScript, Dart doesn't support method overloads
@@ -1641,8 +1582,7 @@ Much like JavaScript, Dart doesn't support method overloads
 [ISSUE: methods & constructors aren't the same thing,
 so I deleted that. We can add it back if we can word it better.]
 {% endcomment %}
-To allow classes to have multiple constructors,
-Dart supports named constructors:
+클래스가 여러 생성자를 가질 수 있도록, Dart는 명명된 생성자를 지원합니다.
 
 <?code-excerpt "misc/lib/cheatsheet/named_constructor.dart (point-class)"?>
 ```dart
@@ -1657,7 +1597,7 @@ class Point {
 }
 ```
 
-To use a named constructor, invoke it using its full name:
+명명된 생성자를 사용하려면, 전체 이름을 사용하여 호출합니다.
 
 <?code-excerpt "misc/test/cheatsheet/constructor_test.dart (origin-point)"?>
 ```dart
@@ -1666,10 +1606,9 @@ final myPoint = Point.origin();
 
 ### Code example {:.no_toc}
 
-Give the `Color` class a constructor named `Color.black`
-that sets all three properties to zero.
+`Color` 클래스에 `Color.black`이라는 생성자를 제공하여, 세 가지 속성을 모두 0으로 설정합니다.
 
-Ignore all initial errors in the DartPad.
+DartPad의 모든 초기 오류를 무시합니다.
 
 ```dartpad
 class Color {
@@ -1679,12 +1618,12 @@ class Color {
   
   Color(this.red, this.green, this.blue);
 
-  // TODO: Create a named constructor called "Color.black" here:
+  // TODO: 여기에 "Color.black"이라는 이름의 생성자를 만듭니다.
 
 }
 
 
-// Tests your solution (Don't edit!):
+// 당신의 솔루션을 테스트합니다. (편집하지 마세요!):
 void main() {
   final errs = <String>[];
 
@@ -1716,10 +1655,10 @@ void main() {
 ```
 
 <details>
-  <summary>Solution for named constructors example</summary>
+  <summary>명명된 생성자 예제에 대한 솔루션</summary>
 
-  The declaration for your constructor should begin with `Color.black(): `.
-  In the initializer list (after the colon), set `red`, `green`, and `blue` to `0`.
+  생성자에 대한 선언은 `Color.black():`로 시작해야 합니다. 
+  이니셜라이저 리스트(콜론 뒤)에서 `red`, `green`, `blue`를 `0`으로 설정합니다.
 
   ```dart    
     Color.black()
@@ -1730,11 +1669,10 @@ void main() {
 
 </details>
 
-## Factory constructors
+## Factory 생성자 {:#factory-constructors}
 
-Dart supports factory constructors,
-which can return subtypes or even null.
-To create a factory constructor, use the `factory` keyword:
+Dart는 팩토리 생성자를 지원하는데, 이는 하위 타입 또는 null을 반환할 수 있습니다. 
+팩토리 생성자를 만들려면, `factory` 키워드를 사용합니다.
 
 <?code-excerpt "misc/lib/cheatsheet/factory_constructors.dart"?>
 ```dart
@@ -1756,24 +1694,20 @@ class Shape {
 
 ### Code example {:.no_toc}
 
-Replace the line `TODO();` in the factory constructor
-named `IntegerHolder.fromList` to return the following:
+`IntegerHolder.fromList`라는 팩토리 생성자에서, `TODO();` 줄을 바꿔 다음을 반환합니다.
 
-* If the list has **one** value,
-  create an `IntegerSingle` instance using that value.
-* If the list has **two** values,
-  create an `IntegerDouble` instance using the values in order.
-* If the list has **three** values,
-  create an `IntegerTriple` instance using the values in order.
-* Otherwise, throw an `Error`.
+* 목록에 **하나**의 값이 있는 경우, 해당 값을 사용하여 `IntegerSingle` 인스턴스를 만듭니다.
+* 목록에 **두**개의 값이 있는 경우, 순서대로 값을 사용하여 `IntegerDouble` 인스턴스를 만듭니다.
+* 목록에 **세**개의 값이 있는 경우, 순서대로 값을 사용하여 `IntegerTriple` 인스턴스를 만듭니다.
+* 그렇지 않으면, `Error`를 throw합니다.
 
-If you succeed, the console should display `Success!`.
+성공하면 콘솔에 `Success!`가 표시됩니다.
 
 ```dartpad
 class IntegerHolder {
   IntegerHolder();
   
-  // Implement this factory constructor.
+  // 이 팩토리 생성자를 구현합니다.
   factory IntegerHolder.fromList(List<int> list) {
     TODO();
   }
@@ -1877,13 +1811,12 @@ void testValues(List<String> errs, List<int> expectedValues, IntegerHolder obj,
 ```
 
 <details>
-  <summary>Solution for factory constructors example</summary>
+  <summary>팩토리 생성자 예제에 대한 솔루션</summary>
 
-  Inside the factory constructor,
-  check the length of the list, then create and return an
-  `IntegerSingle`, `IntegerDouble`, or `IntegerTriple` as appropriate.
+  팩토리 생성자 내부에서 리스트의 길이를 확인한 다음, 
+  필요에 따라 `IntegerSingle`, `IntegerDouble` 또는 `IntegerTriple`을 생성하여 반환합니다.
 
-  Replace `TODO();` with the following code block.
+  `TODO();`를 다음 코드 블록으로 바꿉니다.
 
   ```dart
     switch (list.length) {
@@ -1900,12 +1833,10 @@ void testValues(List<String> errs, List<int> expectedValues, IntegerHolder obj,
 
 </details>
 
-## Redirecting constructors
+## 리다이렉트 생성자 {:#redirecting-constructors}
 
-Sometimes a constructor's only purpose is to redirect to
-another constructor in the same class.
-A redirecting constructor's body is empty,
-with the constructor call appearing after a colon (`:`).
+때때로 생성자의 유일한 목적은 같은 클래스의 다른 생성자로 리다이렉트하는 것입니다. 
+리다이렉팅 생성자의 본문은 비어 있으며, 생성자 호출은 콜론(`:`) 뒤에 나타납니다.
 
 <?code-excerpt "misc/lib/cheatsheet/redirecting_constructors.dart (redirecting-constructors)"?>
 ```dart
@@ -1914,24 +1845,24 @@ class Automobile {
   String model;
   int mpg;
 
-  // The main constructor for this class.
+  // 이 클래스의 메인 생성자입니다.
   Automobile(this.make, this.model, this.mpg);
 
-  // Delegates to the main constructor.
+  // 메인 생성자에게 위임(Delegates)합니다.
   Automobile.hybrid(String make, String model) : this(make, model, 60);
 
-  // Delegates to a named constructor
+  // 명명된 생성자에게 위임(Delegates)합니다.
   Automobile.fancyHybrid() : this.hybrid('Futurecar', 'Mark 2');
 }
 ```
 
 ### Code example {:.no_toc}
 
-Remember the `Color` class from above? Create a named constructor called
-`black`, but rather than manually assigning the properties, redirect it to the
-default constructor with zeros as the arguments.
+위의 `Color` 클래스를 기억하시나요? 
+`black`이라는 명명된 생성자를 만드세요. 
+하지만 속성을 수동으로 할당하는 대신, 인수로 0을 사용하여 기본 생성자로 리디렉션하세요.
 
-Ignore all initial errors in the DartPad.
+DartPad의 모든 초기 오류는 무시하세요.
 
 ```dartpad
 class Color {
@@ -1941,12 +1872,12 @@ class Color {
   
   Color(this.red, this.green, this.blue);
 
-  // TODO: Create a named constructor called "black" here
-  // and redirect it to call the existing constructor
+  // TODO: 여기에 "black"이라는 이름의 생성자를 만들고, 
+  // 기존 생성자를 호출하도록 리디렉션합니다.
 }
 
 
-// Tests your solution (Don't edit!):
+// 당신의 솔루션을 테스트합니다. (편집하지 마세요!):
 void main() {
   final errs = <String>[];
 
@@ -1978,9 +1909,9 @@ void main() {
 ```
 
 <details>
-  <summary>Solution for redirecting constructors example</summary>
+  <summary>리다이렉트 생성자를 위한 솔루션 예제</summary>
 
-  Your constructor should redirect to `this(0, 0, 0)`.
+  생성자는 `this(0, 0, 0)`로 리다이렉트되어야 합니다.
 
   ```dart
     Color.black() : this(0, 0, 0);
@@ -1988,11 +1919,12 @@ void main() {
 
 </details>
 
-## Const constructors
+## Const 생성자 {:#const-constructors}
 
-If your class produces objects that never change, you can make these objects compile-time constants. To
-do this, define a `const` constructor and make sure that all instance variables
-are final.
+클래스가 절대 변하지 않는 객체를 생성하는 경우, 
+이러한 객체를 컴파일 타임 상수로 만들 수 있습니다. 
+이를 위해 `const` 생성자를 정의하고, 
+모든 인스턴스 변수가 final인지 확인하세요.
 
 <?code-excerpt "misc/lib/cheatsheet/redirecting_constructors.dart (const-constructors)"?>
 ```dart
@@ -2008,30 +1940,27 @@ class ImmutablePoint {
 
 ### Code example {:.no_toc}
 
-Modify the `Recipe` class so its instances can be constants,
-and create a constant constructor that does the following:
+`Recipe` 클래스를 수정하여 인스턴스가 상수가 될 수 있도록 하고, 다음을 수행하는 상수 생성자를 만듭니다.
 
-* Has three parameters: `ingredients`, `calories`,
-  and `milligramsOfSodium` (in that order).
-* Uses `this.` syntax to automatically assign the parameter values to the
-  object properties of the same name.
-* Is constant, with the `const` keyword just before
-  `Recipe` in the constructor declaration.
+* 세 개의 매개변수가 있습니다: `ingredients`, `calceries`, `milligramsOfSodium`. (이 순서대로)
+* `this.` 구문을 사용하여, 매개변수 값을 같은 이름의 객체 속성에 자동으로 할당합니다.
+* 생성자 선언에서, `Recipe` 바로 앞에 `const` 키워드가 있는 상수입니다.
 
-Ignore all initial errors in the DartPad.
+DartPad의 모든 초기 오류를 무시합니다.
 
 ```dartpad
+// TODO: 이 메서드 내의 변수도 수정해야 합니다.
 class Recipe {
   List<String> ingredients;
   int calories;
   double milligramsOfSodium;
 
-  // TODO: Create a const constructor here"
+  // TODO: 여기에 const 생성자를 만듭니다.
 
 }
 
 
-// Tests your solution (Don't edit!):
+// 당신의 솔루션을 테스트합니다. (편집하지 마세요!):
 void main() {
   final errs = <String>[];
 
@@ -2062,9 +1991,9 @@ void main() {
 ```
 
 <details>
-  <summary>Solution for const constructors example</summary>
+  <summary>const 생성자 예제에 대한 솔루션</summary>
 
-  To make the constructor const, you'll need to make all the properties final.
+  생성자를 const로 만들려면 모든 속성을 final로 만들어야 합니다.
 
   ```dart
   class Recipe {
@@ -2078,14 +2007,13 @@ void main() {
 
 </details>
 
-## What's next?
+## 다음은 무엇인가요? {:#whats-next}
 
-We hope you enjoyed using this tutorial to learn or test your knowledge of
-some of the most interesting features of the Dart language.
+이 튜토리얼을 사용하여, Dart 언어의 가장 흥미로운 기능에 대한 지식을 배우거나 테스트하는 데 도움이 되었기를 바랍니다.
 
-What you can try next includes:
+다음에 시도할 수 있는 것은 다음과 같습니다.
 
-* Try [other Dart tutorials](/tutorials).
-* Read the [Dart language tour](/language).
-* Play with [DartPad.]({{site.dartpad}})
-* [Get the Dart SDK](/get-dart).
+* [다른 Dart 튜토리얼](/tutorials)을 시도해 보세요.
+* [Dart 언어 투어](/language)를 읽어 보세요.
+* [DartPad]({{site.dartpad}})로 플레이해 보세요.
+* [Dart SDK 받기](/get-dart).

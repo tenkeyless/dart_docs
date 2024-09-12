@@ -1,6 +1,8 @@
 ---
-title: Breaking changes and deprecations
-description: A list of breaking changes by release in Dart.
+# title: Breaking changes and deprecations
+title: 주요 변경 사항(Breaking changes) 및 지원 중단(deprecations)
+# description: A list of breaking changes by release in Dart.
+description: Dart 릴리스별 주요 변경 사항 리스트입니다.
 lastVerified: 2024-08-04
 ---
 
@@ -9,40 +11,36 @@ lastVerified: 2024-08-04
 {% assign removed = '<span class="tag-label removed-tag">Removed</span>' %}
 {% assign experimental = '<span class="tag-label experimental-tag">Experimental</span>' %}
 
-This page lists all language and library breaking changes and deprecations in Dart,
-organized by release and area, to help Dart users understand and manage their
-impact. Complete release notes are available in the [Dart SDK changelog][changelog].
-The [breaking change policy][] document describes the policy and process
-around breaking changes and deprecations in Dart. 
+이 페이지에서는 Dart의 모든 언어 및 라이브러리 중단 변경 사항과 deprecations을 릴리스 및 영역별로 정리하여, 
+Dart 사용자가 영향을 이해하고 관리할 수 있도록 도와줍니다. 
+전체 릴리스 노트는 [Dart SDK 변경 로그][changelog]에서 확인할 수 있습니다. 
+[중단 변경 정책][breaking change policy] 문서에서는 Dart의 중단 변경 사항과 deprecations에 대한 정책과 프로세스를 설명합니다.
 
-**This page includes the following types of breaking changes**:
+**이 페이지에는 다음과 같은 타입의 중단 변경 사항(breaking changes)이 포함되어 있습니다.**
 
-* **Unversioned**: The Dart SDK does not maintain backward compatibility, and
-  code may break as soon as you [upgrade your sdk version][sdk] if it relies on
-  the previous behavior.
-  
-  _These are the majority of changes and are not specially marked in this list._
-* **Language versioned**: The Dart SDK maintains backward compatibility for
-  existing code, and the behavior change only takes effect (potentially breaking
-  code that relies on the previous behavior) when you upgrade the
-  [language version][] of your code.
+* **Unversioned (버전 미지정)**: Dart SDK는 이전 버전과의 호환성(backward compatibility)을 유지하지 않으며, 
+  이전 동작에 의존하는 경우 [SDK 버전 업그레이드][SDK]하자마자 코드가 중단될 수 있습니다.
 
-  _These are marked as:_ {{versioned}}
-* **Deprecations**: The Dart SDK maintains compatibility for deprecated code,
-  with a warning. Deprecations are then completely removed in a subsequent release,
-  breaking any code that relies on the previous behavior.
+  _이것은 대부분의 변경 사항이며, 이 리스트에 특별히 표시되지 않습니다._
+* **Language versioned (언어 버전 지정)**: Dart SDK는 기존 코드에 대한 이전 버전과의 호환성을 유지하며, 
+  동작 변경은 코드의 [언어 버전][language version]을 업그레이드할 때만 적용됩니다.
+  (이전 동작에 의존하는 코드를 중단시킬 수 있음)
 
-  _These are marked as:_ {{deprecated}} / {{removed}}
-* **Experimental**: Part of the release but not yet treated as stable in the SDK,
-  and can break from one version to another. Experimental changes do not
-  always have a corresponding breaking change issue, but may have more detail in
-  the [SDK changelog][changelog].
+  _이것은 다음과 같이 표시됩니다. :_ {{versioned}}
+* **Deprecations (사용 중단)**: Dart SDK는 사용 중단된 코드에 대한 호환성을 유지하며 경고가 표시됩니다. 
+  사용 중단은 이후 릴리스에서 완전히 제거되어, 이전 동작에 의존하는 모든 코드가 중단됩니다.
 
-  These are marked: {{experimental}}
+  _이것은 다음과 같이 표시됩니다. :_ {{deprecated}} / {{removed}}
+* **Experimental (실험적)**: 릴리스의 일부이지만, 아직 SDK에서 stable로 처리되지 않았으며, 
+  한 버전에서 다른 버전으로 변경될 수 있습니다. 
+  실험적 변경 사항에는 항상 해당하는 중단 변경 문제가 있는 것은 아니지만, 
+  [SDK 변경 로그][changelog]에 더 자세한 내용이 있을 수 있습니다.
 
-If you have questions or concerns about any of these breaking changes, please 
-comment on the breaking change issue linked from the relevant entry.
-To be notified about future breaking changes, join the [Dart announce][] group.
+  _이것은 다음과 같이 표시됩니다. :_ {{experimental}}
+
+이러한 중대한 변경 사항에 대해 질문이나 우려 사항이 있는 경우, 
+관련 항목에서 링크된 중대한 변경(breaking change) 문제에 대해 의견을 남겨주세요. 
+향후 중대한 변경 사항(breaking change)에 대해 알림을 받으려면, [Dart announce][] 그룹에 가입하세요.
 
 [breaking change policy]: {{site.repo.dart.sdk}}/blob/main/docs/process/breaking-changes.md
 [changelog]: {{site.repo.dart.sdk}}/blob/main/CHANGELOG.md
@@ -70,20 +68,16 @@ don't include the section header.
 
 ## 3.6.0
 
-**Tentative**<br>
-The following changes are expected to be included in the 3.6 stable release,
-but the final list will likely change before then.
-To reduce the potential impact of these changes, consider
-accounting for them before the 3.6 release.
+**임시 (Tentative)**<br>
+다음 변경 사항은 3.6 stable 릴리스에 포함될 것으로 예상되지만, 최종 리스트는 그 전에 변경될 가능성이 높습니다. 
+이러한 변경 사항의 잠재적 영향을 줄이려면, 3.6 릴리스 전에 이를 고려하는 것이 좋습니다.
 
 ### Language {:.no_toc}
 
-- [The context used by Dart to perform type inference on
-  the operand of a throw expression has been changed from
-  the "unknown type" to `Object`][56065].
-  This makes the type system more self-consistent, because
-  it reflects the fact that it's not legal to throw `null`.
-  This change is not expected to make any difference in practice.
+- [Dart에서 throw 표현식의 피연산자에 대한 타입 추론을 수행하는 데 사용되는 컨텍스트가 "알 수 없는 타입"에서 `Object`로 변경되었습니다][56065]. 
+  이는 `null`을 throw하는 것이 합법적이지 않다는 사실을 반영하기 때문에, 
+  타입 시스템이 더 자체적으로 일관되게 만듭니다. 
+  이 변경은 실제로는 아무런 차이를 만들지 않을 것으로 예상됩니다.
 
 [56065]: {{site.repo.dart.sdk}}/issues/56065
 
@@ -91,13 +85,9 @@ accounting for them before the 3.6 release.
 
 ### Language {:.no_toc}
 
-- [The context used by the compiler to perform type inference on
-  the operand of an `await` expression has been changed to
-  match the behavior of the analyzer.][55418]
-- [The context used by the compiler to perform type inference on
-  the right hand side of an "if-null" expression (`e1 ?? e2`) has been
-  changed to match the behavior of the analyzer.][55436]
-  The old behavior can be restored by supplying explicit types.
+- [컴파일러가 `await` 표현식의 피연산자에 대한 타입 추론을 수행하는 데 사용하는 컨텍스트가 analyzer의 동작과 일치하도록 변경되었습니다.][55418]
+- [컴파일러가 "if-null" 표현식(`e1 ?? e2`)의 오른쪽에 대한 타입 추론을 수행하는 데 사용하는 컨텍스트가 analyzer의 동작과 일치하도록 변경되었습니다.][55436] 
+  명시적 타입을 제공하면, 이전 동작을 복원할 수 있습니다.
 
 [55418]: {{site.repo.dart.sdk}}/issues/55418
 [55436]: {{site.repo.dart.sdk}}/issues/55436
@@ -106,26 +96,21 @@ accounting for them before the 3.6 release.
 
 #### `dart:core`
 
-- [`DateTime` now stores microseconds on the web platform][44876],
-  more closely matching the behavior on native platforms.
+- [`DateTime`은 이제 웹 플랫폼에서 마이크로초를 저장합니다][44876]. 이는 네이티브 플랫폼에서의 동작과 더욱 일치합니다.
 
 [44876]: {{site.repo.dart.sdk}}/issues/44876
 
 #### `dart:io`
 
-- [`SecurityContext` is now final and can no longer be subclassed][55786].
+- [`SecurityContext`는 이제 final이므로, 더 이상 하위 클래스화할 수 없습니다][55786].
 
 [55786]: {{site.repo.dart.sdk}}/issues/55786
 
 #### `dart:js_interop`
 
-- [`importModule` now accepts a `JSAny` instead of a `String`][55508] to
-  support other JS values as well, such as `TrustedScriptURL` objects.
-- [`isTruthy` and `not` now return `JSBoolean` instead of `bool`][55267] to
-  be consistent with other JS operator methods.
-- [`ExternalDartReference` no longer implements `Object`][56015].
-  Instead, it now accepts a type parameter (`T`) with a bound of
-  `Object?` to capture the type of the Dart object that is externalized.
+- [`importModule`은 이제 `String` 대신 `JSAny`를 허용합니다.][55508] 다른 JS 값(예: `TrustedScriptURL` 객체)도 지원합니다.
+- [`isTruthy`와 `not`은 이제 `bool` 대신 `JSBoolean`을 반환합니다.][55267] 다른 JS 연산자 메서드와 일관성을 유지합니다.
+- [`ExternalDartReference`는 더 이상 `Object`를 구현하지 않습니다.][56015] 대신 이제 `Object?`의 바운드를 가진 타입 매개변수(`T`)를 허용하여, 외부화된(externalized) Dart 객체의 타입을 캡처합니다.
 
 [55508]: {{site.repo.dart.sdk}}/issues/55508
 [55267]: {{site.repo.dart.sdk}}/issues/55267
@@ -134,19 +119,17 @@ accounting for them before the 3.6 release.
 #### `dart:typed_data`
 
 - {{removed}}
-  [The unmodifiable view classes for typed data have been removed][53128].
-  Instead of using the constructors of these classes, use
-  the new `asUnmodifiableView` methods on typed data lists.
+  [타입화된 데이터에 대한 수정 불가능한 뷰 클래스가 제거되었습니다.][53128]. 
+  이러한 클래스의 생성자를 사용하는 대신, 
+  타입화된 데이터 리스트에서 새로운 `asUnmodifiableView` 메서드를 사용합니다.
 
 ### Runtime {:.no_toc}
 
-- {{removed}} The Dart VM no longer supports unsound null safety.
-  - The `--no-sound-null-safety` CLI option has been removed.
-  - The `Dart_NewListOf` and `Dart_IsLegacyType` functions have been
-    removed from the C API.
-- {{removed}} The `Dart_DefaultCanonicalizeUrl` function has been
-  removed from the C API.
-
+- {{removed}} Dart VM은 더 이상 unsound null safety를 지원하지 않습니다.
+  - `--no-sound-null-safety` CLI 옵션이 제거되었습니다.
+  - `Dart_NewListOf` 및 `Dart_IsLegacyType` 함수가 C API에서 제거되었습니다.
+- {{removed}} `Dart_DefaultCanonicalizeUrl` 함수가 C API에서 제거되었습니다.
+  
 ## 3.4.0
 
 ### Language {:.no_toc}
