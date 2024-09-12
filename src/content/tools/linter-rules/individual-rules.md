@@ -16,15 +16,17 @@ skipFreshness: true
 {{lint.description}}
 
 {% if lint.sinceDartSdk == "Unreleased" or lint.sinceDartSdk contains "-wip" -%}
-_This rule is currently **experimental**
-and not yet available in a stable SDK._
+<!-- _This rule is currently **experimental** and not yet available in a stable SDK._ -->
+_이 규칙은 현재 **experimental**이며, 아직 stable SDK에서 사용할 수 없습니다._
 {% elsif lint.state == "removed" -%}
-_This rule has been removed as of the latest Dart releases._
+<!-- _This rule has been removed as of the latest Dart releases._ -->
+_이 규칙은 최신 Dart 릴리스부터 제거되었습니다._
 {% elsif lint.state != "stable" -%}
-_This rule is currently **{{lint.state}}**
-and available as of Dart {{lint.sinceDartSdk}}._
+<!-- _This rule is currently **{{lint.state}}** and available as of Dart {{lint.sinceDartSdk}}._ -->
+_이 규칙은 현재 **{{lint.state}}**이며, Dart {{lint.sinceDartSdk}}부터 사용할 수 있습니다._
 {% else -%}
-_This rule is available as of Dart {{lint.sinceDartSdk}}._
+<!-- _This rule is available as of Dart {{lint.sinceDartSdk}}._ -->
+_이 룰은 Dart {{lint.sinceDartSdk}}에서 사용가능합니다._
 {% endif -%}
 
 {% if lint.sets != empty -%}
@@ -52,7 +54,8 @@ _This rule is available as of Dart {{lint.sinceDartSdk}}._
 {% endif -%}
 
 {% if lint.fixStatus == "hasFix" %}
-_This rule has a [quick fix](/tools/linter-rules#quick-fixes) available._
+<!-- _This rule has a [quick fix](/tools/linter-rules#quick-fixes) available._ -->
+_이 규칙에는 [빠른 수정](/tools/linter-rules#quick-fixes)이 있습니다._
 {% endif %}
 
 {% if lint.incompatible != empty -%}
@@ -67,18 +70,18 @@ _This rule has a [quick fix](/tools/linter-rules#quick-fixes) available._
 {% assign incompatible_rules = incompatible_rules | append: incompatible_rule -%}
 {% endfor -%}
 
-<em>Incompatible rules: {{ incompatible_rules }}</em>
+<em>호환되지 않는 규칙: {{ incompatible_rules }}</em>
 {% endif -%}
 
-## Details
+## 세부사항 {:#details}
 
 {{lint.details}}
 
-## Usage
+## 사용 {:#usage}
 
-To enable the `{{lint.name}}` rule,
-add `{{lint.name}}` under **linter > rules** in your
-[`analysis_options.yaml`](/tools/analysis) file:
+`{{lint.name}}` 규칙을 활성화하려면, 
+[`analysis_options.yaml`](/tools/analysis) 파일의 **linter > rules** 아래에, 
+`{{lint.name}}`을 추가합니다.
 
 ```yaml title="analysis_options.yaml"
 linter:

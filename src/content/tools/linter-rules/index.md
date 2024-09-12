@@ -1,120 +1,104 @@
 ---
-title: Linter rules
-description: Details about the Dart linter and its style rules you can choose.
+# title: Linter rules
+title: 린터 규칙
+# description: Details about the Dart linter and its style rules you can choose.
+description: Dart linter와 선택할 수 있는 스타일 규칙에 대한 세부 정보입니다.
 show_breadcrumbs: true
 ---
 
-Use the Dart linter to identify possible problems in your Dart code.
-You can use the linter through your IDE
-or with the [`dart analyze`](/tools/dart-analyze) command.
-For information on how to enable and disable individual linter rules, see
-[individual rules sections][] of the [analyzer documentation][].
+Dart 린터를 사용하여, Dart 코드에서 발생할 수 있는 문제를 식별합니다. 
+IDE를 통해 또는 [`dart analyst`](/tools/dart-analyze) 명령으로 린터를 사용할 수 있습니다. 
+개별 린터 규칙을 활성화 및 비활성화하는 방법에 대한 자세한 내용은, 
+[analyzer 문서][analyzer documentation]의 [개별 규칙 섹션][individual rules sections]을 참조하세요.
 
 [individual rules sections]: /tools/analysis#individual-rules
 [analyzer documentation]: /tools/analysis
 
-This page lists all the linter rules,
-with details such as when you might want to use each rule,
-what code patterns trigger it, and
-how you might fix your code.
+이 페이지에는 모든 린터 규칙이 나열되어 있으며, 
+각 규칙을 언제 사용해야 할지, 어떤 코드 패턴이 규칙을 트리거하는지, 
+어떻게 코드를 수정할 수 있는지 등의 세부 정보가 나와 있습니다.
 
 :::tip
-Linter rules (sometimes called _lints_) can have false positives,
-and they don't all agree with each other.
-For example, some rules are more appropriate for regular Dart packages,
-and others are designed for Flutter apps.
+린터 규칙(때때로 _린트(lints)_ 라고 함)은 거짓 양성(false positives)을 가질 수 있으며, 
+모두 서로 일치하지는 않습니다. 
+예를 들어, 일부 규칙은 일반 Dart 패키지에 더 적합하고, 
+다른 규칙은 Flutter 앱에 맞게 설계되었습니다.
 :::
 
 <a id="predefined-rule-sets"></a>
-## Sets
+## 세트 {:#sets}
 
-To avoid the need to individually select compatible linter rules,
-consider starting with a linter rule set,
-which the following packages provide:
+호환되는 린터 규칙을 개별적으로 선택할 필요가 없도록, 
+다음의 패키지가 제공하는 린터 규칙 세트로 시작하는 것을 고려하세요.
 
 <a id="lints"></a>
 
 [lints][]
-: Contains two rule sets curated by the Dart team. 
-  We recommend using at least the `core` rule set, 
-  which is used when [scoring]({{site.pub}}/help/scoring) 
-  packages uploaded to [pub.dev]({{site.pub}}). 
-  Or, better yet, use the `recommended` rule set, 
-  a superset of `core` that identifies additional issues
-  and enforces style and format. 
-  If you're writing Flutter code, 
-  use the rule set in the [`flutter_lints`](#flutter_lints) package,
-  which builds on `lints`.
+: Dart 팀에서 큐레이팅한 두 가지 규칙 세트가 포함되어 있습니다. 
+  최소한 `core` 규칙 세트를 사용하는 것이 좋습니다. 
+  이 규칙 세트는 [pub.dev]({{site.pub}})에 업로드된 패키지를 [scoring]({{site.pub}}/help/scoring)할 때 사용됩니다. 
+  아니면, `recommended` 규칙 세트를 사용하는 것이 더 좋습니다. 
+  이 규칙 세트는 `core`의 슈퍼세트로, 추가 문제를 식별하고 스타일과 형식을 적용합니다. 
+  Flutter 코드를 작성하는 경우, 
+  `lints`를 기반으로 하는 [`flutter_lints`](#flutter_lints) 패키지의 규칙 세트를 사용하세요.
 
 <a id="flutter_lints"></a>
 
 [flutter_lints][]
-: Contains the `flutter` rule set,
-  which the Flutter team encourages you to use
-  in Flutter apps, packages, and plugins.
-  This rule set is a superset of the [`recommended`](#lints) set,
-  which is itself a superset of the [`core`](#lints) set that
-  partially determines the [score]({{site.pub}}/help/scoring) of
-  packages uploaded to [pub.dev]({{site.pub}}).
+: Flutter 팀에서 Flutter 앱, 패키지 및 플러그인에서 사용하도록 권장하는, 
+  `flutter` 규칙 세트가 포함되어 있습니다. 
+  이 규칙 세트는 [`recommended`](#lints) 세트의 상위 세트이며, 
+  이 세트 자체가 [pub.dev]({{site.pub}})에 업로드된 패키지의 
+  [score]({{site.pub}}/help/scoring)를 부분적으로 결정하는 [`core`](#lints) 세트의 상위 세트입니다.
 
 [lints]: {{site.pub-pkg}}/lints
 [flutter_lints]: {{site.pub-pkg}}/flutter_lints
 
-To learn how to use a specific rule set,
-visit the documentation for [enabling and disabling linter rules][].
+특정 규칙 세트를 사용하는 방법을 알아보려면, 
+[린터 규칙 활성화 및 비활성화][enabling and disabling linter rules]에 대한 설명서를 방문하세요.
 
-To find more predefined rule sets,
-check out the [`#lints` topic]({{site.pub-pkg}}?q=topic:lints) on pub.dev.
+더 많은 사전 정의된 규칙 세트를 찾으려면, 
+pub.dev의 [`#lints` 토픽]({{site.pub-pkg}}?q=topic:lints)을 확인하세요.
 
 [enabling and disabling linter rules]: /tools/analysis#enabling-linter-rules
 
 <a id="maturity-levels"></a>
-## Status
+## 상태 {:#status}
 
-Each rule has a status or maturity level:
+각 규칙에는 상태 또는 성숙도가 있습니다.
 
 **Stable**
-: These rules are safe to use and are verified as functional
-  with the latest versions of the Dart language.
-  All rules are considered stable unless
-  they're marked as experimental, deprecated, or removed.
+: 이러한 규칙은 사용하기에 안전하며, 최신 버전의 Dart 언어에서 작동하는 것으로 검증되었습니다. 
+  모든 규칙은 experimental, deprecated 또는 removed로 표시되지 않는 한 stable로 간주됩니다.
 
 **Experimental**
-: These rules are still under evaluation and might never be stabilized.
-  Use these with caution and report any issues you come across.
+: 이러한 규칙은 아직 평가 중이며 안정화되지 않을 수 있습니다. 주의해서 사용하고 발견한 문제는 보고하세요.
 
 **Deprecated**
-: These rules are no longer suggested for use
-  and might be removed in a future Dart release.
+: 이러한 규칙은 더 이상 사용하도록 제안되지 않으며, 향후 Dart 릴리스에서 제거될 수 있습니다.
 
 **Removed**
-: These rules have been already been removed in the
-  latest stable Dart release.
+: 이러한 규칙은 최신 stable Dart 릴리스에서 이미 제거되었습니다.
 
-## Quick fixes
+## 빠른 수정 {:#quick-fixes}
 
-Some rules can be fixed automatically using quick fixes.
-A quick fix is an automated edit 
-targeted at fixing the issue
-reported by the linter rule.
+일부 규칙은 빠른 수정을 사용하여 자동으로 수정할 수 있습니다. 
+빠른 수정은 린터 규칙에서 보고된 문제를 수정하는 것을 목표로 하는 자동화된 편집입니다.
 
-If the rule has a quick fix,
-it can be applied using [`dart fix`](/tools/dart-fix)
-or using your [editor with Dart support](/tools#editors).
-To learn more, see [Quick fixes for analysis issues][].
+규칙에 빠른 수정이 있는 경우, 
+[`dart fix`](/tools/dart-fix)를 사용하거나, 
+[Dart 지원 편집기](/tools#editors)를 사용하여 적용할 수 있습니다. 
+자세한 내용은 [분석 문제에 대한 빠른 수정][Quick fixes for analysis issues]을 참조하세요.
 
 [Quick fixes for analysis issues]: https://medium.com/dartlang/quick-fixes-for-analysis-issues-c10df084971a
 
-## Rules
+## 규칙 {:#rules}
 
-The following is an index of all linter rules and 
-a short description of their functionality.
-To learn more about each rule, 
-click on its name.
+다음은 모든 linter 규칙의 인덱스와 해당 기능에 대한 간략한 설명입니다. 
+각 규칙에 대해 자세히 알아보려면 해당 이름을 클릭하세요.
 
-For an auto-generated list containing all linter rules
-in Dart `{{site.sdkInfo.version}}`,
-check out [All linter rules](/tools/linter-rules/all).
+Dart `{{site.sdkInfo.version}}`의 모든 린터 규칙이 포함된, 
+자동 생성 리스트는 [모든 린터 규칙](/tools/linter-rules/all)을 확인하세요.
 
 {% render 'linter-rules-section.md', linter_rules:linter_rules %}
 
