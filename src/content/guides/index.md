@@ -20,7 +20,7 @@ Dart 문서에 오신 것을 환영합니다!
 |       |      |
 |:-----:|:----|
 | Dart 버전 | 3.5.0 |
-| 최종 업데이트 | 2024-09-11 |
+| 최종 업데이트 | 2024-09-13|
 | 웹사이트 주소 | [dart-docs-kr.web.app](https://dart-docs-kr.web.app/) |
 | GitHub 주소 | <https://github.com/tenkeyless/dart_docs/tree/develop> |
 
@@ -47,6 +47,9 @@ Dart 문서에 오신 것을 환영합니다!
   - 도구 & 기술
     - 정적 분석
       - [진단 메시지](/tools/diagnostic-messages) : 직접 편집 불가
+    - 게시
+      - [커스텀 패키지 저장소](/tools/pub/custom-package-repositories)
+      - [pub.dev에 패키지를 자동으로 게시](/tools/pub/automated-publishing)
   - 리소스
     - [Dart 3 마이그레이션 가이드](/resources/dart-3-migration)
     - ...에서 이전

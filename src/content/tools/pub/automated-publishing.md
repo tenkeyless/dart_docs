@@ -1,6 +1,8 @@
 ---
-title: Automated publishing of packages to pub.dev
-description: Publish Dart packages to pub.dev directly from GitHub Actions.
+# title: Automated publishing of packages to pub.dev
+title: pub.dev에 패키지를 자동으로 게시
+# description: Publish Dart packages to pub.dev directly from GitHub Actions.
+description: GitHub Actions에서 직접 pub.dev에 Dart 패키지를 게시합니다.
 ---
 
 You can automate publishing from:

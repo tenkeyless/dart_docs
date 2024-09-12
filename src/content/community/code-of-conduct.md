@@ -1,25 +1,26 @@
 ---
-title: Code of conduct
-description: Be excellent to each other.
+# title: Code of conduct
+title: 행동강령
+# description: Be excellent to each other.
+description: 서로에게 최선을 다하세요.
 toc: false
 skipFreshness: true
 ---
 
-We expect Dart community members to act professionally and respectfully, and
-we expect our social spaces to be safe and dignified environments.
+Dart 커뮤니티 구성원이 전문적이고 존중심을 가지고 행동하기를 기대하며, 
+우리의 소셜 공간은 안전하고 품위 있는 환경이 되기를 기대합니다.
 
-Specifically:
+구체적으로:
 
-* Respect people, their identities, their culture, and their work.
-* Be kind. Be courteous. Be welcoming.
-* Listen. Consider and acknowledge people's points before responding.
+* 사람, 그들의 정체성, 문화, 그리고 그들의 일을 존중하십시오.
+* 친절하십시오. 예의 바르게 행동하십시오. 환영하십시오.
+* 경청하십시오. 응답하기 전에 사람들의 요점을 고려하고 인정하십시오.
 
-If any member of the community violates this code of conduct,
-the maintainers of the Dart project may take action, removing issues, comments, and PRs or blocking accounts as deemed appropriate.
-We will not tolerate harassment from anyone in the Dart community,
-even outside of Dart's public communication channels.
+커뮤니티 구성원이 이 행동 강령을 위반하는 경우, 
+Dart 프로젝트 유지 관리자가 문제, 댓글, PR을 제거하거나, 
+적절하다고 판단되는 경우 계정을 차단하는 조치를 취할 수 있습니다. 
+Dart의 공개 커뮤니케이션 채널 외부에서도, 
+Dart 커뮤니티의 누구에게도 괴롭힘을 용납하지 않습니다.
 
-If you are subject to or witness unacceptable behavior,
-or have any other concerns,
-please [email us](mailto:conduct@dartlang.org).
-
+용납할 수 없는 행동을 당하거나 목격하거나 다른 우려 사항이 있는 경우, 
+[이메일](mailto:conduct@dartlang.org)로 문의해 주십시오.

@@ -1,18 +1,18 @@
 ---
-title: What's new
-description: A list of what's new on dart.dev and related sites.
+# title: What's new
+title: 새로운 소식
+# description: A list of what's new on dart.dev and related sites.
+description: dart.dev와 관련 사이트의 새로운 소식 리스트입니다.
 lastVerified: 2024-08-06
 ---
 
-This page describes what's new on the Dart website and blog.
-To see what's new in Flutter, visit the
-[Flutter what's new page.][flutter-whats-new]
+이 페이지에서는 Dart 웹사이트와 블로그의 새로운 소식을 설명합니다. 
+Flutter의 새로운 소식을 보려면 [Flutter 새로운 소식 페이지][flutter-whats-new]를 방문하세요.
 
-For a list of Dart language changes in each Dart SDK, see the 
-[language evolution page][evolution].
-To stay on top of announcements, including breaking changes,
-join the [Dart announcements Google group][dart-announce]
-and follow the [Dart blog][].
+각 Dart SDK의 Dart 언어 변경 사항 리스트는 [언어 진화 페이지][evolution]를 참조하세요. 
+중단된 변경 사항을 포함한 공지 사항을 최신 상태로 유지하려면, 
+[Dart announcements Google group][dart-announce]에 가입하고, 
+[Dart 블로그][Dart blog]를 팔로우하세요.
 
 [flutter-whats-new]: {{site.flutter-docs}}/whats-new
 [dart-announce]: https://groups.google.com/a/dartlang.org/d/forum/announce

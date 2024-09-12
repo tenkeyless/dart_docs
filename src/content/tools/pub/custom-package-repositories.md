@@ -1,6 +1,8 @@
 ---
-title: Custom package repositories
-description: "How Dart's package management tool, pub, works with custom package repositories."
+# title: Custom package repositories
+title: 커스텀 패키지 저장소
+# description: "How Dart's package management tool, pub, works with custom package repositories."
+description: "Dart의 패키지 관리 도구인 pub가 커스텀 패키지 저장소와 어떻게 작동하는지 설명합니다."
 ---
 
 The `dart pub` tool supports third-party package repositories.
