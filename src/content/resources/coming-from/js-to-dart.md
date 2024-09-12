@@ -1,39 +1,30 @@
 ---
-title: Learning Dart as a JavaScript developer
-description: Leverage your JavaScript knowledge when learning Dart.
+# title: Learning Dart as a JavaScript developer
+title: JavaScript 개발자로서 Dart 배우기
+# description: Leverage your JavaScript knowledge when learning Dart.
+description: Dart를 배울 때 JavaScript 지식을 활용하세요.
 body_class: highlight-languages
 lastVerified: 2022-11-21
 ---
 
-This guide aims to leverage your JavaScript programming knowledge
-when learning Dart.
-It showcases key similarities and differences in both languages,
-and introduces Dart concepts that are unsupported in JavaScript.
-As a JavaScript developer, Dart should feel quite familiar,
-as both languages share many concepts.
+이 가이드는 Dart를 배울 때 JavaScript 프로그래밍 지식을 활용하는 것을 목표로 합니다. 
+두 언어의 주요 유사점과 차이점을 보여주고, JavaScript에서 지원되지 않는 Dart 개념을 소개합니다. 
+JavaScript 개발자로서 Dart는 두 언어가 많은 개념을 공유하기 때문에, 꽤 친숙하게 느껴질 것입니다.
 
-Like JavaScript, Dart runs on an event loop,
-so both languages execute code in a similar way.
-For example, asynchronous concepts like futures
-(promises in JavaScript) and the `async/await` syntax are very similar.
+JavaScript와 마찬가지로, Dart는 이벤트 루프에서 실행되므로, 
+두 언어 모두 비슷한 방식으로 코드를 실행합니다. 
+예를 들어, futures(JavaScript의 promises)와 `async/await` 구문과 같은 비동기 개념은 매우 유사합니다.
 
-Dart is strongly typed, unlike JavaScript.
-If you have used with TypeScript or Flow,
-this should simplify learning Dart.
-If you've mostly worked with pure JavaScript,
-it might be more of an adjustment.
-With strong typing, Dart catches many errors before compiling
-that might exist in JavaScript code.
+JavaScript와 달리 Dart는 강력한 타입으로 되어 있습니다.(typed) 
+TypeScript 또는 Flow를 사용한 적이 있다면 Dart를 배우는 것이 간단해질 것입니다. 
+대부분 순수 JavaScript로 작업한 적이 있다면 조정이 더 필요할 수 있습니다. 
+강력한 타입화 덕분에, Dart는 JavaScript 코드에 존재할 수 있는 많은 오류를 컴파일하기 전에 포착합니다.
 
-Dart enables null safety by default.
-JavaScript doesn't support null safety.
-As a JavaScript developer,
-it might take a while to learn how to write null safe code,
-but the trade-off is better protection against
-null reference exceptions that are detected even
-before compiling Dart code. (Thereby avoiding those
-dreaded `TypeError`s that occur when doing operations
-on a JavaScript variable that turns out to be null.)
+Dart는 기본적으로 null 안전성을 활성화합니다. 
+JavaScript는 null 안전성을 지원하지 않습니다. 
+JavaScript 개발자로서 null 안전한 코드를 작성하는 방법을 배우는 데 시간이 걸릴 수 있지만, 
+Dart 코드를 컴파일하기 전에도 감지되는 null 참조 예외에 대한 보호가 더 나은 것입니다. 
+(그러면 JavaScript 변수에 대한 작업을 수행할 때 null이 발생하는 끔찍한 `TypeError`를 피할 수 있습니다.)
 
 ## Conventions and linting
 

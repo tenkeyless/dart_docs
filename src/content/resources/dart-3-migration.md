@@ -1,16 +1,15 @@
 ---
-title: Dart 3 migration guide
-description: How to migrate existing Dart code to be compatible with Dart 3.
+# title: Dart 3 migration guide
+title: Dart 3 마이그레이션 가이드
+# description: How to migrate existing Dart code to be compatible with Dart 3.
+description: 기존 Dart 코드를 Dart 3와 호환되도록 마이그레이션하는 방법.
 ---
 
-Dart 3 is a major release that introduces new core capabilities to Dart: 
-[records][], [patterns][], and [class modifiers][].
+Dart 3는 Dart에 새로운 핵심 기능인 [레코드][records], [패턴][patterns], [클래스 수정자][class modifiers]를 도입하는 주요 릴리스입니다.
 
-Alongside these new capabilities, Dart 3 contains a number of changes
-that may break existing code. 
+이러한 새로운 기능과 함께, Dart 3에는 기존 코드를 손상시킬 수 있는 여러 변경 사항이 포함되어 있습니다.
 
-This guide will help you resolve any migration issues you might encounter
-after [upgrading to Dart 3](/get-dart).
+이 가이드는 [Dart 3으로 업그레이드](/get-dart) 후에 발생할 수 있는, 모든 마이그레이션 문제를 해결하는 데 도움이 됩니다.
 
 ## Introduction
 

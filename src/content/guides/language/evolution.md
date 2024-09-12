@@ -1,26 +1,24 @@
 ---
-title: Dart language evolution
-short-title: Language evolution
-description: Notable changes and additions to the Dart programming language.
+# title: Dart language evolution
+title: Dart 언어 진화
+# short-title: Language evolution
+short-title: 언어 진화
+# description: Notable changes and additions to the Dart programming language.
+description: Dart 프로그래밍 언어의 주요 변경 사항 및 추가 사항.
 lastVerified: 2024-08-04
 ---
 
-This page lists notable changes and additions to the
-Dart programming language.
+이 페이지는 Dart 프로그래밍 언어의 주요 변경 사항과 추가 사항을 나열합니다.
 
-* To learn specific details about the most recent supported language version,
-  check out the [language documentation][] or the [language specification][].
-* For a full history of changes to the Dart SDK, see the [SDK changelog][].
-* For a full history of breaking changes,
-  including [language versioned][] changes,
-  check out the [Breaking changes][] page.
+* 가장 최근에 지원되는 언어 버전에 대한 구체적인 세부 정보를 알아보려면, [언어 문서][language documentation] 또는 [언어 사양][language specification]을 확인하세요.
+* Dart SDK의 변경 사항에 대한 전체 내역은 [SDK 변경 로그][SDK changelog]를 참조하세요.
+* [언어 버전][language versioned] 변경 사항을 포함한 중요한 변경 사항(breaking changes)에 대한 전체 내역은 [중요 변경 사항][Breaking changes] 페이지를 확인하세요.
 
-To use a language feature introduced after 2.0,
-set an [SDK constraint][] no lower than
-the release when Dart first supported that feature.
+2.0 이후에 도입된 언어 기능을 사용하려면, 
+Dart가 해당 기능을 처음 지원했을 때의 릴리스보다 낮은 [SDK 제약 조건][SDK constraint]을 설정하세요.
 
-**For example:** To use null safety, introduced in [2.12][],
-set `2.12.0` as the lower constraint in the `pubspec.yaml` file.
+**예:** [2.12][]에서 도입된 null 안전성을 사용하려면, 
+`pubspec.yaml` 파일에서 `2.12.0`을 하위 제약 조건으로 설정하세요.
 
 ```yaml
 environment:
@@ -33,27 +31,25 @@ environment:
 [Breaking changes]: /resources/breaking-changes
 
 :::tip
-To review the features being discussed, investigated, and
-added to the Dart language,
-check out the [language funnel][] tracker
-on the Dart language GitHub repo.
+Dart 언어에 대해 논의, 조사, 추가된 기능을 검토하려면, 
+Dart 언어 GitHub 저장소의 [언어 퍼널(language funnel)][language funnel] 추적기를 확인하세요.
 :::
 
 
-## Changes in each release
+## 각 릴리스의 변경 사항 {:#changes-in-each-release}
 
 ### Dart 3.5
-_Released 6 August 2024_
-| [Dart 3.5 announcement](https://medium.com/dartlang/dart-3-5-6ca36259fa2f)
 
-Dart 3.5 added no new language features, but made minor changes to the
-context considered during type inference.
-These include the following, non-language versioned changes:
+_2024년 8월 6일 출시_
+| [Dart 3.5 발표](https://medium.com/dartlang/dart-3-5-6ca36259fa2f)
 
-* When the context for an `await` expression is `dynamic`,
-  the context for the operand of expression is now `FutureOr<_>`.
-* When the context for an entire if-null expression (`e1 ?? e2`) is `dynamic`,
-  the context for `e2` is now the static type of `e1`.
+Dart 3.5는 새로운 언어 기능을 추가하지 않았지만, 
+타입 추론 중에 고려되는 컨텍스트에 사소한 변경을 가했습니다. 
+여기에는 다음과 같은 언어가 아닌 버전 변경 사항(non-language versioned changes)이 포함됩니다.
+
+* `await` 표현식의 컨텍스트가 `dynamic`인 경우, 표현식의 피연산자에 대한 컨텍스트는 이제 `FutureOr<_>`입니다.
+* 전체 if-null 표현식(`e1 ?? e2`)에 대한 컨텍스트가 `dynamic`인 경우, 
+  `e2`에 대한 컨텍스트는 이제 `e1`의 정적 타입입니다.
 
 ### Dart 3.4
 _Released 14 May 2024_
@@ -513,104 +509,83 @@ Before Dart 2.0, types weren't fully sound, and
 Dart relied heavily on runtime type checking.
 Dart 1.x code had to be migrated to Dart 2.
 
-## Language versioning
+## 언어 버전 관리 {:#language-versioning}
 
-A single Dart SDK can simultaneously support
-multiple versions of the Dart language.
-The compiler determines what version the code is targeting,
-and it interprets the code according to that version.
+단일 Dart SDK는 동시에 여러 버전의 Dart 언어를 지원할 수 있습니다. 
+컴파일러는 코드가 타겟팅하는 버전을 결정하고, 해당 버전에 따라 코드를 해석합니다.
 
-Language versioning becomes important on the rare occasions when Dart
-introduces an incompatible feature like [null safety][].
-When Dart introduces a breaking change, code that
-did compile might no longer compile.
-Language versioning allows you to set each library's language version
-to maintain compatibility.
+언어 버전 관리가 Dart가 [null safety][]와 같은 호환되지 않는 기능을 도입하는 드문 경우에 중요해집니다. 
+Dart가 중대한 변경 사항을 도입하면, 컴파일된 코드가 더 이상 컴파일되지 않을 수 있습니다. 
+언어 버전 관리를 사용하면, 각 라이브러리의 언어 버전을 설정하여, 호환성을 유지할 수 있습니다.
 
-In the case of null safety, Dart SDKs 2.12 through 2.19 allowed you
-to _choose_ to update your code to use null safety.
-Dart uses language versioning to permit non-null-safe code to run
-alongside null-safe code.
-This decision enabled migration from non-null-safe to null-safe code.
-To review an example of how an app or package can migrate to a new
-language version with an incompatible feature, check out
-[Migrating to null safety](/null-safety/migration-guide).
+null safety의 경우, Dart SDK 2.12~2.19에서는 null safety를 사용하도록 코드를 업데이트하도록 _선택_ 할 수 있습니다. 
+Dart는 언어 버전 관리를 사용하여, null 안전하지 않은 코드가 null 안전 코드와 함께 실행되도록 허용합니다. 
+이 결정을 통해, null 안전하지 않은 코드에서 null 안전 코드로 마이그레이션할 수 있습니다. 
+앱이나 패키지가 호환되지 않는 기능이 있는 새 언어 버전으로 마이그레이션하는 방법의 예를 검토하려면, 
+[null safety로 마이그레이션](/null-safety/migration-guide)을 확인하세요.
 
-Each package has a default language version equal to the **lower bound**
-of the SDK constraint in the `pubspec.yaml` file.
+각 패키지에는 `pubspec.yaml` 파일의 SDK 제약 조건의 **하한(lower bound)**과 동일한 기본 언어 버전이 있습니다.
 
-**For example:** The following entry in a `pubspec.yaml` file
-indicates that this package defaults to the Dart 2.18 language version.
+**예:** `pubspec.yaml` 파일의 다음 항목은 이 패키지가 기본적으로 Dart 2.18 언어 버전을 사용한다는 것을 나타냅니다.
 
 ```yaml
 environment:
   sdk: '>=2.18.0 <3.0.0'
 ```
 
-### Language version numbers
+### 언어 버전 번호 {:#language-version-numbers}
 
-Dart formats its language versions as two numbers separated with a period.
-It reads as a major version number and a minor version number.
-Minor version numbers might introduce breaking changes.
+Dart는 언어 버전을 마침표로 구분된 두 개의 숫자로 포맷합니다. 
+이는 major 버전 번호와 minor 버전 번호로 읽힙니다. 
+minor 버전 번호는 중요한 변경 사항(breaking changes)을 도입할 수도 있습니다.
 
-Dart releases might append a patch number to a language version.
-Patches should not change the language except for bug fixes.
-To illustrate: Dart 2.18.3 serves as the latest release of the
-Dart 2.18 SDK language version.
+Dart 릴리스는 언어 버전에 패치 번호를 추가할 수 있습니다. 
+패치는 버그 수정을 제외하고는 언어를 변경해서는 안 됩니다. 
+예를 들어 Dart 2.18.3은 Dart 2.18 SDK 언어 버전의 최신 릴리스 역할을 합니다.
 
-Each Dart SDK supports all of the language versions within
-its major version number.
-That means that Dart SDK 2.18.3 supports language versions
-2.0 through 2.18 inclusive, but not Dart 1.x.
+각 Dart SDK는 주요 버전 번호 내의 모든 언어 버전을 지원합니다. 
+즉, Dart SDK 2.18.3은 언어 버전 2.0에서 2.18까지 지원하지만, Dart 1.x는 지원하지 않습니다.
 
-Deriving the language version from the SDK version implies the following:
+SDK 버전에서 언어 버전을 파생하는 것은 다음을 의미합니다.
 
-* Whenever a minor version of the SDK ships, a new language version appears.
-  In practice, many of these language versions work in a very similar manner
-  to previous versions and have with full compatibility between them.
-  For example: The Dart 2.9 language works much like the Dart 2.8 language.
+* SDK의 마이너 버전이 출시될 때마다 새로운 언어 버전이 나타납니다. 
+  실제로 이러한 언어 버전 중 다수는 이전 버전과 매우 유사한 방식으로 작동하며, 서로 완벽하게 호환됩니다. 
+  예를 들어 Dart 2.9 언어는 Dart 2.8 언어와 매우 유사하게 작동합니다.
 
-* When a patch release of the SDK ships,
-  it cannot introduce new language features.
-  For example: The 2.18.3 release _remains_ language version 2.18.
-  It must remain compatible with 2.18.2, 2.18.1, and 2.18.0.
+* SDK의 패치 릴리스가 출시될 때 새로운 언어 기능을 도입할 수 없습니다. 
+  예를 들어 2.18.3 릴리스는 언어 버전 2.18로 *유지*됩니다. 
+  2.18.2, 2.18.1 및 2.18.0과 호환되어야 합니다.
 
-### Per-library language version selection
+### 라이브러리별 언어 버전 선택 {:#per-library-language-version-selection}
 
-By default, every Dart file in a package uses the same language version.
-Dart identifies the default language version as the
-lower-bound of the SDK constraint specified in the `pubspec.yaml` file.
-Sometimes, a Dart file might need to use an older language version.
-For example, you might not be able to migrate all the files in a package
-to null safety at the same time.
+기본적으로 패키지의 모든 Dart 파일은 동일한 언어 버전을 사용합니다. 
+Dart는 기본 언어 버전을 `pubspec.yaml` 파일에 지정된 SDK 제약 조건의 하한으로 식별합니다. 
+때때로 Dart 파일은 이전 언어 버전을 사용해야 할 수 있습니다. 
+예를 들어, 패키지의 모든 파일을 동시에 null 안전성으로 마이그레이션할 수 없을 수 있습니다.
 
-Dart supports per-library language version selection.
-To opt to have a different language version from
-the rest of a package, a [Dart library][] must
-include a comment in the following format:
+Dart는 라이브러리별 언어 버전 선택을 지원합니다. 
+패키지의 나머지 부분과 다른 언어 버전을 선택하려면, [Dart 라이브러리][Dart library]에 다음 형식의 주석을 포함해야 합니다.
 
 ```dart
 // @dart = <major>.<minor>
 ```
 
-For example:
+예를 들어:
 
 ```dart
-// Description of what's in this file.
+// 이 파일의 내용에 대한 설명입니다.
 // @dart = 2.17
 import 'dart:math';
 ...
 ```
 
-The `@dart` string must be in a `//` comment (not `///` or `/*`),
-and it must appear before any Dart code in the file.
-Whitespace (tabs and spaces) doesn't matter,
-except within the `@dart` and version strings.
-As the previous example shows,
-other comments can appear before the `@dart` comment.
+`@dart` 문자열은 `//` 주석(`///` 또는 `/*`가 아님)에 있어야 하며, 
+파일의 모든 Dart 코드 앞에 나타나야 합니다. 
+`@dart` 및 버전 문자열 내부를 제외하고는 공백(탭과 공백)은 중요하지 않습니다. 
+이전 예에서 보듯이 다른 주석은 `@dart` 주석 앞에 나타날 수 있습니다.
 
-To learn how and why the Dart team developed this versioning method,
-check out the [language versioning specification][].
+Dart 팀이 이 버전 관리 방법을 개발한 이유와 방법을 알아보려면, 
+[언어 버전 관리 사양][language versioning specification]을 확인하세요.
 
 [2.8 breaking changes]: {{site.repo.dart.sdk}}/issues/40686
 [calling native C code]: /interop/c-interop
