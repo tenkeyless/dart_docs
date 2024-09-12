@@ -1,55 +1,50 @@
 ---
 title: dart analyze
-description: Command-line tool for static analysis
+description: 정적 분석을 위한 명령줄 도구
 toc: false
 ---
 
-The `dart analyze` command
-performs the same [static analysis][]
-that you get when you use an IDE or editor that has Dart support.
+`dart analyst` 명령은 Dart를 지원하는 IDE나 편집기를 사용할 때 수행되는 것과 동일한 
+[정적 분석][static analysis]을 수행합니다.
 
 {% render 'tools/dart-tool-note.md' %}
 
-Here's an example of performing static analysis over all the Dart files
-under the current directory:
+다음은 현재 디렉토리 아래의 모든 Dart 파일에 대한 정적 분석을 수행하는 예입니다.
 
 ```console
 $ dart analyze
 ```
 
-You can customize how the analyzer treats warnings and info-level issues.
-Normally the analyzer reports failure when it finds any errors or warnings,
-but not when it finds info-level issues.
-You can customize this behavior using the
-`--fatal-infos` and `--no-fatal-warnings` flags.
-For example, to make the analyzer fail when any issue is 
-the `--fatal-infos` flag:
+분석기가 경고 및 정보 레벨 문제를 처리하는 방식을 커스터마이즈할 수 있습니다. 
+일반적으로 분석기는 오류나 경고를 발견하면 실패를 보고하지만, 
+정보 레벨 문제를 발견하면 실패를 보고하지 않습니다. 
+`--fatal-infos` 및 `--no-fatal-warnings` 플래그를 사용하여 이 동작을 커스터마이즈할 수 있습니다. 
+예를 들어, `--fatal-infos` 플래그가 있는 문제가 있을 때 분석기가 실패하도록 하려면, 다음과 같이 합니다.
 
 ```console
 $ dart analyze --fatal-infos
 ```
 
-You can add a directory or a single file argument:
+디렉토리나 단일 파일 인수를 추가할 수 있습니다.
 
 ```console
 $ dart analyze [<DIRECTORY> | <DART_FILE>]
 ```
 
-For example, here's the command to analyze the `bin` directory:
+예를 들어, `bin` 디렉토리를 분석하는 명령은 다음과 같습니다.
 
 ```console
 $ dart analyze bin
 ```
 
 :::version-note
-Before Dart 2.13, `dart analyze` supported only directory arguments.
+Dart 2.13 이전에는, `dart analyst`가 디렉토리 인수만 지원했습니다.
 :::
 
-To customize the analysis, use an analysis options file
-or special comments in Dart source code,
-as described in [Customizing static analysis][static analysis].
+분석을 커스터마이즈하려면, [정적 분석 커스터마이즈][static analysis]에 설명된 대로, 
+Dart 소스 코드의 분석 옵션 파일이나 특수 주석을 사용합니다.
 
-For information on command-line options, use the `--help` flag:
+명령줄 옵션에 대한 정보는 `--help` 플래그를 사용합니다.
 
 ```console
 $ dart analyze --help

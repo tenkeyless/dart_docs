@@ -1,31 +1,32 @@
 ---
 title: dartaotruntime
-description: Command-line tool for running AOT-compiled snapshots of Dart code.
+# description: Command-line tool for running AOT-compiled snapshots of Dart code.
+description: Dart 코드의 AOT 컴파일된 스냅샷을 실행하기 위한 명령줄 도구입니다.
 toc: false
 ---
 
-With Dart, you can create pre-compiled Dart applications called *AOT snapshots*.
+Dart를 사용하면 *AOT 스냅샷*이라는 미리 컴파일된 Dart 애플리케이션을 만들 수 있습니다.
 
-## Create AOT snapshot app
+## AOT 스냅샷 앱 생성 {:#create-aot-snapshot-app}
 
-To produce AOT snapshots, use the `aot-snapshot` subcommand of the
-[`dart compile` command][dart compile].
+AOT 스냅샷을 생성하려면, 
+[`dart compile` 명령][dart compile]의 `aot-snapshot` 하위 명령을 사용하세요.
 
-## Run AOT snapshot app
+## AOT 스냅샷 앱 실행 {:#run-aot-snapshot-app}
 
-To run AOT programs, use the `dartaotruntime` command.
-This tool supports Windows, macOS, and Linux.
+AOT 프로그램을 실행하려면 `dartaotruntime` 명령을 사용합니다. 
+이 도구는 Windows, macOS, Linux를 지원합니다.
 
 :::note
-To run use the `dartaotruntime` command,
-add the path to your Dart `bin` directory to your `PATH` environment variable.
+`dartaotruntime` 명령을 사용하여 실행하려면, 
+`PATH` 환경 변수에 Dart `bin` 디렉토리 경로를 추가합니다.
 :::
 
 [dart compile]: /tools/dart-compile
 
-## Review an example
+## 예시 검토 {:#review-an-example}
 
-Here's an example of creating and running an AOT snapshot:
+다음은 AOT 스냅샷을 만들고 실행하는 예입니다.
 
 ```console
 $ dart compile aot-snapshot bin/myapp.dart
@@ -39,9 +40,9 @@ Generated: /Users/me/simpleapp/bin/myapp.aot
 $ dartaotruntime bin/simpleapp.aot
 ```
 
-## Learn more options
+## 더 많은 옵션 알아보기 {:#learn-more-options}
 
-To learn more about command-line options, use the `--help` flag:
+명령줄 옵션에 대해 자세히 알아보려면 `--help` 플래그를 사용하세요.
 
 ```console
 $ dartaotruntime --help

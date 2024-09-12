@@ -1,29 +1,27 @@
 ---
 title: dart pub token
-description: Manage authentication tokens for package repositories.
+description: 패키지 저장소에 대한 인증 토큰을 관리합니다.
 ---
 
-The `dart pub token` subcommand manages a store of tokens.
-When [publishing](pub-lish) packages and [retrieving](pub-get) dependencies,
-the `dart pub` command uses tokens to authenticate against third-party servers.
+`dart pub token` 하위 명령은 토큰 저장소를 관리합니다. 
+패키지를 [게시](pub-lish)하고 종속성을 [검색](pub-get)할 때, 
+`dart pub` 명령은 토큰을 사용하여 타사 서버에 대해 인증합니다.
 
-It stores these tokens in a [user-wide config directory][config-dir].
-The `dart pub token` subcommand has three subcommands:
-[`add`][], [`list`][] and [`remove`][].
+이 토큰은 [사용자 전체 구성 디렉터리][config-dir]에 저장됩니다. 
+`dart pub token` 하위 명령에는 [`add`][], [`list`][] 및 [`remove`][]라는, 
+세 가지 하위 명령이 있습니다.
 
-The `dart pub` command considers the terms _credential_, _token_, _secret_,
-and _secret token_ to be interchangeable.
+`dart pub` 명령은 _credential_, _token_, _secret_ 및 _secret token_ 이라는 
+용어를 서로 바꿔 사용할 수 있다고 생각합니다.
 
 [`add`]: #add-a-new-credential
 [`list`]: #return-a-list-of-credentials
 [`remove`]: #remove-one-or-more-credentials
 
-## Use case for credentials
+## 자격 증명(credential)의 사용 사례 {:#use-case-for-credentials}
 
-Consider a scenario when you have a [dependency](/tools/pub/dependencies)
-hosted on a private repository.
-When you use the `dart pub get` command, it _might_ return a prompt
-to provide credentials:
+private 저장소에 호스팅된 [종속성](/tools/pub/dependencies)이 있는 시나리오를 고려하세요. 
+`dart pub get` 명령을 사용하면, 자격 증명을 제공하라는 프롬프트가 *반환될 수* 있습니다.
 
 ```console
 $ dart pub get
@@ -33,17 +31,15 @@ You can provide credentials using:
     dart pub token add https://some-package-repo.com/my-org/my-repo
 ```
 
-Some, but not all, servers also return a message with instructions as
-to how you can obtain a token.
+모든 서버는 아니지만 일부 서버에서는, 토큰을 얻는 방법에 대한 지침이 담긴 메시지를 반환합니다.
 
-## Add a new credential
+## 새로운 자격 증명 추가 {:#add-a-new-credential}
 
-To create a new credential,
-use the `dart pub token add` command.
+새로운 자격 증명을 만들려면 `dart pub token add` 명령을 사용하세요.
 
-### Add a credential for the current session
+### 현재 세션에 대한 자격 증명 추가 {:#add-a-credential-for-the-current-session}
 
-At the prompt, type the credential on the command line (`stdin`).
+프롬프트에서 명령줄(`stdin`)에 자격 증명을 입력합니다.
 
 ```console
 $ dart pub token add https://some-package-repo.com/my-org/my-repo
@@ -53,52 +49,46 @@ Enter secret token: <Type token on stdin>
 ```
 
 :::note
-To keep the token out of the shell history,
-the `dart pub token` command takes input on `stdin` rather than
-as a command line option.
+토큰을 셸 기록에 남기지 않기 위해, 
+`dart pub token` 명령은 명령줄 옵션이 아닌 `stdin`에서 입력을 받습니다.
 :::
 
-### Add a credential for all sessions
+### 모든 세션에 대한 자격 증명 추가 {:#add-a-credential-for-all-sessions}
 
-To use the same token for any and all terminal sessions and in scripts,
-store the token in an environment variable.
+모든 터미널 세션과 스크립트에 동일한 토큰을 사용하려면, 토큰을 환경 변수에 저장합니다.
 
-1. Store your token in an environment variable.
+1. 토큰을 환경 변수에 저장합니다.
 
-   Make sure to hide the token from your shell history.
-   To explore one way of doing this, consult [this post on Medium][zsh-post].
+    셸 기록에서 토큰을 숨기세요.
+    이를 수행하는 한 가지 방법을 알아보려면 [Medium의 이 게시물][zsh-post]를 참조하세요.
 
-1. To enable any environment variables that you add,
-   restart any open consoles.
+1. 추가한 환경 변수를 활성화하려면, 열려 있는 모든 콘솔을 다시 시작합니다.
 
-1. To use an environment variable as a token,
-   use the `dart pub token add` command:
+1. 환경 변수를 토큰으로 사용하려면, `dart pub token add` 명령을 사용합니다.
 
    ```console
    $ dart pub token add <hosted-url> --env-var <TOKEN_VAR>
    ```
 
-   This command reads the token stored in `$TOKEN_VAR`
-   then uses it to authenticate with the `hosted-url`
-   hosting the desired package.
-   It should print the following response to the terminal.
+    이 명령은 `$TOKEN_VAR`에 저장된 토큰을 읽은 다음, 
+    원하는 패키지를 호스팅하는 `hosted-url`로 인증하는 데 사용합니다. 
+    터미널에 다음 응답이 출력되어야 합니다.
 
    ```console
    $ dart pub token add https://other-package-repo.com/ --env-var TOKEN_VAR
    Requests to "https://other-package-repo.com/" will now be authenticated using the secret token stored in the environment variable "TOKEN_VAR".
    ```
 
-Most CI environments can inject tokens into an environment variable.
-To learn how, consult documentation for [GitHub Actions][] or
-[GitLab][] as examples.
+대부분의 CI 환경은 토큰을 환경 변수에 주입할 수 있습니다. 
+방법을 알아보려면, [GitHub Actions][] 또는 [GitLab][]에 대한 문서를 예로 참조하세요.
 
 [GitHub Actions]: https://docs.github.com/actions/security-guides/encrypted-secrets#using-encrypted-secrets-in-a-workflow
 [GitLab]: https://docs.gitlab.com/ee/ci/secrets/
 [zsh-post]: https://medium.com/@prasincs/hiding-secret-keys-from-shell-history-part-1-5875eb5556cc
 
-## Return a list of credentials
+## 자격 증명 리스트 반환 {:#return-a-list-of-credentials}
 
-To see a list of all active credentials, use the `dart pub token list` command:
+모든 활성 자격 증명 리스트를 보려면, `dart pub token list` 명령을 사용하세요.
 
 ```console
 $ dart pub token list
@@ -107,16 +97,16 @@ https://some-package-repo.com/my-org/my-repo
 https://other-package-repo.com/
 ```
 
-## Remove one or more credentials
+## 하나 이상의 자격 증명 제거 {:#remove-one-or-more-credentials}
 
-To remove a single token, use the `dart pub token remove` command:
+단일 토큰을 제거하려면 `dart pub token remove` 명령을 사용하세요.
 
 ```console
 $ dart pub token remove https://other-package-repo.com
 Removed secret token for package repository: https://other-package-repo.com
 ```
 
-To remove all tokens, use the preceding command with the `remove --all` option:
+모든 토큰을 제거하려면 `remove --all` 옵션과 함께 이전 명령을 사용합니다.
 
 ```console
 $ dart pub token remove --all

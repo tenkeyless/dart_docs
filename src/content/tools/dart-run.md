@@ -1,21 +1,19 @@
 ---
 title: dart run
-description: Command-line tool for running a Dart program.
+# description: Command-line tool for running a Dart program.
+description: Dart 프로그램을 실행하기 위한 명령줄 도구.
 ---
 
-The `dart run` command supports running 
-a Dart program—located in a file, in the current package, 
-or in one of the dependencies of the current package—from the command line.
-This command provides functionality that was previously in `pub run`
-and the Dart VM tool.
-To run a program from an arbitrary location,
-use the [pub global](/tools/pub/cmd/pub-global) command.
+`dart run` 명령은 명령줄에서 파일, 현재 패키지 또는 현재 패키지의 종속성 중 하나에 있는, 
+Dart 프로그램을 실행하는 것을 지원합니다. 
+이 명령은 이전에 `pub run` 및 Dart VM 도구에 있었던 기능을 제공합니다. 
+임의의 위치에서 프로그램을 실행하려면, [pub global](/tools/pub/cmd/pub-global) 명령을 사용합니다.
 
 ```plaintext
 dart run [options] [<DART_FILE> | <PACKAGE_TARGET>] [args]
 ```
 
-Here's an example of creating a new app and running it:
+새로운 앱을 만들고 실행하는 예는 다음과 같습니다.
 
 ```console
 $ dart create myapp
@@ -25,100 +23,80 @@ $ dart run
 
 {% render 'tools/dart-tool-note.md' %}
 
-## Running a Dart file
+## Dart 파일 실행 {:#running-a-dart-file}
 
-You can run a Dart file by passing its relative path:
+Dart 파일의 상대 경로를 전달하여 실행할 수 있습니다.
 
 ```console
 $ dart run tool/debug.dart
 ```
 
-## Running a program that's in a package
+## 패키지에 있는 프로그램 실행 {:#running-a-program-thats-in-a-package}
 
-The instructions in this section assume that
-you're executing the `dart run` command
-from the directory that's at the top of a Dart package
-(the _current package_).
-For information on the directory structure of Dart packages, see
-[package layout conventions](/guides/libraries/create-packages).
+이 섹션의 지침은 Dart 패키지(_현재 패키지_)의 맨 위에 있는 디렉토리에서, 
+`dart run` 명령을 실행한다고 가정합니다. 
+Dart 패키지의 디렉토리 구조에 대한 정보는 [패키지 레이아웃 규칙](/guides/libraries/create-packages)을 참조하세요.
 
-### In a depended-on package
+### 의존하는 패키지에서 {:#in-a-depended-on-package}
 
-You can run programs that are
-distributed in the `bin` directory of any package
-that the current package depends on.
-To run such a program,
-specify the depended-on package name and the program name.
-You can omit the program name if it's the same as the package name.
+현재 패키지가 종속된 모든 패키지의 `bin` 디렉토리에 배포된 프로그램을 실행할 수 있습니다. 
+이러한 프로그램을 실행하려면 종속된 패키지 이름과 프로그램 이름을 지정합니다. 
+패키지 이름과 동일한 경우 프로그램 이름을 생략할 수 있습니다.
 
-For example, say you're in the top directory of a package
-that depends on the `bar` package.
-To run the main program that's in the `bar` package (`bin/bar.dart`),
-you can use this command:
+예를 들어 `bar` 패키지에 종속된 패키지의 최상위 디렉토리에 있다고 가정해 보겠습니다. 
+`bar` 패키지(`bin/bar.dart`)에 있는 메인 프로그램을 실행하려면, 다음 명령을 사용할 수 있습니다.
 
 ```console
 $ dart run bar
 ```
 
-If the program name doesn't match the package name,
-use the form `<package name>:<program name>`. For example,
-to run the program `bin/baz.dart` that's in the `bar` package,
-use this command:
+프로그램 이름이 패키지 이름과 일치하지 않으면, `<패키지 이름>:<프로그램 이름>` 형식을 사용합니다. 
+예를 들어, `bar` 패키지에 있는 프로그램 `bin/baz.dart`를 실행하려면, 다음 명령을 사용합니다.
 
 ```console
 $ dart run bar:baz
 ```
 
-The `bin` directory is the only place with visible programs.
-All other directories in the depended-on package are private.
+`bin` 디렉토리는 보이는 프로그램이 있는 유일한 장소입니다. 
+종속된 패키지의 다른 모든 디렉토리는 private 입니다.
 
-### In the current package
+### 현재 패키지에서 {:#in-the-current-package}
 
-When the current directory matches the package name
-(that is, you're in the directory that matches
-the `name` property in the pubspec),
-then you can omit the package name.
-If the program name matches the package name
-(that is, it's the main program),
-then you can also omit the program name.
+현재 디렉토리가 패키지 이름과 일치할 때(즉, pubspec의 `name` 속성과 일치하는 디렉토리에 있을 때), 
+패키지 이름을 생략할 수 있습니다. 
+프로그램 이름이 패키지 이름과 일치할 때(즉, 메인 프로그램일 때), 프로그램 이름도 생략할 수 있습니다.
 
-Here's the shortest form of `dart run`,
-which runs the main program for the current package.
-For example, if you're in the top directory of the `foo` package,
-this command runs `bin/foo.dart`:
+다음은 현재 패키지의 메인 프로그램을 실행하는 `dart run`의 가장 짧은 형식입니다. 
+예를 들어, `foo` 패키지의 최상위 디렉토리에 있을 때, 이 명령은 `bin/foo.dart`를 실행합니다.
 
 ```console
 $ dart run
 ```
 
-If the program name doesn't match the package name,
-then add a colon and the program name.
-For example, this command runs `bin/baz.dart` in the current package:
+프로그램 이름이 패키지 이름과 일치하지 않으면 콜론과 프로그램 이름을 추가합니다. 
+예를 들어, 이 명령은 현재 패키지에서 `bin/baz.dart`를 실행합니다.
 
 ```console
 $ dart run :baz
 ```
 
-To run a program that's in the current package but not in the `bin` directory,
-pass a relative path (as shown before):
+현재 패키지에 있지만 `bin` 디렉토리에는 없는 프로그램을 실행하려면, 상대 경로를 전달합니다. (앞서 보여준 대로)
 
 ```console
 $ dart run tool/debug.dart
 ```
 
-## Supplying arguments to main()
+## main()에 인수 제공 {:#supplying-arguments-to-main}
 
-To supply [arguments to the `main()` function][args],
-put them at the end of the command:
+[`main()` 함수에 인수][args]를 제공하려면, 명령의 끝에 다음과 같이 입력하세요.
 
 ```console
 $ dart run tool/debug.dart arg1 arg2
 ```
 
-When you're running the main program for the current package,
-add the package name.
-Here's an example of running `bin/foo.dart` with arguments
-while you're in the top directory of the `foo` package:
+현재 패키지의 메인 프로그램을 실행할 때 패키지 이름을 추가합니다. 
+`foo` 패키지의 최상위 디렉토리에 있는 동안 인수와 함께, 
+`bin/foo.dart`를 실행하는 예는 다음과 같습니다.
 
 ```console
 $ dart run foo arg1 arg2
@@ -126,36 +104,32 @@ $ dart run foo arg1 arg2
 
 [args]: /language/functions#the-main-function
 
-## Debugging
+## 디버깅 {:#debugging}
 
-To enable debugging, 
-add one or more of these common debugging options
-to your `dart run` command:
+디버깅을 활성화하려면, `dart run` 명령에 다음 일반적인 디버깅 옵션 중 하나 이상을 추가합니다.
 
-- To enable [`assert` statements][assert],
-  add the `--enable-asserts` flag:
+- [`assert` 문][assert]을 활성화하려면, `--enable-asserts` 플래그를 추가합니다.
 
   ```console
   $ dart run --enable-asserts tool/debug.dart
   ```
 
-- To enable debugging and performance analysis
-  through [Dart DevTools](/tools/dart-devtools),
-  add the `--observe` flag:
+- [Dart DevTools](/tools/dart-devtools)를 통해 디버깅 및 성능 분석을 활성화하려면, 
+  `--observe` 플래그를 추가합니다.
 
   ```console
   $ dart run --observe tool/debug.dart
   ```
-  
-  To learn more about debugging with Dart DevTools,
-  see [Using DevTools with a command-line app][].
 
-To learn more about other debugging options, run `dart run --help`.
+  Dart DevTools로 디버깅하는 방법에 대해 자세히 알아보려면, 
+  [명령줄 앱에서 DevTools 사용][Using DevTools with a command-line app]을 참조하세요.
+
+다른 디버깅 옵션에 대해 자세히 알아보려면, `dart run --help`를 실행하세요.
 
 [assert]: /language/error-handling#assert
 [Using DevTools with a command-line app]: /tools/dart-devtools#using-devtools-with-a-command-line-app
 
-## Enabling experimental features
+## 실험적 기능 활성화 {:#enabling-experimental-features}
 
-To enable new features and enhancements that are currently in development,
-use [experiment flags](/tools/experiment-flags).
+현재 개발 중인 새로운 기능과 향상된 기능을 사용하려면, 
+[실험 플래그](/tools/experiment-flags)를 사용하세요.
