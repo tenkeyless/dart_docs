@@ -1,126 +1,112 @@
 ---
 title: dart pub global
-description: Use dart pub global to run Dart scripts hosted on the pub.dev site from the command line.
+# description: Use dart pub global to run Dart scripts hosted on the pub.dev site from the command line.
+description: 명령줄에서 pub.dev 사이트에 호스팅된 Dart 스크립트를 실행하려면, dart pub global을 사용하세요.
 ---
 
-_Global_ is one of the commands of the [pub tool](/tools/pub/cmd).
+_Global_ 은 [pub 도구](/tools/pub/cmd)의 명령 중 하나입니다.
 
-Pub's `global` option allows you to run Dart scripts from the
-command line when you are not currently inside a package.
-After [activating a package](#activating-a-package), you can
-[run scripts](#running-a-script) from that package's `bin` directory.
-[Deactivating a package](#deactivating-a-package) removes it from
-your list of globally available packages.
+Pub의 `global` 옵션을 사용하면, 현재 패키지 내부에 없을 때 명령줄에서 Dart 스크립트를 실행할 수 있습니다. 
+[패키지를 활성화한](#activating-a-package) 후, 
+해당 패키지의 `bin` 디렉터리에서 [스크립트를 실행](#running-a-script)할 수 있습니다. 
+[패키지를 비활성화](#deactivating-a-package)하면, 
+전역적으로 사용 가능한 패키지 리스트에서 해당 패키지가 제거됩니다.
 
-For example, say you want to use [webdev][] to serve
-your Dart web application from the command line.
+예를 들어, [webdev][]를 사용하여 명령줄에서 Dart 웹 애플리케이션을 제공하려는 경우를 가정해 보겠습니다.
 
 ```console
 $ dart pub global activate webdev
 $ webdev serve
 ```
 
-If this doesn't work, you might need to
-[set up your path](#running-a-script-from-your-path).
+이것이 작동하지 않으면, [경로 설정](#running-a-script-from-your-path)이 필요할 수 있습니다.
 
-To run a Dart script from within a package, or from a
-package that your package depends on, see [dart run](/tools/dart-run).
+패키지 내부에서 또는 패키지가 종속된 패키지에서 Dart 스크립트를 실행하려면, 
+[dart run](/tools/dart-run)을 참조하세요.
 
-## Activating a package
+## 패키지 활성화 {:#activating-a-package}
 
 ```plaintext
 dart pub global activate [--noexecutables] [--executable=<name>] [--overwrite] <package> [version-constraint]
 ```
 
-Activate a package when you want to be able to run
-one or more of its executable files from the command line.
-You can activate packages that live on the
-[pub.dev site]({{site.pub}}), a Git repository,
-or your local machine.
-Once you've activated a package, see [Running a
-script](#running-a-script) to run scripts from the package's
-`bin` directory.
+명령줄에서 하나 이상의 실행 파일을 실행할 수 있도록 하려는 경우 패키지를 활성화합니다. 
+[pub.dev 사이트]({{site.pub}}), Git 저장소 또는 로컬 머신에 있는 패키지를 활성화할 수 있습니다. 
+패키지를 활성화한 후, [스크립트 실행](#running-a-script)을 참조하여, 
+패키지의 `bin` 디렉터리에서 스크립트를 실행합니다.
 
-When you activate a package you can specify an optional version
-constraint.  See the [constraint](#options) flag for usage examples.
+패키지를 활성화할 때, 선택적 버전 제약 조건을 지정할 수 있습니다. 
+사용 예는 [제약 조건](#options) 플래그를 참조하세요.
 
-### Activating a package on the pub.dev site
+### pub.dev 사이트에서 패키지 활성화 {:#activating-a-package-on-the-pub-dev-site}
 
 ```console
 $ dart pub global activate <pub.dev package>
 ```
 
-Specify a package on the pub.dev site to activate it. For example:
+pub.dev 사이트에서 패키지를 지정하여 활성화합니다. 예를 들어:
 
 ```console
 $ dart pub global activate markdown
 ```
 
-### Activating a package with Git
+### Git으로 패키지 활성화 {:#activating-a-package-with-git}
 
 ```console
 $ dart pub global activate --source git <Git URL>
 $ dart pub global activate -sgit <Git URL>
 ```
 
-Use `--source git` (or `-sgit`, for short) to activate
-a package in a Git repository. The following examples,
-which activate the `async_await` package on
-[GitHub](https://github.com/), are equivalent:
+Git 저장소에서 패키지를 활성화하려면, `--source git`(또는 간단히 `-sgit`)을 사용합니다. 
+[GitHub](https://github.com/)에서 `async_await` 패키지를 활성화하는 다음 예는 동일합니다.
 
 ```console
 $ dart pub global activate --source git https://github.com/dart-lang/async_await.git
 $ dart pub global activate -sgit https://github.com/dart-lang/async_await.git
 ```
 
-Pub expects to find the package in the root of the Git repository.
-To specify a different location,
-use the `--git-path` option with
-a path relative to the repository root:
+Pub은 Git 저장소의 루트에서 패키지를 찾을 것으로 예상합니다. 
+다른 위치를 지정하려면, 저장소 루트에 상대적인 경로와 함께 `--git-path` 옵션을 사용합니다.
 
 ```console
 $ dart pub global activate -sgit https://github.com/dart-lang/http.git --git-path pkgs/http/
 ```
 
-Pub uses the default branch of the Git repository. To specify a
-different branch or commit, use the `--git-ref` option:
+Pub은 Git 저장소의 기본 브랜치를 사용합니다. 
+다른 브랜치나 커밋을 지정하려면 `--git-ref` 옵션을 사용합니다.
 
 ```console
 $ dart pub global activate -sgit https://github.com/dart-lang/http.git --git-ref 36f98e900347335af2338a0e087538009b7de2f9
 ```
 
-### Activating a package on your local machine
+### 로컬 컴퓨터에서 패키지 활성화 {:#activating-a-package-on-your-local-machine}
 
 ```console
 $ dart pub global activate --source path <path>
 ```
 
-Use `activate --source path <path>` to activate a package on your local machine.
-The following example activates the `stopwatch` package from the
-`~/dart` directory:
+`activate --source path <path>`를 사용하여 로컬 머신에서 패키지를 활성화합니다. 
+다음 예는 `~/dart` 디렉토리에서 `stopwatch` 패키지를 활성화합니다.
 
 ```console
 $ dart pub global activate --source path ~/dart/stopwatch
 ```
 
-### Updating an activated package
+### 활성화된 패키지 업데이트 {:#updating-an-activated-package}
 
-Once a package has been activated, you can upgrade it by activating the
-package again.
+패키지가 활성화되면, 패키지를 다시 활성화하여 업그레이드할 수 있습니다.
 
-## Running a script
+## 스크립트 실행 {:#running-a-script}
 
-You can directly run a script from an activated package from the
-command line. If you are unable to run the script directly,
-you can also use `dart pub global run`.
+명령줄에서 활성화된 패키지의 스크립트를 직접 실행할 수 있습니다. 
+스크립트를 직접 실행할 수 없는 경우, `dart pub global run`을 사용할 수도 있습니다.
 
-### Running a script from your PATH
+### PATH에서 스크립트 실행 {:#running-a-script-from-your-path}
 
-To run a script directly from the command line, add the [system cache][] `bin`
-directory to your `PATH` environment variable.
+명령줄에서 직접 스크립트를 실행하려면, 
+[시스탬 캐시][system cache] `bin` 디렉토리를 `PATH` 환경 변수에 추가합니다.
 
-For example, say you've activated the webdev package,
-but you still can't run the command:
+예를 들어, webdev 패키지를 활성화했지만, 여전히 명령을 실행할 수 없는 경우:
 
 ```console
 $ dart pub global activate webdev
@@ -128,64 +114,57 @@ $ webdev serve
 -bash: webdev: command not found
 ```
 
-Verify that the `bin` directory for the system cache is in your path.
-The following `PATH` variable, on macOS, includes the system cache:
+시스템 캐시의 `bin` 디렉토리가 경로에 있는지 확인하세요. 
+macOS에서 다음 `PATH` 변수는 시스템 캐시를 포함합니다.
 
 ```console
 $ echo $PATH
 /Users/<user>/homebrew/bin:/usr/local/bin:/usr/bin:/bin:[!/Users/<user>/.pub-cache/bin!]
 ```
 
-If this directory is missing from your `PATH`,
-locate the file for your platform and add it.
+이 디렉토리가 `PATH`에 없는 경우, 플랫폼에 맞는 파일을 찾아 추가하세요.
 
-| Platform                             | Cache location                 |
+| 플랫폼                             | 캐시 위치                 |
 |--------------------------------------|--------------------------------|
-| macOS or Linux                       | `$HOME/.pub-cache/bin`         |
+| macOS 또는 Linux                       | `$HOME/.pub-cache/bin`         |
 | Windows<sup><strong>*</strong></sup> | `%LOCALAPPDATA%\Pub\Cache\bin` |
 
 {:.table .table-striped}
 
-<sup><strong>*</strong></sup> The exact location of the system cache
-may vary for different versions of Windows.
+<sup><strong>*</strong></sup> 시스템 캐시의 정확한 위치는 Windows 버전마다 다를 수 있습니다.
 
-You can now directly invoke the command:
+이제 다음 명령을 직접 호출할 수 있습니다.
 
 ```console
 $ cd web_project
 $ [!webdev serve!]
 ```
 
-If the script still fails to run from the command line, the
-package may not be [configured](#configuring-package-executables) for
-this feature. You can still run the script using `dart pub global run`.
+스크립트가 여전히 명령줄에서 실행되지 않으면, 
+패키지가 이 기능에 대해 [구성](#configuring-package-executables)되지 않았을 수 있습니다. 
+`dart pub global run`을 사용하여, 스크립트를 실행할 수 있습니다.
 
-### Running a script using `dart pub global run`
+### `dart pub global run`을 사용하여 스크립트 실행 {:#running-a-script-using-dart-pub-global-run}
 
 ```plaintext
 $ dart pub global run <package>:<executable> [args...]
 ```
 
-Even if a script is not configured to be run from the command line,
-you can still use `dart pub global run`.
-The following command runs the `bin/bar.dart` script from the
-`foo` package, passing in two arguments.
+스크립트가 명령줄에서 실행되도록 구성되지 않았더라도, 
+`dart pub global run`을 사용할 수 있습니다. 
+다음 명령은 `foo` 패키지에서 `bin/bar.dart` 스크립트를 실행하여, 두 개의 인수를 전달합니다.
 
 ```console
 $ dart pub global run foo:bar arg1 arg2
 ```
 
-### Configuring package executables
+### 패키지 executables 구성 {:#configuring-package-executables}
 
-If you are not a package developer, you can skip this section.
+패키지 개발자가 아니라면, 이 섹션을 건너뛸 수 있습니다.
 
-A package can expose some of its scripts as executables
-that can be run directly from the command line. The script or scripts
-must be listed in the
-[`executables`](/tools/pub/pubspec#executables)
-entry of the pubspec file.  For example, the following pubspec file
-identifies `bin/helloworld.dart` as an executable for the helloworld
-package:
+패키지는 일부 스크립트를 명령줄에서 직접 실행할 수 있는 실행 파일로 노출할 수 있습니다. 
+스크립트 또는 스크립트는 pubspec 파일의 [`executables`](/tools/pub/pubspec#executables) 항목에 나열되어야 합니다. 
+예를 들어, 다음 pubspec 파일은 `bin/helloworld.dart`를 helloworld 패키지의 실행 파일로 식별합니다.
 
 ```yaml
 name: helloworld
@@ -194,52 +173,47 @@ executables:
   helloworld:
 ```
 
-Failing to list a script under the `executables` tag reduces the script's
-usability: unlisted scripts can be executed using `dart pub global run`, but not
-directly from the command line.
+`executables` 태그 아래에 스크립트를 나열하지 않으면, 스크립트의 유용성이 떨어집니다. 
+나열되지 않은 스크립트는 `dart pub global run` 명령을 사용하여 실행할 수 있지만, 
+명령줄에서 직접 실행할 수는 없습니다.
 
-## Deactivating a package
+## 패키지 비활성화 {:#deactivating-a-package}
 
 ```console
 $ dart pub global deactivate <package>
 ```
 
-Use `deactivate` to remove a package from the list of available
-global packages. For example:
+`deactivate`를 사용하여 사용 가능한 글로벌 패키지 리스트에서 패키지를 제거합니다. 예를 들어:
 
 ```console
 $ dart pub global deactivate markdown
 ```
 
-You can no longer invoke the package's scripts using `dart pub global run`,
-or at the command line.
+더 이상 `dart pub global run`이나 명령줄을 사용하여 패키지의 스크립트를 호출할 수 없습니다.
 
-## Listing active packages
+## 활성 패키지 나열 {:#listing-active-packages}
 
 ```console
 $ dart pub global list
 ```
 
-Use `list` to list all currently active packages.
+`list`를 사용하면 현재 활성화된 모든 패키지를 나열할 수 있습니다.
 
-## Options
+## 옵션 {:#options}
 
-For options that apply to all pub commands, see
-[Global options](/tools/pub/cmd#global-options).
+모든 pub 명령에 적용되는 옵션은 [전역 옵션](/tools/pub/cmd#global-options)을 참조하세요.
 
 ### `[version-constraint]`
 
-Use `dart pub global activate <package> [version-constraint]`
-to specify a specific version of the package.
-For example, the following command pulls
-the 0.6.0 version of the `markdown` package:
+`dart pub global activate <package> [version-constraint]`를 사용하여, 
+패키지의 특정 버전을 지정합니다. 
+예를 들어, 다음 명령은 `markdown` 패키지의 0.6.0 버전을 가져옵니다.
 
 ```console
 $ dart pub global activate markdown 0.6.0
 ```
 
-If you specify a range, pub picks the best version that meets that
-constraint. For example:
+범위를 지정하면, pub는 해당 제약 조건을 충족하는 최상의 버전을 선택합니다. 예를 들어:
 
 ```console
 $ dart pub global activate foo <3.0.0
@@ -247,20 +221,18 @@ $ dart pub global activate foo <3.0.0
 
 ### `--no-executables`
 
-Use `dart pub global activate <package> --no-executables`
-to globally activate the specified package,
-but not put any executables in `bin`.
-You have to use `dart pub global run` to run any executables.
+`dart pub global activate <package> --no-executables`를 사용하여, 
+지정된 패키지를 전역적으로 활성화하지만, 실행 파일을 `bin`에 넣지 않습니다. 
+실행 파일을 실행하려면, `dart pub global run`을 사용해야 합니다.
 
-### `--executable=<name>` or `-x <name>`
+### `--executable=<name>` 또는 `-x <name>` {:#executablename-or-x-name}
 
-Use with `dart pub global activate`
-to add the specified executable to your PATH.
-You can pass more than one of these flags.
+`dart pub global activate`와 함께 사용하여, 
+지정된 실행 파일을 PATH에 추가합니다. 
+이러한 플래그 중 두 개 이상을 전달할 수 있습니다.
 
-For example, the following command adds `bar` and `baz`,
-(but not any other executables that `foo` might define)
-to your PATH.
+예를 들어, 다음 명령은 `bar`와 `baz`를 PATH에 추가합니다.
+(`foo`가 정의할 수 있는 다른 실행 파일은 추가하지 않음)
 
 ```console
 $ dart pub global activate foo -x bar -x baz
@@ -268,11 +240,9 @@ $ dart pub global activate foo -x bar -x baz
 
 ### `--overwrite`
 
-Use `dart pub global activate <package> --overwrite`
-to overwrite any previously activated global executables
-with the same name. If you don't specify this flag,
-the preexisting executable will not be replaced.
-
+`dart pub global activate <package> --overwrite`를 사용하여, 
+이전에 활성화된 글로벌 실행 파일을 같은 이름으로 덮어씁니다. 
+이 플래그를 지정하지 않으면, 기존 실행 파일은 대체되지 않습니다.
 
 {% render 'pub-problems.md' %}
 

@@ -1,19 +1,19 @@
 ---
 title: dart pub downgrade
-description: Use dart pub downgrade to get the lowest versions of all dependencies used by your Dart application.
+# description: Use dart pub downgrade to get the lowest versions of all dependencies used by your Dart application.
+description: Dart 애플리케이션에서 사용하는 모든 종속성의 가장 낮은 버전을 얻으려면, dart pub downgrade를 사용하세요.
 ---
 
-_Downgrade_ is one of the commands of the [pub tool](/tools/pub/cmd).
+_Downgrade_ 는 [pub 도구](/tools/pub/cmd)의 명령 중 하나입니다.
 
 ```plaintext
 $ dart pub downgrade [--[no-]offline] [-n|--dry-run] [dependencies...] 
 ```
 
-Without any additional arguments, `dart pub downgrade` gets the lowest versions of
-all the dependencies listed in the [`pubspec.yaml`](/tools/pub/pubspec) file
-in the current working directory, as well as their [transitive
-dependencies](/tools/pub/glossary#transitive-dependency).
-For example:
+추가 인수 없이, 
+`dart pub downgrade`는 현재 작업 디렉토리의 [`pubspec.yaml`](/tools/pub/pubspec) 파일에 나열된,
+모든 종속성의 가장 낮은 버전과 해당 [전이적 종속성](/tools/pub/glossary#transitive-dependency)을 가져옵니다. 
+예를 들어:
 
 ```console
 $ dart pub downgrade
@@ -27,19 +27,17 @@ Resolving dependencies... (1.2s)
 Changed 6 dependencies!
 ```
 
-The `dart pub downgrade` command creates a lockfile. If one already exists,
-pub ignores that file and generates a new one from scratch, using the lowest
-versions of all dependencies.
+`dart pub downgrade` 명령은 잠금 파일을 만듭니다. 
+이미 잠금 파일이 있으면, pub은 해당 파일을 무시하고, 
+모든 종속성의 가장 낮은 버전을 사용하여 처음부터 새 파일을 생성합니다.
 
-See the [`dart pub get` documentation](/tools/pub/cmd/pub-get) for more information
-on package resolution and the system package cache.
+패키지 해결 및 시스템 패키지 캐시에 대한 자세한 내용은, 
+[`dart pub get` 문서](/tools/pub/cmd/pub-get)를 참조하세요.
 
+## 특정 종속성 다운그레이드 {:#downgrading-specific-dependencies}
 
-## Downgrading specific dependencies
-
-It's possible to tell `dart pub downgrade` to downgrade specific dependencies to the
-lowest version while leaving the rest of the dependencies alone as much as
-possible. For example:
+`dart pub downgrade`에 특정 종속성을 가장 낮은 버전으로 다운그레이드하고, 
+나머지 종속성은 가능한 한 그대로 두라고 지시할 수 있습니다. 예를 들어:
 
 ```console
 $ dart pub downgrade test
@@ -60,65 +58,59 @@ These packages are no longer being depended on:
 Changed 3 dependencies!
 ```
 
-If you are downgrading a specific dependency, pub tries to find the
-highest versions of any transitive dependencies that fit the new dependency
-constraints. Any transitive dependencies are usually also downgraded
-as a result.
+특정 종속성을 다운그레이드하는 경우, 
+pub은 새로운 종속성 제약 조건에 맞는 모든 전이 종속성의 가장 높은 버전을 찾으려고 합니다. 
+모든 전이 종속성도 결과적으로 다운그레이드됩니다.
 
 
-## Getting a new dependency
+## 새로운 종속성 얻기 {:#getting-a-new-dependency}
 
-If a dependency is added to the pubspec before `dart pub downgrade` is run,
-it gets the new dependency and any of its transitive dependencies.
-This shares the same behavior as `dart pub get`.
-
-
-## Removing a dependency
-
-If a dependency is removed from the pubspec before `dart pub downgrade` is run,
-the dependency is no longer available for importing.
-Any transitive dependencies of the removed dependency are also removed,
-as long as no remaining immediate dependencies also depend on them.
-This is the same behavior as `dart pub get`.
+`dart pub downgrade`가 실행되기 전에 종속성이 pubspec에 추가되면, 
+새 종속성과 그 전이적 종속성을 모두 가져옵니다. 
+이는 `dart pub get`과 동일한 동작을 공유합니다.
 
 
-## Downgrading while offline
+## 종속성 제거 {:#removing-a-dependency}
 
-If you don't have network access, you can still run `dart pub downgrade`.
-Because pub downloads packages to a central cache shared by all packages
-on your system, it can often find previously downloaded packages
-without needing to use the network.
-
-However, by default, `dart pub downgrade` tries to go online if you
-have any hosted dependencies.
-If you don't want pub to do that, pass it the `--offline` flag.
-In offline mode, pub looks only in your local package cache,
-trying to find a set of versions that work with your package from what's already
-available.
+`dart pub downgrade`를 실행하기 전에 pubspec에서 종속성이 제거되면, 
+종속성은 더 이상 import 할 수 없습니다. 
+제거된 종속성의 모든 전이 종속성도 제거되며, 
+남아 있는 즉각적인 종속성도 이에 종속되지 않는 한 제거됩니다. 
+이는 `dart pub get`과 동일한 동작입니다.
 
 
+## 오프라인 상태에서 다운그레이드 {:#downgrading-while-offline}
 
-## Options
+네트워크 액세스가 없어도, `dart pub downgrade`를 실행할 수 있습니다. 
+pub는 시스템의 모든 패키지가 공유하는 중앙 캐시에 패키지를 다운로드하기 때문에, 
+네트워크를 사용하지 않고도 이전에 다운로드한 패키지를 찾을 수 있습니다.
 
-For options that apply to all pub commands, see
-[Global options](/tools/pub/cmd#global-options).
+그러나, 기본적으로 `dart pub downgrade`는 호스팅된 종속성이 있는 경우, 온라인으로 전환하려고 합니다. 
+pub에서 이를 수행하지 않으려면, `--offline` 플래그를 전달합니다. 
+오프라인 모드에서 pub는 로컬 패키지 캐시에서만 찾고, 
+이미 사용 가능한 버전 중에서 패키지와 작동하는 버전 세트를 찾으려고 합니다.
 
-### `--[no-]offline`
+
+## 옵션 {:#options}
+
+모든 pub 명령에 적용되는 옵션은, [전역 옵션](/tools/pub/cmd#global-options)을 참조하세요.
+
+### `--[no-]offline` {:#no-offline}
 
 {% render 'tools/pub-option-no-offline.md' %}
 
-### `--dry-run` or `-n`
+### `--dry-run` 또는 `-n` {:#dry-run-or-n}
 
-Reports what dependencies would change but doesn't change any.
+어떤 종속성이 변경될지 보고하지만, 아무것도 변경하지 않습니다.
 
-### `--tighten`
+### `--tighten` {:#tighten}
 
 :::version-note
-Support for the `--tighten` option was added in Dart 3.5.
+Dart 3.5에서는 `--tighten` 옵션에 대한 지원이 추가되었습니다.
 :::
 
-Updates the lower bounds of dependencies in `pubspec.yaml` to match the
-resolved versions, and returns a list of the changed constraints. 
-Can be applied to [specific dependencies](#downgrading-specific-dependencies).
+`pubspec.yaml`의 종속성 하한을 해결된 버전과 일치하도록 업데이트하고, 
+변경된 제약 조건 리스트를 반환합니다. 
+[특정 종속성](#downgrading-specific-dependencies)에 적용할 수 있습니다.
 
 {% render 'pub-problems.md' %}

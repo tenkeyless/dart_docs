@@ -1,21 +1,19 @@
 ---
-title: Dart SDK overview
-description: Dart libraries and command-line tools.
+# title: Dart SDK overview
+title: Dart SDK 개요
+# description: Dart libraries and command-line tools.
+description: Dart 라이브러리 및 명령줄 도구.
 ---
 
-The Dart SDK has the libraries and command-line tools that you need to develop
-Dart web, command-line, and server apps.
-To install the Dart SDK, see [Get Dart](/get-dart).
-If you're developing Flutter apps, [install the Flutter SDK][flutter].
-The Flutter SDK includes the Dart SDK.
+Dart SDK에는 Dart 웹, 명령줄 및 서버 앱을 개발하는 데 필요한 라이브러리와 명령줄 도구가 있습니다. 
+Dart SDK를 설치하려면 [Dart 받기](/get-dart)를 참조하세요. 
+Flutter 앱을 개발하는 경우, [Flutter SDK 설치][flutter]를 참조하세요. 
+Flutter SDK에는 Dart SDK가 포함되어 있습니다.
 
-To learn about other tools you can use for Dart development,
-check out the [Dart tools](/tools) page.
+Dart 개발에 사용할 수 있는 다른 도구에 대해 알아보려면, [Dart 도구](/tools) 페이지를 확인하세요.
 
 :::version-note
-This site's documentation and examples use
-{% if site.sdkInfo.channel == 'dev' %} the **dev channel** {% endif -%}
-version [{{site.sdkInfo.version}}][site SDK version] of the **Dart SDK**.
+이 사이트의 문서와 예제에서는 **Dart SDK** {% if site.sdkInfo.channel == 'dev' %} **dev 채널** {% endif -%} 버전 [{{site.sdkInfo.version}}][site SDK version]을 사용합니다.
 :::
 
 {% comment %}
@@ -24,28 +22,26 @@ version [{{site.sdkInfo.version}}][site SDK version] of the **Dart SDK**.
   More info: https://github.com/dart-lang/site-www/wiki/Updating-to-new-SDK-releases
 {% endcomment %}
 
-## What's in the Dart SDK
+## Dart SDK에는 무엇이 들어있나요? {:#whats-in-the-dart-sdk}
 
-The Dart SDK includes two directories:
+Dart SDK에는 두 개의 디렉토리가 포함되어 있습니다.
 
-* `lib` contains the [Dart libraries][].
-* `bin` contains the following command-line tools.
+* `lib`에는 [Dart 라이브러리][Dart libraries]가 포함되어 있습니다.
+* `bin`에는 다음 명령줄 도구가 포함되어 있습니다.
 
 [`dart`](/tools/dart-tool)
-: The command-line interface to create, format, analyze, test,
-  document, compile, and run Dart code.
-  
+: Dart 코드를 만들고, 포맷하고, 분석하고, 테스트하고, 문서화하고, 컴파일하고, 실행하는 명령줄 인터페이스입니다.
+
 [`dartaotruntime`](/tools/dartaotruntime)
-: A Dart runtime for AOT-compiled snapshots.
+: AOT 컴파일 스냅샷을 위한 Dart 런타임입니다.
 
 {% render 'tools/utf-8.md' %}
 
-To learn more about the SDK, check out its [README file][readme].
+SDK에 대해 자세히 알아보려면, [README 파일][readme]을 확인하세요.
 
-## Filing bugs and feature requests
+## 버그 제출 및 기능 요청 {:#filing-bugs-and-feature-requests}
 
-To see existing issues or create a new one,
-go to [the SDK issue tracker][sdk-issues].
+기존 문제를 보거나 새 문제를 만들려면, [SDK 문제 추적기][sdk-issues]로 이동하세요.
 
 [Dart libraries]: /libraries
 [flutter]: {{site.flutter-docs}}/get-started/install

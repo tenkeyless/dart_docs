@@ -1,164 +1,143 @@
 ---
 title: dart pub
-description: The command-line interface for pub, a package management tool for Dart.
+description: Dart용 패키지 관리 도구인 pub의 명령줄 인터페이스입니다.
 ---
 
-The [pub package manager](/guides/packages) has a command-line interface
-that works with either the
-[`flutter` tool][flutter-cli] or the [`dart` tool][dart-cli].
-With either tool, add the `pub` command followed by
-a subcommand such as `get`:
+[pub 패키지 관리자](/guides/packages)에는, 
+[`flutter` 도구][flutter-cli] 또는 [`dart` 도구][dart-cli]와 함께 작동하는, 
+명령줄 인터페이스가 있습니다. 
+두 도구 중 하나를 사용하여, `pub` 명령 다음에 `get`과 같은 하위 명령을 추가합니다.
 
 ```console
-$ dart pub get    # Gets dependencies for a non-Flutter package
-$ flutter pub get # Gets dependencies for a Flutter package
+$ dart pub get    # Flutter가 아닌 패키지에 대한 종속성을 가져옵니다.
+$ flutter pub get # Flutter 패키지에 대한 종속성을 가져옵니다.
 ```
 
-This site uses `dart pub <subcommand>` for its examples,
-but if your current directory holds a Flutter app
-or other Flutter-specific code,
-use `flutter pub <subcommand>` instead.
-For more information, see
-[Using packages]({{site.flutter-docs}}/development/packages-and-plugins/using-packages)
-on the [Flutter website]({{site.flutter}}).
+이 사이트는 예시로 `dart pub <subcommand>`를 사용하지만, 
+현재 디렉토리에 Flutter 앱이나 기타 Flutter 관련 코드가 있는 경우, 
+`flutter pub <subcommand>`를 대신 사용합니다. 
+자세한 내용은 [Flutter 웹사이트]({{site.flutter}})에서 [패키지 사용]({{site.flutter-docs}}/development/packages-and-plugins/using-packages)을 참조하세요.
 
 [flutter-cli]: {{site.flutter-docs}}/reference/flutter-cli
 [dart-cli]: /tools/dart-tool
 
 :::version-note
-The `dart pub` command debuted in Dart 2.10.
-Although you might still find examples of
-using the standalone `pub` command instead of
-`dart pub` or `flutter pub`,
-the standalone `pub` command has been removed.
+`dart pub` 명령은 Dart 2.10에서 처음 선보였습니다. 
+`dart pub` 또는 `flutter pub` 대신, 독립형 `pub` 명령을 사용하는 예를 여전히 찾을 수 있지만, 
+독립형 `pub` 명령은 제거되었습니다.
 :::
 
-If you encounter problems using the pub tool,
-see [Troubleshooting Pub](/tools/pub/troubleshoot).
+Pub 도구 사용 시 문제가 발생하면, [Pub 문제 해결](/tools/pub/troubleshoot)을 참조하세요.
 
+## 하위 명령 리스트 {:#list-of-subcommands}
 
-## List of subcommands
-
-Detailed documentation exists for each of the following pub subcommands:
+다음 각 pub 하위 명령에 대한 자세한 문서가 있습니다.
 
 {% render 'pub-subcommands.md' %}
 
-## Overview of subcommands
+## 하위 명령 개요 {:#overview-of-subcommands}
 
-Pub's subcommands fall into the following categories:
+Pub의 하위 명령은 다음 범주로 나뉩니다.
 
-* [Managing package dependencies](#managing-package-dependencies)
-* [Running command-line apps](#running-command-line-apps)
-* [Deploying packages and apps](#deploying-packages-and-apps)
-
+* [패키지 종속성 관리](#managing-package-dependencies)
+* [명령줄 앱 실행](#running-command-line-apps)
+* [패키지 및 앱 배포](#deploying-packages-and-apps)
 
 <a id="managing-apps"></a>
-### Managing package dependencies
+### 패키지 종속성 관리 {:#managing-package-dependencies}
 
-Pub provides a number of subcommands for managing the
-[packages your code depends on](/tools/pub/dependencies).
+Pub은 [코드가 종속된 패키지](/tools/pub/dependencies)를 관리하기 위한 여러 하위 명령을 제공합니다.
 
-In this group, the most commonly used subcommands are `get` and
-`upgrade`, which retrieve or upgrade dependencies used by a package.
-Every time you modify a pubspec file,
-run `dart pub get` or `flutter pub get`
-to make sure the dependencies are up to date. Some IDEs
-perform this step automatically on the creation of a project,
-or any modification of the pubspec.
+이 그룹에서 가장 일반적으로 사용되는 하위 명령은 `get`과 `upgrade`로, 
+패키지에서 사용하는 종속성을 검색하거나 업그레이드합니다. 
+pubspec 파일을 수정할 때마다 `dart pub get` 또는 `flutter pub get`을 실행하여, 
+종속성이 최신 상태인지 확인합니다. 
+일부 IDE는 프로젝트를 만들거나 pubspec을 수정할 때 이 단계를 자동으로 수행합니다.
 
 [`cache`](/tools/pub/cmd/pub-cache)
-: Manages pub's local package cache. Use this subcommand to add packages
-  to your cache, or to perform a clean reinstall of all packages in
-  your cache.
+: pub의 로컬 패키지 캐시를 관리합니다. 
+  이 하위 명령을 사용하여 캐시에 패키지를 추가하거나, 
+  캐시에 있는 모든 패키지를 깨끗하게 다시 설치합니다.
 
 [`deps`](/tools/pub/cmd/pub-deps)
-: Lists all dependencies used by the current package.
+: 현재 패키지에서 사용되는 모든 종속성을 나열합니다.
 
 [`downgrade`](/tools/pub/cmd/pub-downgrade)
-: Retrieves the lowest versions of all the packages that are
-  listed as dependencies used by the current package. Used for testing
-  the lower range of your package's dependencies.
+: 현재 패키지에서 사용하는 종속성으로 나열된 모든 패키지의 가장 낮은 버전을 검색합니다. 
+  패키지 종속성의 하위 범위를 테스트하는 데 사용됩니다.
 
 [`get`](/tools/pub/cmd/pub-get)
-: Retrieves the packages that are listed as the dependencies for
-  the current package.
-  If a `pubspec.lock` file already exists, fetches the version
-  of each dependency (if possible) as listed in the lock file.
-  Creates or updates the lock file, as needed.
+: 현재 패키지의 종속성으로 나열된 패키지를 검색합니다. 
+  `pubspec.lock` 파일이 이미 있는 경우, 잠금 파일에 나열된 각 종속성의 버전(가능한 경우)을 가져옵니다. 
+  필요에 따라 잠금 파일을 생성하거나 업데이트합니다.
 
 [`outdated`](/tools/pub/cmd/pub-outdated)
-: Looks at every package that the current package depends on,
-  determines which package dependencies are out of date,
-  and gives you advice on how to update them.
-  Use this subcommand when you want to update package dependencies.
+: 현재 패키지가 종속된 모든 패키지를 살펴보고, 
+  어떤 패키지 종속성이 오래되었는지 확인하고, 
+  이를 업데이트하는 방법에 대한 조언을 제공합니다. 
+  패키지 종속성을 업데이트하려면, 이 하위 명령을 사용합니다.
 
 [`upgrade`](/tools/pub/cmd/pub-upgrade)
-: Retrieves the latest version of each package listed
-  as dependencies used by the current package. If a `pubspec.lock`
-  file exists, ignores the versions listed in the lock file and fetches
-  the newest versions that honor the constraints in the pubspec.
-  Creates or updates the lock file, as needed.
+: 현재 패키지에서 사용하는 종속성으로 나열된 각 패키지의 최신 버전을 검색합니다. 
+  `pubspec.lock` 파일이 있는 경우, 잠금 파일에 나열된 버전을 무시하고, 
+  pubspec의 제약 조건을 준수하는 최신 버전을 가져옵니다. 
+  필요에 따라 잠금 파일을 생성하거나 업데이트합니다.
 
 
-### Running command-line apps
+### 명령줄 앱 실행 {:#running-command-line-apps}
 
-The [`global`](/tools/pub/cmd/pub-global) subcommand lets you 
-make a package globally available, 
-so you can run scripts from that package's `bin` directory.
-To run globally available scripts, you must
-[add the system cache `bin` directory to your path][add-path].
+[`global`](/tools/pub/cmd/pub-global) 하위 명령을 사용하면, 
+패키지를 전역적으로 사용할 수 있으므로, 
+해당 패키지의 `bin` 디렉토리에서 스크립트를 실행할 수 있습니다. 
+전역적으로 사용할 수 있는 스크립트를 실행하려면, 
+[경로에 시스템 캐시 `bin` 디렉토리를 추가][add-path]해야 합니다.
 
 [add-path]: /tools/pub/cmd/pub-global#running-a-script-from-your-path
 
-### Deploying packages and apps
+### 패키지 및 앱 배포 {:#deploying-packages-and-apps}
 
-With pub you can publish packages and command-line apps.
+pub를 사용하면 패키지와 명령줄 앱을 게시할 수 있습니다.
 
-#### Packages
+#### 패키지 {:#packages}
 
-To share your Dart packages with the world, you can
-use the [`publish`](/tools/pub/cmd/pub-lish) subcommand to upload the
-package to the [pub.dev site]({{site.pub}}).
-For information on allowing other users 
-to modify and upload new versions of your package,
-see [Uploaders](/tools/pub/publishing#uploaders).
-
-
-#### Command-line apps
-
-For any package that contains scripts (anything under the `bin/`
-directory), consider adding the `executables` tag to the pubspec file.
-When a script is listed under `executables`, users can run
-[`dart pub global activate`](/tools/pub/cmd/pub-global#activating-a-package)
-to make it directly available from the command line.
+Dart 패키지를 전 세계와 공유하려면, 
+[`publish`](/tools/pub/cmd/pub-lish) 하위 명령을 사용하여, 
+패키지를 [pub.dev 사이트]({{site.pub}})에 업로드할 수 있습니다. 
+다른 사용자가 패키지의 새 버전을 수정하고 업로드할 수 있도록 허용하는 방법에 대한 자세한 내용은, 
+[Uploaders](/tools/pub/publishing#uploaders)를 참조하세요.
 
 
-## Global options
+#### 명령줄 앱 {:#command-line-apps}
 
-Several command-line options work with all of the pub subcommands.
-These include:
+스크립트가 포함된 모든 패키지(`bin/` 디렉토리에 있는 모든 것)의 경우, 
+`executables` 태그를 pubspec 파일에 추가하는 것을 고려하세요. 
+스크립트가 `executables`에 나열되면, 
+사용자는 [`dart pub global activate`](/tools/pub/cmd/pub-global#activating-a-package)를 실행하여, 
+명령줄에서 직접 사용할 수 있도록 할 수 있습니다.
 
-### `--help` or `-h`
+## 글로벌 옵션 {:#global-options}
 
-Prints usage information.
+여러 명령줄 옵션이 모든 pub 하위 명령과 함께 작동합니다. 여기에는 다음이 포함됩니다.
 
-### `--trace`
+### `--help` 또는 `-h` {:#help-or-h}
 
-Prints debugging information when an error occurs.
+사용 정보를 출력합니다.
 
-### `--verbose` or `-v`
+### `--trace` {:#trace}
 
-Equivalent to `--verbosity=all`.
+오류가 발생하면 디버깅 정보를 출력합니다.
 
-### `--directory=<dir>` or `-C <dir>`
+### `--verbose` 또는 `-v` {:#verbose-or-v}
 
-Runs the command in the specified directory.
+`--verbosity=all`과 동일합니다.
 
-### `--[no-]color`
+### `--directory=<dir>` 또는 `-C <dir>` {:#directorydir-or-c-dir}
 
-Adds color to the output for emphasis (`--color`).
-The default depends on whether you're using this command at a terminal.
-At a terminal, `--color` is the default,
-otherwise, `--no-color` is the default.
-Use `--no-color` to disable color in all environments.
+지정된 디렉토리에서 명령을 실행합니다.
 
+### `--[no-]color` {:#no-color}
+
+강조를 위해 출력에 색상을 추가합니다. (`--color`)
+기본값은 터미널에서 이 명령을 사용하는지 여부에 따라 달라집니다. 
+터미널에서는 `--color`가 기본값이고, 그렇지 않으면 `--no-color`가 기본값입니다. 
+모든 환경에서 색상을 비활성화하려면, `--no-color`를 사용합니다.

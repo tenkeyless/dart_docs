@@ -1,25 +1,21 @@
 ---
 title: dart pub deps
-description: Use dart pub deps to print a dependency graph for a package.
+description: dart pub deps를 사용하여 패키지의 종속성 그래프를 출력합니다.
 ---
 
-_Deps_ is one of the commands of the [pub tool](/tools/pub/cmd).
+_Deps_ 는 [pub 도구](/tools/pub/cmd)의 명령 중 하나입니다.
 
-```plaintext
+```console
 $ dart pub deps [--style=<style>] [--[no-]dev] [--executables]
 ```
 
-This command prints the dependency graph for a package.
-The graph includes both the
-[immediate dependencies](/tools/pub/glossary#immediate-dependency)
-that the package uses (as specified in the pubspec), as well as the
-[transitive dependencies](/tools/pub/glossary#transitive-dependency)
-pulled in by the immediate dependencies.
+이 명령은 패키지의 종속성 그래프를 출력합니다. 
+그래프에는 패키지가 사용하는 [즉각적 종속성](/tools/pub/glossary#immediate-dependency)(pubspec에 지정된 대로)과, 
+직접 종속성에서 가져온 [전이적 종속성](/tools/pub/glossary#transitive-dependency)이 모두 포함됩니다.
 
-The dependency information is printed as a tree by default.
+종속성 정보는 기본적으로 트리로 출력됩니다.
 
-For example, the pubspec for the markdown_converter example specifies
-the following dependencies:
+예를 들어, markdown_converter 예제의 pubspec은 다음 종속성을 지정합니다.
 
 ```yaml
 dependencies:
@@ -27,7 +23,7 @@ dependencies:
   markdown: ^0.7.2
 ```
 
-Here's an example of the `dart pub deps` output for markdown_converter:
+다음은 markdown_converter에 대한 `dart pub deps` 출력의 예입니다.
 
 ```console
 $ dart pub deps
@@ -44,38 +40,35 @@ markdown_converter 0.0.0
 '-- markdown 0.7.2
 ```
 
-## Options
+## 옵션 {:#options}
 
-For options that apply to all pub commands, see
-[Global options](/tools/pub/cmd#global-options).
+모든 pub 명령에 적용되는 옵션은, [전역 옵션](/tools/pub/cmd#global-options)을 참조하세요.
 
-### `--style=<style>` or `-s <style>`
+### `--style=<style>` 또는 `-s <style>` {:#stylestyle-or-s-style}
 
-The specified style determines the output format:
+지정된 스타일은 출력 형식을 결정합니다:
 
 `tree`
-: Prints dependency information as a tree. This is the 
-  default format.
+: 종속성 정보를 트리로 출력합니다. 이는 기본 형식입니다.
 
 `list`
-: Prints dependency information as a list.
+: 종속성 정보를 리스트로 출력합니다.
 
 `compact`
-: Prints dependency information as a compact list.
+: 종속성 정보를 컴팩트 리스트로 출력합니다.
 
-### `--[no-]dev`
+### `--[no-]dev` {:#no-dev}
 
-By default, prints all dependencies, 
-including dev dependencies (`--dev`).
-To remove dev dependencies, use `--no-dev`.
+기본적으로 dev 종속성(`--dev`)을 포함한 모든 종속성을 출력합니다.
+dev 종속성을 제거하려면, `--no-dev`를 사용합니다.
 
-### `--executables`
+### `--executables` {:#executables}
 
-Prints all available executables.
+사용 가능한 모든 실행 파일을 출력합니다.
 
-### `--json`
+### `--json` {:#json}
 
-Generates output in JSON format.
+JSON 형식으로 출력을 생성합니다.
 
 
 {% render 'pub-problems.md' %}
